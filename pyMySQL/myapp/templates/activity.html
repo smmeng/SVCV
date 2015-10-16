@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block title %}SVCV Investment Activities{% endblock %}
+
+{% block body_block %}
+{% load humanize %}
+
+{% if user.is_authenticated %}
+	{% if user.is_staff or user.is_superuser%}
+		<h1>Select An Investor to View: </h1>
+		
+		<form  method="post" action="/activity/"><span>
+			{% csrf_token %}
+			<select name="investorId" onchange="javascript: this.form.submit(); " >
+			  	<option >---</option>
+			  	<option value="ALL">ALL</option>
+				{% for userId in allUser_list %}
+					{% if   userId.id|add:0 == investorId|add:0 %}
+						<option value="{{ userId.id }}" selected="selected">{{ userId.first_name }} {{ userId.last_name }}</option>
+					{% else %}
+						<option value="{{ userId.id }}">{{ userId.first_name }} {{ userId.last_name }}</option>
+					{% endif %}
+				{% endfor %}
+			</select> 
+			<noscript><input type="submit" name="submit" value="View" ></noscript>
+		</span></form>
+		<hr />
+		<h2>Requested Investment Activities for <font color=blue>{{ investorName.0.0  }} {{investorName.0.1 }}</font>*</h2>
+	{% else %}
+		<h2>Your Investment Activities*</h2>
+	{% endif %}
+	
+*-Most recent activities may not be included. 
+	<table style="width:80%; border: 1px dashed gray;">
+		<tr  style="border: 1px solid black;">
+		{% if user.is_staff or user.is_superuser%}
+			<th><strong><font size="4"><a href="/activity/NONE/">UserName</a></font></strong> </th>
+		{% endif %}
+		<th><strong><font size="4"><a href="/activity/Type/">Type</a></font></strong> </th>
+		<th><strong><font size="4"><a href="/activity/Date/">Date</a></font></strong> </th>
+		<th><strong><font size="4">Status</font></strong> </th>
+		<th><strong><font size="4" style="text-align: center;">Description</font></strong> </th>
+		<th><strong><font size="4">Principal</font></strong> </th>
+		<th><strong><font size="4" color=green>Distribution</font></strong> </th>
+		</tr>
+	{% for activity in activities %}
+		<tr>
+		{% if user.is_staff or user.is_superuser%}
+			<td> {{ activity.UserId }} </td>
+		{% endif %}
+			<td> {{ activity.Type_id }} </td>
+			<td> {{ activity.Date }} </td>
+			<td>{% if activity.ProjectId.Status.Status == 'Completed' %}
+                		<font color="green" weight="bold" > 
+                	{% elif activity.ProjectId.Status.Status == 'In Progress' %}
+                		<font color="blue" weight="bold" > 
+                	{% elif activity.ProjectId.Status.Status == 'Open' %}
+                		<font color="Red" weight="bold" size=6px>
+                	{% else  %}
+                		<font color="navy" weight="bold" size=8px>
+                	{% endif %}
+                	{{ activity.ProjectId.Status.Status }} </font>
+			</td>
+			<td>{% if activity.ProjectId.Status.Status == 'Completed' %}
+					<strike>{{ activity.Memo }},</strike> {{ activity.ProjectId }}
+				{% else %}
+					{{ activity.Memo }}, {{ activity.ProjectId }}
+				{% endif %}
+			</td>
+			<td style="text-align: center;">
+				{% if activity.Amount >= 0%}
+					 ${{ activity.Amount|intcomma }}
+				{% endif %}
+			</td>
+			<td style="text-align: center;">
+				{% if activity.Amount < 0%}
+					 <strong><font color=green>${{activity.Amount|intcomma }}</font></strong>
+				{% endif %}
+			<td>
+			</td>
+		</tr>
+	{% endfor %}
+
+		<tr>
+			{% if user.is_staff or user.is_superuser%}
+				<td/>
+			{% endif %}
+			<td/>
+			<td/>
+			<td/>
+			<td style="text-align: right;"> <b>Subtotal Principal:</b> </td>
+			<td style="text-align: center;"> <font color=red> ${{total_principal|intcomma }} </font></td>
+			
+		</tr>
+		<tr>
+			{% if user.is_staff or user.is_superuser%}
+				<td/>
+			{% endif %}
+			<td/>
+			<td/>
+			<td/>
+			<td style="text-align: right;"> <b>Subtotal Distribution:</b> </td>
+			<td/>
+			<td style="text-align: center;"> <font color=green> ${{total_distribution|intcomma }} </font></td>
+			
+		</tr>
+		<tr>
+		{% if user.is_staff or user.is_superuser%}
+			<td> {{ activity.UserId_id }} </td>
+		{% endif %}
+			<td/>
+			<td/>
+			<td/>
+			<td style="text-align: right;">  <b><font color=red size=5> Total Outstanding: ${{total_amount |intcomma }} </font></b></td>
+		</tr>
+	</table>
+{% else %}
+<h1>Please authenticate first!</h1>
+{% endif %}
+
+{% endblock %}

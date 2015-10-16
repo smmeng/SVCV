@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>SVCV Partners - {% block title %}Welcome to SVCV Partners!{% endblock %}</title>
+    </head>
+
+    <body>
+        <div style="display: inline-block; position: absolute; bottom: auto; left: auto; width: auto; height: auto; max-width: none; max-height: none; right: 0px; top: 0px;">
+            <table> <tr>
+            {% if user.is_authenticated %}
+            	{% if user.is_superuser%}
+	                <td><font color=green>Welcome, Superuser {{ user.first_name }}! </font></td>
+                {% elif user.is_staff %}
+	                <td><font color=blue>Welcome, Staff {{ user.first_name }}! </font> </td>
+                {% else %}
+	                <td>Welcome, {{ user.first_name }}! </td>
+                {%endif %}
+                <td><a href="/logout/">Logout</a></td>
+            {% else %}
+                <td><a href="/">Home</a></td>
+                <td><a href="/login/">Login</a></td>
+            {% endif %}
+
+                <td><a href="http://svcvllc.blogspot.com/p/blog-page.html">About</a></td>
+            </tr></table>
+        </div>
+        
+        {% include "top-nav.html" %}
+        <!-- Page specific content goes here -->
+        <div>
+            {% block body_block %}{% endblock %}
+            <hr/>
+            <p style="text-align: center;">&copy; 2013~2015 SVCV Partners LLC.</p>
+        </div>
+    </body>
+</html>

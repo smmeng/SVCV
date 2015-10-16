@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}SVCV Projects{% endblock %}
+
+{% block body_block %}
+{% load humanize %}
+
+{% if user.is_authenticated %}
+        <h1>Projects</h1>
+        {% if user.is_staff or user.is_superuser %}
+	        <a href="/add_project">New</a>
+        {% endif %}
+        {% if projects %}
+        <table style="width:100%; border: 1px dashed gray;">
+			<tr>
+				<th><strong><font size="4">Project Name</font></strong> </th>
+				<th><strong><font size="4">Description</font></strong> </th>
+				<th><strong><font size="4">Status</font></strong> </th>
+				<th><strong><font size="4">Company</font></strong> </th>
+				<th><strong><font size="4">Vendor</font></strong> </th>
+				<th><strong><font size="4">Start</font></strong> </th>
+		        {% if user.is_staff or user.is_superuser %}
+				<th><strong><font size="4">Expected End</font></strong> </th>
+				<th><strong><font size="4">Allocation</font></strong> </th>
+				<th><strong><font size="4" color=green>Committed</font></strong> </th>
+				{% endif %}
+			</tr>
+            {% for project in projects %}
+                <tr>
+                	<td><a href='/edit_project/{{ project.ProjectId }}'>{{ project.ProjectId }}. {{ project.ProjectName }}</a></td>
+                <td>{{ project.DESCRIPTION }}</td>
+                <td>{% if project.Status_id == 'Completed' %}
+                		<font color="green" weight="bold" > 
+                	{% elif project.Status_id == 'In Progress' %}
+                		<font color="blue" weight="bold" > 
+                	{% elif project.Status_id == 'Open' %}
+                		<font color="Red" weight="bold" size=6px>
+                	{% else  %}
+                		<font color="navy" weight="bold" size=8px>
+                	{% endif %}
+                	{{ project.Status_id }} </font></td>
+                <td>{{ project.CompanyId }}</td>
+                <td>{{ project.VendorId }}</td>
+                <td>{{ project.StartDate }}</td>
+		        {% if user.is_staff or user.is_superuser %}
+                <td>{{ project.EndDate }}</td>
+                <td>${{ project.Allocation |intcomma}}</td>
+                <td>${{ project.Committed|intcomma }}</td>
+                {% endif %}
+                </tr>
+              {% endfor %}
+              
+  			  {% if user.is_staff or user.is_superuser%}
+				<tr>
+					<td/>
+					<td style="text-align: right;"> <b>Subtotal Outstanding Principal:</b> </td>
+					<td/>
+					<td/>
+					<td/>
+					<td/>
+					<td/>
+					<td style="text-align: center; color:red">  ${{total_principal|intcomma }} </td>
+					
+				</tr>
+				<tr>
+					<td/>
+					<td style="text-align: right; color:green;"> <b>Subtotal Distribution:</b> </td>
+					
+					<td/>
+					<td/>
+					<td/>
+					<td/>
+					<td/>
+					<td/>
+					<td style="text-align: center;color:green"> ${{total_distribution|intcomma }}</td>
+					
+				</tr>
+				<tr>
+					<td/>
+					<td style="text-align: right;color:blue">  <b> Overall Amount: ${{total_amount |intcomma }} </b></td>
+					<td/>
+					<td/>
+				</tr>
+				{% endif %}
+           </table>
+        {% else %}
+            No project exists!
+        {% endif %}
+{% else %}
+<h1>Please authenticate first!</h1>
+{% endif %}
+
+{% endblock %}
