@@ -160,6 +160,7 @@ def add_project(request, id=None):
 def get_activity(request, orderBy=None):
     # Create a context dictionary which we can pass to the template rendering engine.
     activity_dict = {}
+    user = request.user
     
     util = Utility()
     user_list = util.viewable_user_list(request)
@@ -169,7 +170,7 @@ def get_activity(request, orderBy=None):
     uid=request.POST.get('investorId')
     userName = None
     activity_list = None
-    print 'get_activity() orderBy ',orderBy, " id=", uid
+    print 'get_activity() orderBy=[', orderBy, "] id=[", uid
     
     sess= request.session;
     sess_userId_label = "current_activity_uid"
@@ -198,7 +199,7 @@ def get_activity(request, orderBy=None):
                 activity_list = InvestmentActivity.objects.filter(UserId = userId).order_by(orderBy)
             
             userName = User.objects.filter(id = uid).values_list('first_name', 'last_name')
-        elif uid == 'ALL': # fetch all records the current user is allowed to view
+        elif uid == 'ALL'  and (user.is_staff or user.is_superuser) : # fetch all records the current user is allowed to view
             if orderBy == 'NONE':
                 activity_list = InvestmentActivity.objects.all().filter(UserId__in=allUserId_list)
             else:
@@ -240,6 +241,21 @@ def get_activity(request, orderBy=None):
     # Go render the response and return it to the client.
     return render(request, 'activity.html', activity_dict)
 
+################## for updating userProfile
+@login_required
+def get_userProfile(request):
+    userProfile_dict = {}
+    user = request.user
+    myUserId = user.id
+    print 'myUserId=[', myUserId
+    profileInfo = UserProfile.objects.filter(UserId = myUserId )
+    print 'profileInfo=[', profileInfo
+     
+    if profileInfo != None:
+        userProfile_dict = {profileInfo}
+    
+    return render(request, 'userProfile.html', userProfile_dict)
+    
 ########################################################################
 def index(request):
     return render(request, 'index.html')

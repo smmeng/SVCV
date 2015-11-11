@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}SVCV Investment Activities{% endblock %}
+
+{% block body_block %}
+{% load humanize %}
+
+{% if user.is_authenticated %}
+	<h1>Your Profile: </h1>
+		
+{% else %}
+	<h1>Please authenticate first!</h1>
+{% endif %}
+
+{% endblock %}

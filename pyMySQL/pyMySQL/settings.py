@@ -81,8 +81,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'security',
 #        'HOST': 'www.parkwhileaway.com',                                                 
-        #'HOST': 'www.svcvllc.com',
-        'HOST': 'SNCSMENG03',                                                 
+        'HOST': 'www.svcvllc.com',
+        #'HOST': 'SNCSMENG03',                                                 
         'PORT': '3306',
         'USER': 'smmeng',
         'PASSWORD': 'shanghai0'    

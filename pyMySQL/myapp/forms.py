@@ -37,4 +37,26 @@ class InvestmentActivityForm(forms.ModelForm):
     class Meta:
         # Provide an association between the ModelForm and a model
         model = InvestmentActivity
-        fields = ('UserId',)
+        fields = ('UserId', )
+        
+class UserProfileForm(forms.ModelForm):
+    UserId =forms.IntegerField(widget=forms.TextInput)
+    Telephone = forms.CharField(widget=forms.TextInput)
+    Cell = forms.CharField(widget=forms.TextInput)
+    Address1 = forms.CharField(widget=forms.TextInput)
+    Address2 = forms.CharField(widget=forms.TextInput)
+    City = forms.CharField(widget=forms.TextInput)
+    State = forms.CharField(widget=forms.TextInput)
+    ZipCode = forms.CharField(widget=forms.TextInput)
+    W9Ready = forms.BooleanField()
+    website = forms.URLField(widget=forms.URLInput)
+
+    minCommitment = forms.IntegerField(widget=forms.TextInput)
+    maxCommitment = forms.IntegerField(widget=forms.TextInput)
+    lastCommitmentDate = forms.DateField(widget=forms.DateInput)
+    
+    # An inline class to provide additional information on the form.
+    class Meta:
+        # Provide an association between the ModelForm and a model
+        model = UserProfile
+        fields = ('UserId', 'Telephone', 'Cell', 'Address1', 'Address2', 'City', 'State', 'ZipCode', 'W9Ready', 'website', 'minCommitment', 'maxCommitment', 'lastCommitmentDate')

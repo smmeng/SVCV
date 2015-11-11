@@ -26,5 +26,6 @@ urlpatterns = patterns('',
         url(r'^edit_project/(?P<id>\d+)/$', views.add_project, {}, name='add_project'),  
         url(r'^activity/(?P<orderBy>[a-zA-Z]+)/$', views.get_activity, {}, name='get_activity'),
         url(r'^activity/', views.get_activity),
+        url(r'^profile/', views.get_userProfile),
 )
 
