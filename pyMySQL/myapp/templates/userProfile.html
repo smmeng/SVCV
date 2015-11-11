@@ -1,13 +1,51 @@
 {% extends 'base.html' %}
 
-{% block title %}SVCV Investment Activities{% endblock %}
+{% block title %}Personal Profile{% endblock %}
 
 {% block body_block %}
 {% load humanize %}
 
 {% if user.is_authenticated %}
-	<h1>Your Profile: </h1>
-		
+  	{%  if dbOperation == "Create" %}
+       <h1>{{dbOperation}} A New Profile (Your Investor ID is {{myUserId}}) :</h1>
+      {% else %}
+       <h1>{{dbOperation}} Your Profile (Your Investor ID is {{myUserId}}):</h1>
+      {% endif %}
+  	
+
+  	{%  if dbOperation == "Create" %}
+       <form id="UserProfile_form" method="post" action="/save_UserProfile/">
+    {% else %}
+       <form id="UserProfile_form" method="post" action="/save_UserProfile/{{ UserId.value }}/">
+    {% endif %}
+    
+    {% csrf_token %}
+
+	<table>
+          {% for field in form.visible_fields %}
+           	<tr>
+          	<td width="20%">
+              	{{ field.errors }}
+              </td>
+          	<td width="20%" align="right">
+              {{ field.help_text }}
+              </td>
+          	<td width="60%">
+              {{ field }}
+              </td></tr>
+           {%  if form.minCommitment.value != None and form.minCommitment != field or form.minCommitment.value == None %}
+        {% endif %}
+
+          {% endfor %}
+	</table>
+	<span align="center">
+  	{%  if dbOperation == 'Create' %}
+           	<input type="submit" name="submit" value="CREATE" />
+        {% else %}
+           	<input type="submit" name="submit" value="SAVE" />
+        {% endif %}
+	</span>
+      </form>		
 {% else %}
 	<h1>Please authenticate first!</h1>
 {% endif %}

@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import   User
 from django.db.models import Q
 
-from myapp.forms import ProjectForm, InvestmentActivityForm
+from myapp.forms import ProjectForm,  UserProfileForm
 from myapp.models import PROJECT, InvestmentActivity, UserProfile
 
 from myapp.utility import Utility
@@ -244,17 +244,26 @@ def get_activity(request, orderBy=None):
 ################## for updating userProfile
 @login_required
 def get_userProfile(request):
-    userProfile_dict = {}
     user = request.user
     myUserId = user.id
     print 'myUserId=[', myUserId
+
     profileInfo = UserProfile.objects.filter(UserId = myUserId )
-    print 'profileInfo=[', profileInfo
-     
-    if profileInfo != None:
-        userProfile_dict = {profileInfo}
-    
-    return render(request, 'userProfile.html', userProfile_dict)
+    #profileInfo = UserProfile.objects.get(pk=myUserId)
+    print 'profileInfo=', profileInfo.count()
+         
+    if profileInfo is None or profileInfo.count() == 0:
+        form = UserProfileForm()
+        dbOperation = 'Create'
+    else:
+        form = UserProfileForm(instance=profileInfo)
+        dbOperation = 'Update'
+
+    print 'form=', form
+    # Bad form (or form details), no form supplied...
+    # Render the form with error messages (if any).
+    return render(request, 'userProfile.html', {'myUserId':myUserId, 'dbOperation':dbOperation, 'form': form})
+    #return render(request, 'userProfile.html', userProfile_dict)
     
 ########################################################################
 def index(request):

@@ -4,6 +4,7 @@ from decimal import Decimal
 from django.utils import timezone
 from datetime import datetime
 from django.template.defaultfilters import default
+from django.conf import settings
 
 # Create your models here.
 
@@ -79,7 +80,8 @@ class InvestmentActivityCopy(models.Model):
 class UserProfile(models.Model):
     # This line is required. Links UserProfile to a User model instance.
     #user = models.OneToOneField(User)
-    UserId =models.ForeignKey(User, default="1")
+    #UserId =models.ForeignKey(User, primary_key=True)
+    UserId =models.OneToOneField(settings.AUTH_USER_MODEL, primary_key=True)
 
     # The additional attributes we wish to include.
     Telephone = models.CharField('Phone#', max_length=32, null=True)
