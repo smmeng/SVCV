@@ -149,6 +149,7 @@ def add_project(request, id=None):
         else:
             form = ProjectForm(instance=project)
 
+    print 'ProjectForm=', form
     # Bad form (or form details), no form supplied...
     # Render the form with error messages (if any).
     return render(request, 'add_project.html', {'form': form})
@@ -253,18 +254,47 @@ def get_userProfile(request):
     print 'profileInfo=', profileInfo.count()
          
     if profileInfo is None or profileInfo.count() == 0:
-        form = UserProfileForm()
+        form = UserProfileForm(initial={'UserId': myUserId})
         dbOperation = 'Create'
     else:
         form = UserProfileForm(instance=profileInfo)
         dbOperation = 'Update'
 
-    print 'form=', form
+    #print 'UserProfileForm=', form
     # Bad form (or form details), no form supplied...
     # Render the form with error messages (if any).
     return render(request, 'userProfile.html', {'myUserId':myUserId, 'dbOperation':dbOperation, 'form': form})
     #return render(request, 'userProfile.html', userProfile_dict)
+
+@login_required
+def  save_userProfile(request, id=None):
+    user = request.user
+    myUserId = user.id
     
+    print 'save_userProfile recv id=[', id
+    if id == None:
+        print 'create'
+        form = UserProfileForm(request.POST)
+    else:
+        #form = ProjectForm(request.POST, instance=project)
+        print 'update'
+        object_to_edit = get_object_or_404(UserProfile, UserId=id) #Or slug=slug
+        print 'Found object_to_edit[{}]'.format(object_to_edit)
+        form = UserProfileForm(data = request.POST or None, instance=object_to_edit)
+
+    print 'before committing'
+    # Have we been provided with a valid form?
+    form.fields['UserId'].required = False
+    if form.is_valid():
+        # Save the new project to the database.
+        print 'committing'
+        form.save(commit=True)
+    else:
+        # The supplied form contained errors - just print them to the terminal.
+        print form.errors
+
+    print 'after committing'
+    return get_userProfile(request)
 ########################################################################
 def index(request):
     return render(request, 'index.html')

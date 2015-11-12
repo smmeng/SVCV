@@ -40,20 +40,20 @@ class InvestmentActivityForm(forms.ModelForm):
         fields = ('UserId', )
         
 class UserProfileForm(forms.ModelForm):
-    UserId =forms.IntegerField(widget=forms.TextInput)
-    Telephone = forms.CharField(widget=forms.TextInput)
-    Cell = forms.CharField(widget=forms.TextInput)
-    Address1 = forms.CharField(widget=forms.TextInput)
-    Address2 = forms.CharField(widget=forms.TextInput)
-    City = forms.CharField(widget=forms.TextInput)
-    State = forms.CharField(widget=forms.TextInput)
-    ZipCode = forms.CharField(widget=forms.TextInput)
-    W9Ready = forms.BooleanField()
-    website = forms.URLField(widget=forms.URLInput)
+    UserId =  forms.IntegerField(widget=forms.TextInput, help_text="UserID")
+    Telephone = forms.CharField(widget=forms.TextInput, help_text="Telephone#:")
+    Cell = forms.CharField(widget=forms.TextInput, help_text="Cell#:")
+    Address1 = forms.CharField(widget=forms.TextInput, help_text="Address1:")
+    Address2 = forms.CharField(widget=forms.TextInput, help_text="Address2:")
+    City = forms.CharField(widget=forms.TextInput, help_text="City:")
+    State = forms.CharField(widget=forms.TextInput, help_text="State:")
+    ZipCode = forms.CharField(widget=forms.TextInput, help_text="Zip:")
+    W9Ready = forms.BooleanField( help_text="W-9 Ready?:")
+    website = forms.URLField(widget=forms.URLInput, help_text="Website:")
 
-    minCommitment = forms.IntegerField(widget=forms.TextInput)
-    maxCommitment = forms.IntegerField(widget=forms.TextInput)
-    lastCommitmentDate = forms.DateField(widget=forms.DateInput)
+    minCommitment = forms.IntegerField(widget=forms.TextInput, help_text="Minimum Commitment")
+    maxCommitment = forms.IntegerField(widget=forms.TextInput, help_text="Maximum Commitment")
+    lastCommitmentDate = forms.DateField(widget=forms.DateInput, initial=timezone.now(), help_text="Last Commitment Date:")
     
     # An inline class to provide additional information on the form.
     class Meta:

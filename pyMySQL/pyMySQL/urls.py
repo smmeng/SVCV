@@ -27,5 +27,6 @@ urlpatterns = patterns('',
         url(r'^activity/(?P<orderBy>[a-zA-Z]+)/$', views.get_activity, {}, name='get_activity'),
         url(r'^activity/', views.get_activity),
         url(r'^profile/', views.get_userProfile),
+        url(r'^save_UserProfile/$', views.save_userProfile),
 )
 
