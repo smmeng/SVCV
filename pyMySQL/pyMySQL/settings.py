@@ -110,5 +110,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+    'C:/github/trunk/pyMySQL/myapp/static',
+    # Put strings here, like "/home/html/static" or "C:/www/django/static".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+    )
+
 LOGIN_URL = '/login/'
 AUTO_LOGOUT_DELAY = 5 #equivalent to 5 minutes
