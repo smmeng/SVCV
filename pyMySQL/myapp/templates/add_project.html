@@ -1,14 +1,14 @@
-<!DOCTYPE html>
-<html>
-    <head>
-    	{%  if form.ProjectName.value == None %}
-	        <title>Add a Project</title>
-        {% else %}
-       		<title>Edit Project-{{form.ProjectName.value}}</title>
-        {% endif %}
-    </head>
+{% extends 'base.html' %}
 
-    <body>
+{% block title %}
+    	{%  if form.ProjectName.value == None %}
+	        Add a Project
+        {% else %}
+       		Edit Project-{{form.ProjectName.value}}
+        {% endif %}
+{% endblock %}
+
+{% block body_block %}
     	{%  if form.ProjectName.value == None %}
 	        <h1>Add A Project</h1>
         {% else %}
@@ -47,11 +47,8 @@
 			   	{%  if form.ProjectName.value == None %}
 	            	<input type="submit" name="submit" value="CREATE" />
 		        {% else %}
-	            	<input type="submit" name="submit" value="SAVE" />
-		        {% endif %}
-		        <a href="/projects">Projects</a>
+	            	<input type="submit" name="submit" value="UPDATE" />
+		        {% endif %}		        
 			</span>
         </form>
-    </body>
-
-</html>
+{% endblock %}

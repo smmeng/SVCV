@@ -250,17 +250,22 @@ def get_userProfile(request):
     print 'myUserId=[', myUserId
 
     profileInfo = UserProfile.objects.filter(UserId = myUserId )
-    #profileInfo = UserProfile.objects.get(pk=myUserId)
-    print 'profileInfo=', profileInfo.count()
+    
+    if profileInfo.count() > 0:
+        profileInfo = UserProfile.objects.get(pk=myUserId)
+    else:
+        profileInfo = None
+        
+    print 'profileInfo=', profileInfo
          
-    if profileInfo is None or profileInfo.count() == 0:
-        form = UserProfileForm(initial={'UserId': myUserId})
+    if profileInfo is None:
+        form = UserProfileForm(initial={'UserId_id': myUserId, 'UserId': myUserId})
         dbOperation = 'Create'
     else:
         form = UserProfileForm(instance=profileInfo)
         dbOperation = 'Update'
 
-    #print 'UserProfileForm=', form
+    print 'UserProfileForm=', form
     # Bad form (or form details), no form supplied...
     # Render the form with error messages (if any).
     return render(request, 'userProfile.html', {'myUserId':myUserId, 'dbOperation':dbOperation, 'form': form})

@@ -32,28 +32,28 @@ Released   : 20130412
 		</div>
 		<div id="menu">
 			<ul>
-				<li class="current_page_item"><a href="#" accesskey="1" title="">Home</a></li>
-				<li><a href="#" accesskey="2" title="">Projects</a></li>
-				<li><a href="http://svcvllc.blogspot.com/p/blog-page.html" accesskey="3" title="">About Us</a></li>
-				<li><a href="http://svcvllc.blogspot.com/p/contact-us.html" accesskey="4" title="">Contact Us</a></li>
 	            {% if user.is_authenticated %}
 	            	{% if user.is_superuser%}
-		                <li><font color=green>Welcome, Superuser {{ user.first_name }}! </font></li>
+		                <li><font color=green><a href="#"></a>Welcome, Superuser {{ user.first_name }}! </a></font></li>
 	                {% elif user.is_staff %}
-		                <li><font color=blue>Welcome, Staff {{ user.first_name }}! </font> </li>
+		                <li><font color=blue><a href="#">Welcome, Staff {{ user.first_name }}! </a></font> </li>
 	                {% else %}
-		                <li>Welcome, {{ user.first_name }}! </td>li>
+		                <li><a href="#">Welcome, {{ user.first_name }}!</a> </td>li>
 	                {%endif %}
 	                <li><a href="/profile/">Profile</a></li>
 	                <li><a href="/logout/">Logout</a></li>
 	            {% else %}
+					<li class="current_page_item"><a href="/" accesskey="1" title="">Home</a></li>
+					<li><a href="/" accesskey="2" title="">Projects</a></li>
+					<li><a href="http://svcvllc.blogspot.com/p/blog-page.html" accesskey="3" title="">About Us</a></li>
+					<li><a href="http://svcvllc.blogspot.com/p/contact-us.html" accesskey="4" title="">Contact Us</a></li>
 					<li><a href="/login/" accesskey="5" title="">Member Login</a></li>
 	            {% endif %}
 			</ul>
 		</div>
 	</div>
 	{% if user.is_authenticated %}
-		{% include "top-nav.html" %}
+		<div id="menu2">	{% include "top-nav.html" %} </div>
 	{% else %}
 	<div id="banner">
 		<div class="img-border"> <a href="#"><img src="{% static "images/header-img.jpg" %}" width="1120" height="400" alt="" /></a> </div>
@@ -63,38 +63,10 @@ Released   : 20130412
         <!-- Page specific content goes here -->
         <div>
             {% block body_block %}{% endblock %}
-            <hr/>
         </div>
 
-<div id="footer-bg">
-	<div id="footer-content" class="container">
-		<div id="column1">
-			<h2>Recommended Links</h2>
-			<ul class="style1">
-				<li class="first"><a href="#">Pellentesque consectetuer gravida blandit.</a></li>
-				<li><a href="#">Lorem consectetuer adipiscing elit.</a></li>
-			</ul>
-		</div>
-		<div id="column2">
-			<h2>推荐联接</h2>
-			<ul class="style1">
-				<li class="first"><a href="#">Pellentesque consectetuer gravida blandit.</a></li>
-				<li><a href="#">Lorem consectetuer adipiscing elit.</a></li>
-			</ul>
-		</div>
-		<div id="column3">
-			<h2>Social</h2>
-			<ul class="style1">
-				<li class="first"><a href="#">Twitter</a></li>
-				<li><a href="#">Facebook</a></li>
-				<li><a href="#">Flickr</a></li>
-				<li><a href="#">Google +</a></li>
-				<li><a href="#">Instagram</a></li>
-				<li><a href="#">RSS</a></li>
-			</ul>
-		</div>
-	</div>
-</div>
+<hr/>
+
 <div id="footer_CopyRight" class="container">
 	<p>&copy; 2013~2015 SVCV Partners LLC. All Rights Reserved. </p>
 </div>

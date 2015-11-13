@@ -1,7 +1,7 @@
-            <table  style="width:60%; "> <tr>
+            
             {% if user.is_authenticated %}
-                <td><a href="/projects/">Projects</a></td>
-                <td><a href="/activity/">Investment Activities</a></td>
+                <UL>
+                	<li><a href="/projects/">Projects</a></li>
+                	<li><a href="/activity/">Activities</a></li>
+                </UL>
             {% endif %}
-            </tr>
-            </table>

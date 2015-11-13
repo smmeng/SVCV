@@ -59,4 +59,4 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         # Provide an association between the ModelForm and a model
         model = UserProfile
-        fields = ('UserId', 'Telephone', 'Cell', 'Address1', 'Address2', 'City', 'State', 'ZipCode', 'W9Ready', 'website', 'minCommitment', 'maxCommitment', 'lastCommitmentDate')
+        fields = ('UserId', 'Telephone', 'Cell', 'Address1', 'Address2', 'City', 'State', 'ZipCode', 'W9Ready', 'website', 'minCommitment', 'maxCommitment', 'lastCommitmentDate',)
