@@ -89,6 +89,17 @@ DATABASES = {
     }
 }
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.mysql',
+#        'NAME': 'security',
+#        #'HOST': 'www.svcvllc.com',
+#        'HOST': 'localhost',
+#        'PORT': '3306',
+#        'USER': 'svcvllc',
+#        #'PASSWORD': ''
+#    }
+#}
 
 
 
@@ -113,6 +124,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
     'C:/github/trunk/pyMySQL/myapp/static',
+    '/home/ec2-user/downloads/pyMySQL/myapp/static',
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
