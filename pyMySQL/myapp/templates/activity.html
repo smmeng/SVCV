@@ -31,17 +31,17 @@
 	{% endif %}
 	
 *-Most recent activities may not be included. 
-	<table style="width:80%; border: 1px dashed gray;">
-		<tr  style="border: 1px solid black;">
+	<table class="CSSTableGenerator">
+		<tr >
 		{% if user.is_staff or user.is_superuser%}
-			<th><strong><font size="4"><a href="/activity/NONE/">UserName</a></font></strong> </th>
+			<td><a href="/activity/NONE/">UserName</a> </td>
 		{% endif %}
-		<th><strong><font size="4"><a href="/activity/Type/">Type</a></font></strong> </th>
-		<th><strong><font size="4"><a href="/activity/Date/">Date</a></font></strong> </th>
-		<th><strong><font size="4">Status</font></strong> </th>
-		<th><strong><font size="4" style="text-align: center;">Description</font></strong> </th>
-		<th><strong><font size="4">Principal</font></strong> </th>
-		<th><strong><font size="4" color=green>Distribution</font></strong> </th>
+		<td><a href="/activity/Type/">Type</a> </td>
+		<td><a href="/activity/Date/">Date</a> </td>
+		<td>Status </td>
+		<td><font size="4" style="text-align: center;">Description </td>
+		<td>Principal </td>
+		<td><strong><font size="4" color=green>Distribution</font></strong> </td>
 		</tr>
 	{% for activity in activities %}
 		<tr>
@@ -76,7 +76,6 @@
 				{% if activity.Amount < 0%}
 					 <strong><font color=green>${{activity.Amount|intcomma }}</font></strong>
 				{% endif %}
-			<td>
 			</td>
 		</tr>
 	{% endfor %}
@@ -101,7 +100,7 @@
 			<td/>
 			<td style="text-align: right;"> <b>Subtotal Distribution:</b> </td>
 			<td/>
-			<td style="text-align: center;"> <font color=green> ${{total_distribution|intcomma }} </font></td>
+			<td style="text-align: center;"><strong> <font color=green> ${{total_distribution|intcomma }} </font></strong></td>
 			
 		</tr>
 		<tr>

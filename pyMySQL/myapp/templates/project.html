@@ -11,18 +11,18 @@
 	        <a href="/add_project">New</a>
         {% endif %}
         {% if projects %}
-        <table style="width:100%; border: 1px dashed gray;">
+        <table class="CSSTableGenerator">
 			<tr>
-				<th><strong><font size="4">Project Name</font></strong> </th>
-				<th><strong><font size="4">Description</font></strong> </th>
-				<th><strong><font size="4">Status</font></strong> </th>
-				<th><strong><font size="4">Company</font></strong> </th>
-				<th><strong><font size="4">Vendor</font></strong> </th>
-				<th><strong><font size="4">Start</font></strong> </th>
+				<td>Project Name </td>
+				<td>Description </td>
+				<td>Status </td>
+				<td>Company </td>
+				<td>Vendor </td>
+				<td>Start </td>
 		        {% if user.is_staff or user.is_superuser %}
-				<th><strong><font size="4">Expected End</font></strong> </th>
-				<th><strong><font size="4">Allocation</font></strong> </th>
-				<th><strong><font size="4" color=green>Committed</font></strong> </th>
+				<td>Expected End </td>
+				<td>Allocation </td>
+				<td><font color=green>Committed</font> </td>
 				{% endif %}
 			</tr>
             {% for project in projects %}
@@ -45,7 +45,7 @@
 		        {% if user.is_staff or user.is_superuser %}
                 <td>{{ project.EndDate }}</td>
                 <td>${{ project.Allocation |intcomma}}</td>
-                <td>${{ project.Committed|intcomma }}</td>
+                <td><strong><font color=green>${{ project.Committed|intcomma }}</font></strong></td>
                 {% endif %}
                 </tr>
               {% endfor %}
@@ -87,7 +87,7 @@
             No project exists!
         {% endif %}
 {% else %}
-<h1>Please authenticate first!</h1>
+<div class="form-title"><h2>Please authenticate first!</h2></div>
 {% endif %}
 
 {% endblock %}

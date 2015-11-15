@@ -9,18 +9,19 @@
 {% endblock %}
 
 {% block body_block %}
-    	{%  if form.ProjectName.value == None %}
-	        <h1>Add A Project</h1>
-        {% else %}
-	        <h1>Edit Project - {{ form.ProjectName.value}}</h1>
-        {% endif %}
     	
 
     	{%  if form.ProjectName.value == None %}
-	        <form id="Project_form" method="post" action="/add_project/">
+	        <form class="form-container" id="Project_form" method="post" action="/add_project/">
         {% else %}
-	        <form id="Project_form" method="post" action="/add_project/{{ form.ProjectId.value }}/">
+	        <form class="form-container" id="Project_form" method="post" action="/add_project/{{ form.ProjectId.value }}/">
         {% endif %}
+	    	{%  if form.ProjectName.value == None %}
+		        <div class="form-title"><h2>Add A Project</h2></div>
+	        {% else %}
+		        <div class="form-title"><h2>Edit Project - {{ form.ProjectName.value}}</h2></div>
+	        {% endif %}
+
             {% csrf_token %}
             {% for hidden in form.hidden_fields %}
                 {{ hidden }}
@@ -28,27 +29,29 @@
 
 			<table>
             {% for field in form.visible_fields %}
-	            	<tr>
+	          <tr>
             	<td width="20%">
                 	{{ field.errors }}
                 </td>
-            	<td width="20%" align="right">
+            	<td width="20%" class="form-title">
                 	{{ field.help_text }}
                 </td>
-            	<td width="60%">
+            	<td width="60%" class="form-field">
                 	{{ field }}
-                </td></tr>
-	            {%  if form.ProjectName.value != None and form.ProjectName != field or form.ProjectName.value == None %}
-		        {% endif %}
+                </td>
+              </tr>
+              {%  if form.ProjectName.value != None and form.ProjectName != field or form.ProjectName.value == None %}
+	          {% endif %}
 
             {% endfor %}
 			</table>
-			<span align="center">
+			<div class="submit-container">
 			   	{%  if form.ProjectName.value == None %}
-	            	<input type="submit" name="submit" value="CREATE" />
+	            	<input class="submit-button" type="submit" name="submit" value="CREATE" />
 		        {% else %}
-	            	<input type="submit" name="submit" value="UPDATE" />
+	            	<input class="submit-button"  type="submit" name="submit" value="UPDATE" />
 		        {% endif %}		        
-			</span>
+			</div>
+
         </form>
 {% endblock %}
