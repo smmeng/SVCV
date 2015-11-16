@@ -28,5 +28,6 @@ urlpatterns = patterns('',
         url(r'^activity/', views.get_activity),
         url(r'^profile/', views.get_userProfile),
         url(r'^save_UserProfile/$', views.save_userProfile),
+        url(r'^save_UserProfile/(?P<id>\d+)/$', views.save_userProfile),
 )
 

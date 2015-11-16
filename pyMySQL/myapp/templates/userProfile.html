@@ -11,7 +11,7 @@
   	{%  if dbOperation == "Create" %}
        <form class="form-container" id="UserProfile_form" method="post" action="/save_UserProfile/">
     {% else %}
-       <form class="form-container" id="UserProfile_form" method="post" action="/save_UserProfile/{{ UserId.value }}/">
+       <form class="form-container" id="UserProfile_form" method="post" action="/save_UserProfile/{{myUserId}}/">
     {% endif %}
 	  {%  if dbOperation == "Create" %}
        	<div class="form-title"><h2>{{dbOperation}} A New Profile (Your Investor ID is {{myUserId}}) :</h2></div>
@@ -23,7 +23,10 @@
 	
 		<table>
           {% for field in form.visible_fields %}
-           	<tr>
+          	{%  if field.name == "UserId" %}
+          		<inputHidden id="id_UserId" name="{{field.name}}" type="text" value="{{field.value}}" /> 
+          	{% else %}
+           	  <tr>
 	          	<td width="20%">
 	              	{{ field.errors }}
 	              </td>
@@ -32,9 +35,11 @@
 	              </td>
 	          	<td width="60%" class="form-field">
 	              	{{ field }}
-	              </td></tr>
-	           	{%  if form.minCommitment.value != None and form.minCommitment != field or form.minCommitment.value == None %}
-	        	{% endif %}
+	             </td>
+	          </tr>
+	        {% endif %}
+	        {%  if form.minCommitment.value != None and form.minCommitment != field or form.minCommitment.value == None %}
+	        {% endif %}
 	
 	          {% endfor %}
 		</table>

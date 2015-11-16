@@ -265,7 +265,7 @@ def get_userProfile(request):
         form = UserProfileForm(instance=profileInfo)
         dbOperation = 'Update'
 
-    print 'UserProfileForm=', form
+    #print 'UserProfileForm=', form
     # Bad form (or form details), no form supplied...
     # Render the form with error messages (if any).
     return render(request, 'userProfile.html', {'myUserId':myUserId, 'dbOperation':dbOperation, 'form': form})
@@ -288,6 +288,7 @@ def  save_userProfile(request, id=None):
         form = UserProfileForm(data = request.POST or None, instance=object_to_edit)
 
     print 'before committing'
+    print 'UserProfileForm=', form
     # Have we been provided with a valid form?
     form.fields['UserId'].required = False
     if form.is_valid():
