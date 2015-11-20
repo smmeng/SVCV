@@ -220,16 +220,24 @@ def get_activity(request, orderBy=None):
         total = 0.0
         total_principal = 0.0
         total_distribution = 0.0
+        total_interest = 0.0
+        total_dividend = 0.0
         
         for item in activity_list:
             if (item.Type_id == 'Deposit'):
                 total_principal += item.Amount
             elif (item.Type_id == 'Check'):
                 total_distribution += item.Amount
+            elif (item.Type_id == 'Interest'):
+                total_interest += item.Amount
+            elif (item.Type_id == 'Dividend'):
+                total_dividend += item.Amount
                 
-            total +=  item.Amount
         
-        activity_dict= {'activities': activity_list, 'total_amount': total, 'total_distribution':total_distribution, 'total_principal':total_principal, 'allUser_list':allUser_list, 'investorId':uid, 'investorName':userName}
+        total =  total_principal + total_distribution
+        
+        activity_dict= {'activities': activity_list, 'total_amount': total, 'total_distribution':total_distribution, 'total_principal':total_principal,
+                        'total_interest':total_interest, 'total_dividend':total_dividend, 'allUser_list':allUser_list, 'investorId':uid, 'investorName':userName}
         print 'get_activity() activity_dict[', activity_dict
         # We also add the project object from the database to the context dictionary.
         # We'll use this in the template to verify that the project exists.

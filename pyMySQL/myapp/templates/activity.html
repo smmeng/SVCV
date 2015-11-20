@@ -38,10 +38,12 @@
 		{% endif %}
 		<td><a href="/activity/Type/">Type</a> </td>
 		<td><a href="/activity/Date/">Date</a> </td>
-		<td>Status </td>
-		<td><font size="4" style="text-align: center;">Description </td>
-		<td>Principal </td>
-		<td><strong><font size="4" color=green>Distribution</font></strong> </td>
+		<td>Status</td>
+		<td>Description</td>
+		<td>Principal</td>
+		<td><strong><font color=green>Distribution</font></strong> </td>
+		<td><strong><font color=green>Interest</font></strong> </td>
+		<td><strong><font color=green>Dividend</font></strong> </td>
 		</tr>
 	{% for activity in activities %}
 		<tr>
@@ -51,29 +53,39 @@
 			<td> {{ activity.Type_id }} </td>
 			<td> {{ activity.Date }} </td>
 			<td>{% if activity.ProjectId.Status.Status == 'Completed' %}
-                		<font color="green" weight="bold" > 
+                		<font color="green" > 
                 	{% elif activity.ProjectId.Status.Status == 'In Progress' %}
-                		<font color="blue" weight="bold" > 
+                		<font color="blue" > 
                 	{% elif activity.ProjectId.Status.Status == 'Open' %}
-                		<font color="Red" weight="bold" size=6px>
+                		<font color="Red">
                 	{% else  %}
-                		<font color="navy" weight="bold" size=8px>
+                		<font color="navy">
                 	{% endif %}
                 	{{ activity.ProjectId.Status.Status }} </font>
 			</td>
 			<td>{% if activity.ProjectId.Status.Status == 'Completed' %}
-					<strike>{{ activity.Memo }},</strike> {{ activity.ProjectId }}
+					<strike>{{ activity.Memo }}, {{ activity.ProjectId }}</strike> 
 				{% else %}
 					{{ activity.Memo }}, {{ activity.ProjectId }}
 				{% endif %}
 			</td>
-			<td style="text-align: center;">
-				{% if activity.Amount >= 0%}
+			<td>
+				{% if activity.Type_id  == "Deposit" %}
 					 ${{ activity.Amount|intcomma }}
 				{% endif %}
 			</td>
-			<td style="text-align: center;">
-				{% if activity.Amount < 0%}
+			<td>
+				{% if activity.Type_id == "Check" %}
+					 <strong><font color=green>${{activity.Amount|intcomma }}</font></strong>
+				{% endif %}
+			</td>
+			<td>
+				{% if activity.Type_id == "Interest" %}
+					 <strong><font color=green>${{activity.Amount|intcomma }}</font></strong>
+				{% endif %}
+			</td>
+			<td>
+				{% if activity.Type_id == "Dividend" %}
 					 <strong><font color=green>${{activity.Amount|intcomma }}</font></strong>
 				{% endif %}
 			</td>
@@ -87,8 +99,8 @@
 			<td/>
 			<td/>
 			<td/>
-			<td style="text-align: right;"> <b>Subtotal Principal:</b> </td>
-			<td style="text-align: center;"> <font color=red> ${{total_principal|intcomma }} </font></td>
+			<td style="text-align: right;"> <b>Subtotal:</b> </td>
+			<td> <font color=red> ${{total_principal|intcomma }} </font></td>
 			
 		</tr>
 		<tr>
@@ -98,9 +110,11 @@
 			<td/>
 			<td/>
 			<td/>
-			<td style="text-align: right;"> <b>Subtotal Distribution:</b> </td>
+			<td style="text-align: right;"> <b>Total Distribution, Interest & Dividend:</b> </td>
 			<td/>
-			<td style="text-align: center;"><strong> <font color=green> ${{total_distribution|intcomma }} </font></strong></td>
+			<td><strong> <font color=green> ${{total_distribution|intcomma }} </font></strong></td>
+			<td> <font color=green> ${{total_interest|intcomma }} </font></td>
+			<td> <font color=green> ${{total_dividend|intcomma }} </font></td>
 			
 		</tr>
 		<tr>
@@ -110,7 +124,7 @@
 			<td/>
 			<td/>
 			<td/>
-			<td style="text-align: right;">  <b><font color=red size=5> Total Outstanding: ${{total_amount |intcomma }} </font></b></td>
+			<td style="text-align: right;">  <b><font color=red size=5> Total Outstanding Principal: ${{total_amount |intcomma }} </font></b></td>
 		</tr>
 	</table>
 {% else %}

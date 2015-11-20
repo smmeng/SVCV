@@ -28,17 +28,22 @@
             {% for project in projects %}
                 <tr>
                 	<td><a href='/edit_project/{{ project.ProjectId }}'>{{ project.ProjectId }}. {{ project.ProjectName }}</a></td>
-                <td>{{ project.DESCRIPTION }}</td>
                 <td>{% if project.Status_id == 'Completed' %}
-                		<font color="green" weight="bold" > 
-                	{% elif project.Status_id == 'In Progress' %}
-                		<font color="blue" weight="bold" > 
-                	{% elif project.Status_id == 'Open' %}
-                		<font color="Red" weight="bold" size=6px>
+                		<strike>{{ project.DESCRIPTION }} </strike>
                 	{% else  %}
-                		<font color="navy" weight="bold" size=8px>
+                		{{ project.DESCRIPTION }}
                 	{% endif %}
-                	{{ project.Status_id }} </font></td>
+                	</td>
+                <td>{% if project.Status_id == 'Completed' %}
+                		<font color="green" > <strong>{{ project.Status_id }}</strong>
+                	{% elif project.Status_id == 'In Progress' %}
+                		<font color="blue" > {{ project.Status_id }}
+                	{% elif project.Status_id == 'Open' %}
+                		<font color="Red" >{{ project.Status_id }}
+                	{% else  %}
+                		<font color="navy">{{ project.Status_id }}
+                	{% endif %}
+                	 	</font></td>
                 <td>{{ project.CompanyId }}</td>
                 <td>{{ project.VendorId }}</td>
                 <td>{{ project.StartDate }}</td>
