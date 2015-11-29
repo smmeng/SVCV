@@ -24,7 +24,7 @@
 		<table>
           {% for field in form.visible_fields %}
           	{%  if field.name == "UserId" %}
-          		<inputHidden id="id_UserId" name="{{field.name}}" type="text" value="{{field.value}}" /> 
+          		<input  id="id_UserId" name="{{field.name}}" type="hidden" value="{{field.value}}" /> 
           	{% else %}
            	  <tr>
 	          	<td width="20%">

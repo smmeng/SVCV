@@ -287,7 +287,7 @@ def  save_userProfile(request, id=None):
     print 'save_userProfile recv id=[', id
     if id == None:
         print 'create'
-        form = UserProfileForm(request.POST)
+        form = UserProfileForm(request.POST, request.FILES)
     else:
         #form = ProjectForm(request.POST, instance=project)
         print 'update'
@@ -295,8 +295,8 @@ def  save_userProfile(request, id=None):
         print 'Found object_to_edit[{}]'.format(object_to_edit)
         form = UserProfileForm(data = request.POST or None, instance=object_to_edit)
 
-    print 'before committing'
     print 'UserProfileForm=', form
+    print 'before committing request.method=[', request.method , "] validation=[", form.is_valid()
     # Have we been provided with a valid form?
     form.fields['UserId'].required = False
     if form.is_valid():
@@ -306,6 +306,7 @@ def  save_userProfile(request, id=None):
     else:
         # The supplied form contained errors - just print them to the terminal.
         print form.errors
+        return render(request, 'userProfile.html', {'myUserId':myUserId,  'form': form})
 
     print 'after committing'
     return get_userProfile(request)

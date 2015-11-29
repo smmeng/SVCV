@@ -92,13 +92,29 @@ class UserProfile(models.Model):
     State = models.CharField(max_length=32, default="CA", null=True)
     ZipCode = models.CharField(max_length=16, null=True)
     W9Ready = models.BooleanField('W-9 Filed?', default=False)
-    website = models.URLField(blank=True)
+    website = models.URLField(null=True)
 
     minCommitment = models.IntegerField(default=0)
     maxCommitment = models.IntegerField(default=0)
     lastCommitmentDate = models.DateField('Date Committed', default=datetime.now)
     
-    #picture = models.ImageField(upload_to='profile_images', blank=True)
+    #Bank instructions x 3
+    bank1Name = models.CharField('Bank1 Name', max_length=64, null=True)
+    bank1UserName = models.CharField('Bank1 Account Name', max_length=64, null=True)
+    bank1Rounting = models.CharField('Bank1 ABA#', max_length=32, null=True)
+    bank1AccountNumber = models.CharField('Bank1 Account#', max_length=32, null=True)
+    
+    bank2Name = models.CharField('Bank2 Name', max_length=64, null=True)
+    bank2UserName = models.CharField('Bank2 Account Name', max_length=64, null=True)
+    bank2Rounting = models.CharField('Bank2 ABA#', max_length=32, null=True)
+    bank2AccountNumber = models.CharField('Bank2 Account#', max_length=32, null=True)
+
+    bank3Name = models.CharField('Bank3 Name', max_length=64, null=True)
+    bank3UserName = models.CharField('Bank3 Account Name', max_length=64, null=True)
+    bank3Rounting = models.CharField('Bank3 ABA#', max_length=32, null=True)
+    bank3AccountNumber = models.CharField('Bank3 Account#', max_length=32, null=True)
+    
+    #picture = models.ImageField(upload_to='profile_images')
 
     # Override the __unicode__() method to return out something meaningful!
     def __unicode__(self):
