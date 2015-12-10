@@ -165,8 +165,10 @@ def get_activity(request, orderBy=None):
     
     util = Utility()
     user_list = util.viewable_user_list(request)
+    
     allUserId_list = user_list['allUserId_list']
     allUser_list = user_list['allUser_list']
+    allUserId_dict = user_list['allUserId_dict']
 
     uid=request.POST.get('investorId')
     userName = None
@@ -191,6 +193,7 @@ def get_activity(request, orderBy=None):
     sess[sess_orderBy_label] = orderBy
 
     try:
+        currentUser = None
         if uid == None or uid == '---': # investor self look up 
             userId = request.user.id
             uid = userId
@@ -199,7 +202,8 @@ def get_activity(request, orderBy=None):
             else :
                 activity_list = InvestmentActivity.objects.filter(UserId = userId).order_by(orderBy)
             
-            userName = User.objects.filter(id = uid).values_list('first_name', 'last_name')
+            #userName = User.objects.filter(id = uid).values_list('first_name', 'last_name')
+            currentUser=allUserId_dict[int(uid)]
         elif uid == 'ALL'  and (user.is_staff or user.is_superuser) : # fetch all records the current user is allowed to view
             if orderBy == 'NONE':
                 activity_list = InvestmentActivity.objects.all().filter(UserId__in=allUserId_list)
@@ -207,16 +211,22 @@ def get_activity(request, orderBy=None):
                 activity_list = InvestmentActivity.objects.all().filter(UserId__in=allUserId_list).order_by(orderBy)
             userName = [(u'ALL', u'USERS')]
         else:
-            userName = User.objects.filter(id = uid).values_list('first_name', 'last_name')
+            currentUser=allUserId_dict[int(uid)]
+            #userName = User.objects.filter(id = uid).values_list('first_name', 'last_name')
             
             if orderBy == 'NONE':
                 activity_list = InvestmentActivity.objects.select_related('ProjectId__Status').filter(UserId = uid)
             else:
                 activity_list = InvestmentActivity.objects.select_related('ProjectId__Status').filter(UserId = uid).order_by(orderBy)
         
+        if currentUser != None  :  
+            fname = allUserId_dict[int(uid)]['first_name']
+            lname = allUserId_dict[int(uid)]['last_name']
+            userName = fname + ' ' + lname
+            
         sess[sess_userId_label] = uid
             
-        print 'get_activity() user record=', userName
+        print 'get_activity() user name=', userName
         total = 0.0
         total_principal = 0.0
         total_distribution = 0.0
@@ -253,8 +263,14 @@ def get_activity(request, orderBy=None):
 ################## for updating userProfile
 @login_required
 def get_userProfile(request):
-    user = request.user
-    myUserId = user.id
+    myUserId = request.POST.get('investorId')
+
+    print 'myUserId=[', myUserId
+        
+    if myUserId == None: # self creation.
+        user = request.user
+        myUserId = user.id
+    
     print 'myUserId=[', myUserId
 
     profileInfo = UserProfile.objects.filter(UserId = myUserId )
@@ -276,7 +292,25 @@ def get_userProfile(request):
     #print 'UserProfileForm=', form
     # Bad form (or form details), no form supplied...
     # Render the form with error messages (if any).
-    return render(request, 'userProfile.html', {'myUserId':myUserId, 'dbOperation':dbOperation, 'form': form})
+    user_list = Utility().viewable_user_list(request)
+    allUser_list = user_list['allUser_list']
+    allUserId_dict = user_list['allUserId_dict']
+    
+    currentUser = None
+    userName = None
+    
+    if myUserId == 'ALL'  and (user.is_staff or user.is_superuser) : # fetch all records the current user is allowed to view
+        userName = [(u'ALL', u'USERS')]
+    else:
+        currentUser=allUserId_dict[int(myUserId)]
+            
+    if currentUser != None  :  
+        fname = allUserId_dict[int(myUserId)]['first_name']
+        lname = allUserId_dict[int(myUserId)]['last_name']
+        userName = fname + ' ' + lname
+            
+    #allUserId_list = user_list['allUserId_list']
+    return render(request, 'userProfile.html', {'myUserId':myUserId, 'investorName':userName, 'investorId':myUserId, 'dbOperation':dbOperation, 'allUser_list':allUser_list, 'form': form})
     #return render(request, 'userProfile.html', userProfile_dict)
 
 @login_required

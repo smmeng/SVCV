@@ -19,13 +19,31 @@
 				<p class="button-style"><a href="#">More Details</a></p>
 			</div>
 			<div id="sidebar">
-				<h2>Completed Projects</h2>
-				<ul class="style1">
-					<li class="first"><a href="http://15107montalvo.com/">15107 Montalvo Rd, Saratoga, CA</a></li>
-					<li><a href="https://www.redfin.com/CA/San-Francisco/3663-Folsom-St-94110/home/1784745#photoSlideShow">3663 Folsom St, San Francisco, CA 94110</a></li>
-					
-				</ul>
-				<p class="button-style"><a href="#">More Details</a></p>
+				{% if user.is_authenticated %}
+					<h2>Completed Projects</h2>
+					<ul class="style2">
+						<li class="first"><a href="http://15107montalvo.com/">15107 Montalvo Rd, Saratoga, CA</a></li>
+						<li><a href="https://www.redfin.com/CA/San-Francisco/3663-Folsom-St-94110/home/1784745#photoSlideShow">3663 Folsom St, San Francisco, CA 94110</a></li>
+					</ul>
+					<h2>Ongoing Projects</h2>
+					<ul class="style2">
+						<li class="first">Washington Ave, Sunnyvale, CA 94086 </li>
+						<li><a href="https://www.redfin.com/CA/San-Francisco/3663-Folsom-St-94110/home/1784745#photoSlideShow">Athwood St, Redwood City, CA</a></li>
+					</ul>
+					<h2>Upcoming Projects</h2>
+					<ul class="style2">
+						<li class="first"><a href="http://15107montalvo.com/">Sacremento, CA</a></li>
+					</ul>
+
+					<p class="button-style"><a href="#">More Details</a></p>
+				{% else %}
+					<h2>Our Specialties</h2>
+					<ul>
+						<li>Residential Property Renovation or Flipping</li>
+						<li>Commercial Projects</li>
+						<li>Industrial Projects</li>
+					</ul>
+				{% endif %}
 			</div>
 		</div>
 	</div>

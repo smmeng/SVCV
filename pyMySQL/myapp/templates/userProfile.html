@@ -6,17 +6,39 @@
 {% load humanize %}
 
 {% if user.is_authenticated %}
-  	
-
+	{% if user.is_staff or user.is_superuser%}
+		<h1>Select A Profile to View: </h1>
+		
+		<form  method="post" action="/profile/"><span>
+			{% csrf_token %}
+			<select name="investorId" onchange="javascript: this.form.submit(); " >
+			  	<option >---</option>
+			  	<option value="ALL">ALL</option>
+				{% for userId in allUser_list %}
+					{% if   userId.id|add:0 == investorId|add:0 %}
+						<option value="{{ userId.id }}" selected="selected">{{ userId.first_name }} {{ userId.last_name }}</option>
+					{% else %}
+						<option value="{{ userId.id }}">{{ userId.first_name }} {{ userId.last_name }}</option>
+					{% endif %}
+				{% endfor %}
+			</select> 
+			<noscript><input type="submit" name="submit" value="View" ></noscript>
+		</span></form>
+		<hr />
+		<h2>Profile for <font color=blue>{{ investorName}}</font></h2>
+	{% else %}
+		<h2>Your Profile*</h2>
+	{% endif %}
+	
   	{%  if dbOperation == "Create" %}
        <form class="form-container" id="UserProfile_form" method="post" action="/save_UserProfile/">
     {% else %}
        <form class="form-container" id="UserProfile_form" method="post" action="/save_UserProfile/{{myUserId}}/">
     {% endif %}
 	  {%  if dbOperation == "Create" %}
-       	<div class="form-title"><h2>{{dbOperation}} A New Profile (Your Investor ID is {{myUserId}}) :</h2></div>
+       	<div class="form-title"><h2>{{dbOperation}} A New Profile for {{investorName}}. (Investor ID is {{myUserId}}) :</h2></div>
       {% else %}
-       	<div class="form-title"><h2>{{dbOperation}} Your Profile (Your Investor ID is {{myUserId}}):</h2></div>
+       	<div class="form-title"><h2>{{dbOperation}} {{investorName}}'s Profile (Investor ID is {{myUserId}}):</h2></div>
       {% endif %}
     
 	    {% csrf_token %}

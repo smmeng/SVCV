@@ -49,7 +49,7 @@ class UserProfileForm(forms.ModelForm):
     State = forms.CharField(widget=forms.TextInput, help_text="State:")
     ZipCode = forms.CharField(widget=forms.TextInput, help_text="Zip:")
     W9Ready = forms.BooleanField(required=False, help_text="W-9 Ready?:")
-    website = forms.URLField(widget=forms.URLInput, help_text="Website:")
+    website = forms.URLField(widget=forms.URLInput, required=False,help_text="Website:")
 
     minCommitment = forms.IntegerField(widget=forms.TextInput, help_text="Minimum Commitment")
     maxCommitment = forms.IntegerField(widget=forms.TextInput, help_text="Maximum Commitment")

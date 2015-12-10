@@ -396,7 +396,7 @@ hr {
 
 /* List Style 1 */
 
-ul.style1 {
+ul.style1 ul.style2 {
 	margin: 0px;
 	padding: 0px;
 	list-style: none;
@@ -407,18 +407,22 @@ ul.style1 li {
 	border-top: 1px solid #CED1CC;
 }
 
-ul.style1 a {
+ul.style2 li {
+	padding: 15px 0px 15px 0px;
+}
+
+ul.style1 ul.style2 a {
 	text-shadow: 1px 1px 0px #FFFFFF;
 	text-decoration: none;
 	color: #83868A;
 }
 
-ul.style1 a:hover {
+ul.style1 ul.style2 a:hover {
 	text-decoration: underline;
 	color: #6B6B6B;
 }
 
-ul.style1 .first {
+ul.style1 ul.style2 .first {
 	padding-top: 0px;
 	border-top: none;
 }
@@ -652,7 +656,7 @@ form {
    padding-right:10px;
    color: #7f0000;
    text-shadow: #784404 0 1px 0;
-   text-align:right;
+   text-align: left;
    }
 .submit-container {
    margin:8px 0;
