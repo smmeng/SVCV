@@ -13,6 +13,7 @@ class Utility:
 
     # viewable_user_list defines a list of active investors 
     def viewable_user_list(self, request):
+        #print 'viewable_user_list()'
         allUser_list = None
         viewableUserId_list = None
         allUserId_dict = {}
@@ -32,12 +33,13 @@ class Utility:
                 allUser_list = User.objects.values('id', 'username','first_name', 'last_name', 'is_active').order_by('first_name').filter(Q(id__in=activeUsers, is_superuser=False, is_staff=False)|Q(id=myId))
                 viewableUserId_list = User.objects.values('id').filter(Q(id__in=activeUsers, is_superuser=False, is_staff=False)|Q(id=myId))
 
-                for user in allUser_list:
-                    uid = user['id']
-                    uname = user['username']
-                    allUserId_dict[uid] = user
-                    allUserName_dict[uname]=user
-            #print 'viewable_user_list() allUser_list:', allUser_list, ' allUserId_list=', viewableUserId_list, ' allUserId_dict=', allUserId_dict
+            for user in allUser_list:
+                uid = user['id']
+                uname = user['username']
+                allUserId_dict[uid] = user
+                allUserName_dict[uname]=user
+                
+            #print 'viewable_user_list() allUser_list:', allUser_list, ' \n allUserId_list=', viewableUserId_list, ' \n allUserId_dict=', allUserId_dict
             #print 'viewable_user_list() allUserId_dict=', allUserId_dict
         except InvestmentActivity.DoesNotExist:
         # We get here if we didn't find the specified project.

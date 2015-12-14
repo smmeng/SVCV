@@ -86,6 +86,12 @@ DATABASES = {
         'PORT': '3306',
         'USER': 'smmeng',
         'PASSWORD': 'shanghai0'    
+#        , 'OPTIONS':  {
+#                        'ssl': {'ca': '<PATH TO CA CERT>',
+#                                'cert': '<PATH TO CLIENT CERT>',
+#                                'key': '<PATH TO CLIENT KEY>'
+#                                }
+#                    }
     }
 }
 

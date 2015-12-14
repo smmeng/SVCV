@@ -162,6 +162,7 @@ def get_activity(request, orderBy=None):
     # Create a context dictionary which we can pass to the template rendering engine.
     activity_dict = {}
     user = request.user
+    print 'get_activity(()'
     
     util = Utility()
     user_list = util.viewable_user_list(request)
@@ -169,6 +170,7 @@ def get_activity(request, orderBy=None):
     allUserId_list = user_list['allUserId_list']
     allUser_list = user_list['allUser_list']
     allUserId_dict = user_list['allUserId_dict']
+    print 'allUserId_dict[', allUserId_dict
 
     uid=request.POST.get('investorId')
     userName = None
@@ -265,13 +267,13 @@ def get_activity(request, orderBy=None):
 def get_userProfile(request):
     myUserId = request.POST.get('investorId')
 
-    print 'myUserId=[', myUserId
+    #print 'get_userProfile() myUserId=[', myUserId
         
     if myUserId == None: # self creation.
         user = request.user
         myUserId = user.id
     
-    print 'myUserId=[', myUserId
+    #print 'myUserId=[', myUserId
 
     profileInfo = UserProfile.objects.filter(UserId = myUserId )
     
@@ -280,7 +282,7 @@ def get_userProfile(request):
     else:
         profileInfo = None
         
-    print 'profileInfo=', profileInfo
+    #print 'profileInfo=', profileInfo
          
     if profileInfo is None:
         form = UserProfileForm(initial={'UserId_id': myUserId, 'UserId': myUserId})
@@ -298,6 +300,7 @@ def get_userProfile(request):
     
     currentUser = None
     userName = None
+    #print 'allUserId_dict=[', allUserId_dict
     
     if myUserId == 'ALL'  and (user.is_staff or user.is_superuser) : # fetch all records the current user is allowed to view
         userName = [(u'ALL', u'USERS')]
@@ -318,7 +321,7 @@ def  save_userProfile(request, id=None):
     user = request.user
     myUserId = user.id
     
-    print 'save_userProfile recv id=[', id
+    #print 'save_userProfile recv id=[', id
     if id == None:
         print 'create'
         form = UserProfileForm(request.POST, request.FILES)
@@ -329,7 +332,7 @@ def  save_userProfile(request, id=None):
         print 'Found object_to_edit[{}]'.format(object_to_edit)
         form = UserProfileForm(data = request.POST or None, instance=object_to_edit)
 
-    print 'UserProfileForm=', form
+    #print 'UserProfileForm=', form
     print 'before committing request.method=[', request.method , "] validation=[", form.is_valid()
     # Have we been provided with a valid form?
     form.fields['UserId'].required = False
