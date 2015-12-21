@@ -8,34 +8,17 @@
 		<div id="page">
 			<div id="content">
 				<h2>Welcome to SVCV Partners LLC!</h2>
-				<p><strong>SVCV Partners</strong>, located in the heart of Silicon Valley, provides access to real estate as an asset class to a select group of sophisticated, high-net worth clients that deliver significantly high risk adjusted returns, relatives to other asset classes, over an extended period of time. </p>
-				<p><script type="text/javascript"  class="alignleft">
-					var o=String.fromCharCode(60);var c=String.fromCharCode(62)
-					document.write(o+'iframe sr'+'c="http://slideful.com/v20150321_1452924877050201_ijf.htm" frameborder="0" sty'+'le="border:0px;padding:0px;margin:0px;width:600px;height:350px;" allowtransparency="true"'+c+o+'/iframe'+c)
-					</script>
+				<p> <img alt="" src="/static/images/nevada-woodside.gif">
 					<noscript><a href="http://slideful.com/v20150321_1452924877050201_pf.htm">View the slide show</a>
-					</noscript> 
-					SVCV 合作伙伴有限责任公司坐落于美国高科技重镇硅谷中心. 附近的邻居有斯坦福大学,苹果,古狗, 雅虎, 思科, 英特儿等等公司. 她为高资产,高收入人士提供当地有关地产投资业务.</p>
+					</noscript>
+				</p>
+				<p><strong>SVCV Partners</strong>, located in the heart of Silicon Valley, provides access to real estate as an asset class to a select group of sophisticated, high-net worth clients that deliver significantly high risk adjusted returns, relatives to other asset classes, over an extended period of time. </p>
+				<p>SVCV 伙伴有限责任公司坐落于美国高科技重镇硅谷中心. 附近的邻居有斯坦福大学,苹果,古狗, 脸书, 雅虎, 思科, 英特儿等等公司. 她为高资产,高收入人士提供当地有关地产投资业务.</p>
 				<p class="button-style"><a href="#">More Details</a></p>
 			</div>
 			<div id="sidebar">
 				{% if user.is_authenticated %}
-					<h2>Completed Projects</h2>
-					<ul class="style2">
-						<li class="first"><a href="http://15107montalvo.com/">15107 Montalvo Rd, Saratoga, CA</a></li>
-						<li><a href="https://www.redfin.com/CA/San-Francisco/3663-Folsom-St-94110/home/1784745#photoSlideShow">3663 Folsom St, San Francisco, CA 94110</a></li>
-					</ul>
-					<h2>Ongoing Projects</h2>
-					<ul class="style2">
-						<li class="first">Washington Ave, Sunnyvale, CA 94086 </li>
-						<li><a href="https://www.redfin.com/CA/San-Francisco/3663-Folsom-St-94110/home/1784745#photoSlideShow">Athwood St, Redwood City, CA</a></li>
-					</ul>
-					<h2>Upcoming Projects</h2>
-					<ul class="style2">
-						<li class="first"><a href="http://15107montalvo.com/">Sacremento, CA</a></li>
-					</ul>
-
-					<p class="button-style"><a href="#">More Details</a></p>
+					{% include "project-history.html" %} 
 				{% else %}
 					<h2>Our Specialties</h2>
 					<ul>
@@ -53,26 +36,21 @@
 		<div id="column1">
 			<h2>Recommended Links</h2>
 			<ul class="style1">
-				<li class="first"><a href="#">Pellentesque consectetuer gravida blandit.</a></li>
-				<li><a href="#">Lorem consectetuer adipiscing elit.</a></li>
+				<li class="first"></li>
+				<li></li>
 			</ul>
 		</div>
 		<div id="column2">
 			<h2>推荐联接</h2>
 			<ul class="style1">
-				<li class="first"><a href="#">Pellentesque consectetuer gravida blandit.</a></li>
-				<li><a href="#">Lorem consectetuer adipiscing elit.</a></li>
+				<li class="first"></li>
+				<li></li>
 			</ul>
 		</div>
 		<div id="column3">
 			<h2>Social</h2>
 			<ul class="style1">
-				<li class="first"><a href="#">Twitter</a></li>
-				<li><a href="#">Facebook</a></li>
-				<li><a href="#">Flickr</a></li>
-				<li><a href="#">Google +</a></li>
-				<li><a href="#">Instagram</a></li>
-				<li><a href="#">RSS</a></li>
+				<li class="first"><a href="#">Google +</a></li>
 			</ul>
 		</div>
 	</div>

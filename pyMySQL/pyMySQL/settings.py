@@ -137,4 +137,4 @@ STATICFILES_DIRS = (
     )
 
 LOGIN_URL = '/login/'
-AUTO_LOGOUT_DELAY = 5 #equivalent to 5 minutes
+AUTO_LOGOUT_DELAY = 15 #equivalent to 5 minutes

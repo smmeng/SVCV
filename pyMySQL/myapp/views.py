@@ -348,7 +348,15 @@ def  save_userProfile(request, id=None):
     print 'after committing'
     return get_userProfile(request)
 ########################################################################
+# index.html
 def index(request):
     return render(request, 'index.html')
+# about-us.html
+def aboutUs(request):
+    return render(request, 'about-us.html')
+# contact-us.html
+def contactUs(request):
+    return render(request, 'contact-us.html')
+
 
 

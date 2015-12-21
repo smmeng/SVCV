@@ -17,6 +17,8 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
         url(r'^$', views.index, name='index'),     
+        url(r'^about-us.html/', views.aboutUs, name='aboutUs'),     
+        url(r'^contact-us.html/', views.contactUs, name='contactUs'),
         url(r'^admin/', include(admin.site.urls)),
         url(r'^login/$', views.user_login, name='login'),
         url(r'^logout/$', views.user_logout, name='logout'),

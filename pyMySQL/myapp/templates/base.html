@@ -28,45 +28,55 @@ Released   : 20130412
 <![endif]-->
 </head>
 <body>
-<div id="header-wrapper">
-	<div id="header">
-		<div id="logo">
-			<h1><a href="/">SVCV Partners</a></h1>
+	<div id="header-wrapper">
+		<div id="header">
+			<div id="logo">
+				<h1><a href="/">SVCV Partners</a></h1>
+			</div>
+			<div id="menu">
+				<ul>
+		            {% if user.is_authenticated %}
+		            	{% if user.is_superuser%}
+			                <li><font color=green><a href="#"></a>Welcome, Superuser {{ user.first_name }}! </a></font></li>
+		                {% elif user.is_staff %}
+			                <li><font color=blue><a href="#">Welcome, Staff {{ user.first_name }}! </a></font> </li>
+		                {% else %}
+			                <li><a href="#">Welcome, {{ user.first_name }}!</a> </td>li>
+		                {%endif %}
+		                <li><a href="/profile/">Profile</a></li>
+		                <li><a href="/logout/">Logout</a></li>
+		            {% else %}
+						<li class="current_page_item"><a href="/" accesskey="1" title="">Home</a></li>
+						<li><a href="/" accesskey="2" title="">Projects</a></li>
+						<li><a href="/about-us.html" accesskey="3" title="">About Us</a></li>
+						<li><a href="/contact-us.html" accesskey="4" title="">Contact Us</a></li>
+						<li><a href="/login/" accesskey="5" title="">Member Login</a></li>
+		            {% endif %}
+				</ul>
+			</div>
 		</div>
-		<div id="menu">
-			<ul>
-	            {% if user.is_authenticated %}
-	            	{% if user.is_superuser%}
-		                <li><font color=green><a href="#"></a>Welcome, Superuser {{ user.first_name }}! </a></font></li>
-	                {% elif user.is_staff %}
-		                <li><font color=blue><a href="#">Welcome, Staff {{ user.first_name }}! </a></font> </li>
-	                {% else %}
-		                <li><a href="#">Welcome, {{ user.first_name }}!</a> </td>li>
-	                {%endif %}
-	                <li><a href="/profile/">Profile</a></li>
-	                <li><a href="/logout/">Logout</a></li>
-	            {% else %}
-					<li class="current_page_item"><a href="/" accesskey="1" title="">Home</a></li>
-					<li><a href="/" accesskey="2" title="">Projects</a></li>
-					<li><a href="http://svcvllc.blogspot.com/p/blog-page.html" accesskey="3" title="">About Us</a></li>
-					<li><a href="http://svcvllc.blogspot.com/p/contact-us.html" accesskey="4" title="">Contact Us</a></li>
-					<li><a href="/login/" accesskey="5" title="">Member Login</a></li>
-	            {% endif %}
-			</ul>
-		</div>
+		{% if user.is_authenticated %}
+			<div id="menu2">	{% include "top-nav.html" %} 
+			</div>
+		{% else %}
+			<div id="banner">
+				<div class="img-border"> <a href="#"><img src="{% static "images/header-img.jpg" %}" width="840" height="300" alt="" /></a> </div>
+			</div>
+		{% endif %}
 	</div>
 	{% if user.is_authenticated %}
-		<div id="menu2">	{% include "top-nav.html" %} </div>
-	{% else %}
-	<div id="banner">
-		<div class="img-border"> <a href="#"><img src="{% static "images/header-img.jpg" %}" width="1120" height="400" alt="" /></a> </div>
-	</div>
+		<div id="announcement">
+			<h2> Announcement</h2>
+			<ul >
+				<li ><a href="http://2341hilo.com/">2341 Hilo Ct, Mtn View, CA</a> is closing</li>
+			</ul>
+		</div>
 	{% endif %}
-</div>
-        <!-- Page specific content goes here -->
-        <div>
-            {% block body_block %}{% endblock %}
-        </div>
+	
+    <!-- Page specific content goes here -->
+    <div>
+        {% block body_block %}{% endblock %}
+    </div>
 
 <hr/>
 
