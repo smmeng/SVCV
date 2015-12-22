@@ -358,5 +358,6 @@ def aboutUs(request):
 def contactUs(request):
     return render(request, 'contact-us.html')
 
-
+def disclaimer(request):
+    return render(request, "disclaimer.html")
 
