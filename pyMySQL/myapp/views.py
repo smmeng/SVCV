@@ -265,15 +265,16 @@ def get_activity(request, orderBy=None):
 ################## for updating userProfile
 @login_required
 def get_userProfile(request):
-    myUserId = request.POST.get('investorId')
-
-    #print 'get_userProfile() myUserId=[', myUserId
-        
-    if myUserId == None: # self creation.
-        user = request.user
-        myUserId = user.id
+    myUserId = None
     
-    #print 'myUserId=[', myUserId
+    user = request.user
+    if user.is_staff or user.is_superuser: #check security
+        myUserId = request.POST.get('investorId')
+
+    if myUserId == None:
+        myUserId = user.id
+
+    print 'get_userProfile() myUserId=[', myUserId
 
     profileInfo = UserProfile.objects.filter(UserId = myUserId )
     
@@ -291,7 +292,7 @@ def get_userProfile(request):
         form = UserProfileForm(instance=profileInfo)
         dbOperation = 'Update'
 
-    #print 'UserProfileForm=', form
+    print 'UserProfileForm=', form
     # Bad form (or form details), no form supplied...
     # Render the form with error messages (if any).
     user_list = Utility().viewable_user_list(request)
@@ -346,6 +347,30 @@ def  save_userProfile(request, id=None):
         return render(request, 'userProfile.html', {'myUserId':myUserId,  'form': form})
 
     print 'after committing'
+    return get_userProfile(request)
+
+@login_required
+def change_password(request):
+    return render(request, 'passwordUpdate.html')
+@login_required
+def  save_password(request):
+    user = request.user
+    myUserId = user.id
+
+    if request.method == 'POST':
+        oldPassword = request.POST['oldPassword'].strip()
+        newPassword1 = request.POST.get('newPassword1')
+        newPassword2 = request.POST.get('newPassword2')
+        
+        print oldPassword, newPassword1, newPassword2
+        
+        saveuser = User.objects.get(id=myUserId)
+        if user.check_password(oldPassword):
+            saveuser.set_password(newPassword1);
+            saveuser.save()
+        else:
+            print 'bad password [', oldPassword, ' for user[', myUserId
+
     return get_userProfile(request)
 ########################################################################
 # index.html

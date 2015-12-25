@@ -23,7 +23,7 @@ class Utility:
             user = request.user
             myId =  request.user.id
             activeUsers = InvestmentActivity.objects.values('UserId').distinct()
-            print 'viewable_user_list() activeUsers:  ', activeUsers
+            #print 'viewable_user_list() activeUsers:  ', activeUsers
             
             if user.is_superuser: #for superusers. They can't view super users' records but staffs' records 
                 allUser_list = User.objects.values('id', 'username', 'first_name', 'last_name', 'is_active').order_by('first_name').filter(id__in=activeUsers)
@@ -43,8 +43,8 @@ class Utility:
                 allUserId_dict[uid] = user
                 allUserName_dict[uname]=user
                     
-            print 'viewable_user_list() allUser_list:', allUser_list, ' \n allUserId_list=', viewableUserId_list, ' \n allUserId_dict=', allUserId_dict
-            print 'viewable_user_list() allUserId_dict=', allUserId_dict
+            #print 'viewable_user_list() allUser_list:', allUser_list, ' \n allUserId_list=', viewableUserId_list, ' \n allUserId_dict=', allUserId_dict
+            #print 'viewable_user_list() allUserId_dict=', allUserId_dict
         except InvestmentActivity.DoesNotExist:
         # We get here if we didn't find the specified project.
         # Don't do anything - the template displays the "no project" message for us.

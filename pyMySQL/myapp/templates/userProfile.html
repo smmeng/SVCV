@@ -25,10 +25,11 @@
 			<noscript><input type="submit" name="submit" value="View" ></noscript>
 		</span></form>
 		<hr />
-		<h2>Profile for <font color=blue>{{ investorName}}</font></h2>
+		<h2>Profile for <font color=blue>{{ investorName}}</font> </h2>     	
 	{% else %}
 		<h2>Your Profile*</h2>
 	{% endif %}
+	<h3><a href="/changePassword/">Change Password</a></h3>
 	
   	{%  if dbOperation == "Create" %}
        <form class="form-container" id="UserProfile_form" method="post" action="/save_UserProfile/">
@@ -41,6 +42,7 @@
        	<div class="form-title"><h2>{{dbOperation}} {{investorName}}'s Profile (Investor ID is {{myUserId}}):</h2></div>
       {% endif %}
     
+
 	    {% csrf_token %}
 	
 		<table>

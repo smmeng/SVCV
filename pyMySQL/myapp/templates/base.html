@@ -37,11 +37,11 @@ Released   : 20130412
 				<ul>
 		            {% if user.is_authenticated %}
 		            	{% if user.is_superuser%}
-			                <li><font color=green><a href="#"></a>Welcome, Superuser {{ user.first_name }}! </a></font></li>
+			                <li><a href="#" style="color:green;">Welcome, Superuser {{ user.first_name }}! </a></li>
 		                {% elif user.is_staff %}
-			                <li><font color=blue><a href="#">Welcome, Staff {{ user.first_name }}! </a></font> </li>
+			                 <li><a href="#" style="color:blue;">Welcome, Staff {{ user.first_name }}! </a> </li>
 		                {% else %}
-			                <li><a href="#">Welcome, {{ user.first_name }}!</a> </td>li>
+			                <li><a href="#">Welcome, {{ user.first_name }}!</a> </li>
 		                {%endif %}
 		                <li><a href="/profile/">Profile</a></li>
 		                <li><a href="/logout/">Logout</a></li>

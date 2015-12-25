@@ -32,5 +32,8 @@ urlpatterns = patterns('',
         url(r'^profile/', views.get_userProfile),
         url(r'^save_UserProfile/$', views.save_userProfile),
         url(r'^save_UserProfile/(?P<id>\d+)/$', views.save_userProfile),
+        # Change Password URLs:
+        url(r'^changePassword/$', views.change_password),
+        url(r'^savePassword/$', views.save_password),
 )
 
