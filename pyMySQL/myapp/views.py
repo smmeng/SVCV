@@ -11,7 +11,7 @@ from django.db.models import Q
 from myapp.forms import ProjectForm,  UserProfileForm
 from myapp.models import PROJECT, InvestmentActivity, UserProfile
 
-from myapp.utility import Utility
+from myapp.utility import Utility, FieldSet
 #from myapp import RegisterTableColumns
 #import MySQLdb
 
@@ -264,7 +264,7 @@ def get_activity(request, orderBy=None):
 
 ################## for updating userProfile
 @login_required
-def get_userProfile(request):
+def get_userProfile(request, form=None):
     myUserId = None
     
     user = request.user
@@ -274,7 +274,7 @@ def get_userProfile(request):
     if myUserId == None:
         myUserId = user.id
 
-    print 'get_userProfile() myUserId=[', myUserId
+    print 'get_userProfile() myUserId=[', myUserId, 'form is None:', form is None
 
     profileInfo = UserProfile.objects.filter(UserId = myUserId )
     
@@ -284,15 +284,21 @@ def get_userProfile(request):
         profileInfo = None
         
     #print 'profileInfo=', profileInfo
-         
-    if profileInfo is None:
-        form = UserProfileForm(initial={'UserId_id': myUserId, 'UserId': myUserId})
-        dbOperation = 'Create'
-    else:
-        form = UserProfileForm(instance=profileInfo)
-        dbOperation = 'Update'
-
-    print 'UserProfileForm=', form
+    
+    if form is None:
+        if profileInfo is None:
+            form = UserProfileForm(initial={'UserId_id': myUserId, 'UserId': myUserId})
+            dbOperation = 'Create'
+        else:
+            form = UserProfileForm(instance=profileInfo)
+            dbOperation = 'Update'
+    else: #previous submission error?
+        if profileInfo is None:
+            dbOperation = 'Create'
+        else:
+            dbOperation = 'Update'
+        
+    #print 'UserProfileForm=', form
     # Bad form (or form details), no form supplied...
     # Render the form with error messages (if any).
     user_list = Utility().viewable_user_list(request)
@@ -312,9 +318,26 @@ def get_userProfile(request):
         fname = allUserId_dict[int(myUserId)]['first_name']
         lname = allUserId_dict[int(myUserId)]['last_name']
         userName = fname + ' ' + lname
+        
+    fieldsetsPersonalInfo = (FieldSet(form, ('UserId', 'Address1','Address2','City', 'State', 'ZipCode', 'Telephone', 'Cell'),
+                        legend='Personal Info.',
+                        styleClass="form_name_info"), )
             
-    #allUserId_list = user_list['allUserId_list']
-    return render(request, 'userProfile.html', {'myUserId':myUserId, 'investorName':userName, 'investorId':myUserId, 'dbOperation':dbOperation, 'allUser_list':allUser_list, 'form': form})
+    fieldsetsOthers = (FieldSet(form, ('minCommitment', 'maxCommitment', 'lastCommitmentDate', 'W9Ready','website', ), 
+                        legend="Other Info.",
+                        styleClass="form_name_info"),)
+
+    fieldsetsBank1 = (FieldSet(form, ('bank1Name','bank1UserName', 'bank1Rounting', 'bank1AccountNumber'), 
+                        legend="Bank1 Instructions", styleClass="form_name_info"), )
+    fieldsetsBank2 = (FieldSet(form, ('bank2Name','bank2UserName', 'bank2Rounting', 'bank2AccountNumber'), 
+                        legend="Bank2 Instructions",  styleClass="form_name_info"), )
+    fieldsetsBank3 = (FieldSet(form, ('bank3Name','bank3UserName', 'bank3Rounting', 'bank3AccountNumber'), 
+                        legend="Bank3 Instructions", styleClass="form_name_info"), )
+    
+    return render(request, 'userProfile.html', 
+                  {'myUserId':myUserId, 'investorName':userName, 'investorId':myUserId, 'dbOperation':dbOperation, 'allUser_list':allUser_list, 
+                    'form': form, 'fieldsetsPersonalInfo': fieldsetsPersonalInfo, 'fieldsetsOthers':fieldsetsOthers, 
+                    'fieldsetsBank1':fieldsetsBank1, 'fieldsetsBank2':fieldsetsBank2, 'fieldsetsBank3':fieldsetsBank3})
     #return render(request, 'userProfile.html', userProfile_dict)
 
 @login_required
@@ -344,7 +367,8 @@ def  save_userProfile(request, id=None):
     else:
         # The supplied form contained errors - just print them to the terminal.
         print form.errors
-        return render(request, 'userProfile.html', {'myUserId':myUserId,  'form': form})
+        return get_userProfile(request, form)
+        #return render(request, 'userProfile.html', {'myUserId':myUserId,  'form': form})
 
     print 'after committing'
     return get_userProfile(request)

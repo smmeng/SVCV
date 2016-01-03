@@ -1,10 +1,8 @@
 from django import forms
 from decimal import Decimal
-
 from django.utils import timezone
-
 from myapp.models import PROJECT, Vendor, Company, Status, UserProfile, TransactionType, InvestmentActivity
-
+            
 class ProjectForm(forms.ModelForm):
     ProjectId = forms.IntegerField(widget=forms.HiddenInput)
     ProjectName = forms.CharField(widget=forms.TextInput,  help_text="Project Name*:")
@@ -55,6 +53,22 @@ class UserProfileForm(forms.ModelForm):
     maxCommitment = forms.IntegerField(widget=forms.TextInput, help_text="Maximum Commitment")
     lastCommitmentDate = forms.DateField(widget=forms.DateInput, initial=timezone.now(), help_text="Last Commitment Date:")
     
+        #Bank instructions x 3
+    bank1Name = forms.CharField(widget=forms.TextInput, help_text='Bank1 Name',required=False)
+    bank1UserName = forms.CharField(widget=forms.TextInput, help_text='Bank1 Account Name',required=False)
+    bank1Rounting = forms.CharField(widget=forms.TextInput, help_text='Bank1 ABA/Routing#',required=False)
+    bank1AccountNumber = forms.CharField(widget=forms.TextInput, help_text='Bank1 Account#',required=False)
+    
+    bank2Name = forms.CharField(widget=forms.TextInput, help_text='Bank2 Name',required=False)
+    bank2UserName = forms.CharField(widget=forms.TextInput, help_text='Bank2 Account Name',required=False)
+    bank2Rounting = forms.CharField(widget=forms.TextInput, help_text='Bank2 ABA/Routing#',required=False)
+    bank2AccountNumber = forms.CharField(widget=forms.TextInput, help_text='Bank2 Account#',required=False)
+
+    bank3Name = forms.CharField(widget=forms.TextInput, help_text='Bank3 Name',required=False)
+    bank3UserName = forms.CharField(widget=forms.TextInput, help_text='Bank3 Account Name',required=False)
+    bank3Rounting = forms.CharField(widget=forms.TextInput, help_text='Bank3 ABA/Routing#',required=False)
+    bank3AccountNumber = forms.CharField(widget=forms.TextInput, help_text='Bank3 Account#',required=False)
+
     # An inline class to provide additional information on the form.
     class Meta:
         # Provide an association between the ModelForm and a model

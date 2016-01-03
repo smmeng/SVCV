@@ -2,6 +2,8 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Q
+from django.forms.forms import BoundField
+
 
 #from myapp.forms import ProjectForm, InvestmentActivityForm
 from myapp.models import PROJECT, InvestmentActivity, UserProfile
@@ -50,4 +52,16 @@ class Utility:
         # Don't do anything - the template displays the "no project" message for us.
             pass
         return  {'allUser_list': allUser_list , 'allUserId_list':viewableUserId_list, 'allUserId_dict':allUserId_dict, 'allUserName_dict':allUserName_dict}
+    
+class FieldSet(object):
+    def __init__(self,form,fields,legend='',styleClass=None):
+        self.form = form
+        self.legend = legend
+        self.fields = fields
+        self.styleClass = styleClass
+ 
+    def __iter__(self):
+        for name in self.fields:
+            field = self.form.fields[name]
+            yield BoundField(self.form, field, name)
         

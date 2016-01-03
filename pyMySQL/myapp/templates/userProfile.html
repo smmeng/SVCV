@@ -10,7 +10,6 @@
 		<h1>Select A Profile to View: </h1>
 		
 		<form  method="post" action="/profile/"><span>
-			{% csrf_token %}
 			<select name="investorId" onchange="javascript: this.form.submit(); " >
 			  	<option >---</option>
 			  	<option value="ALL">ALL</option>
@@ -41,32 +40,104 @@
       {% else %}
        	<div class="form-title"><h2>{{dbOperation}} {{investorName}}'s Profile (Investor ID is {{myUserId}}):</h2></div>
       {% endif %}
-    
-
-	    {% csrf_token %}
-	
+    	
 		<table>
-          {% for field in form.visible_fields %}
-          	{%  if field.name == "UserId" %}
-          		<input  id="id_UserId" name="{{field.name}}" type="hidden" value="{{field.value}}" /> 
-          	{% else %}
-           	  <tr>
-	          	<td width="20%">
-	              	{{ field.errors }}
-	              </td>
-	          	<td width="20%" class="form-title">
-	              	{{ field.help_text }}
-	              </td>
-	          	<td width="60%" class="form-field">
-	              	{{ field }}
-	             </td>
-	          </tr>
-	        {% endif %}
-	        {%  if form.minCommitment.value != None and form.minCommitment != field or form.minCommitment.value == None %}
-	        {% endif %}
-	
-	          {% endfor %}
+		{% csrf_token %}
+			<tr>
+				<td  width="50%">
+					{% for set in fieldsetsPersonalInfo %}
+						<fieldset {% if set.styleClass %}class="{{ set.styleClass }}">{% endif %}
+						  <legend style="color:black">{{ set.legend }}</legend>
+						  	<table>
+						  	{% for field in set %}
+						  		{%  if field.name == "UserId" %}
+					          		<input  id="id_UserId" name="{{field.name}}" type="hidden" value="{{field.value}}" /> 
+					          	{% else %}
+							  		<tr>
+									    <td width="10%">{{ field.errors }}</td>
+									    <td width="15%" class="form-title">{{ field.help_text }}</td>
+									    <td width="75%" class="form-field">{{ field }}</td>
+							    	</tr>
+							    {% endif %}
+							{% endfor %}
+						    </table>
+						</fieldset>
+					{% endfor %}
+				</td>
+
+				<td  width="50%" style="vertical-align: top;">
+					{% for set in fieldsetsOthers %}
+						<fieldset {% if set.styleClass %}class="{{ set.styleClass }}">{% endif %}
+						  <legend style="color:black">{{ set.legend }}</legend>
+						  	<table>
+						  	{% for field in set %}
+						  		<tr>
+								    <td width="10%">{{ field.errors }}</td>
+								    <td width="15%" class="form-title">{{ field.help_text }}</td>
+								    <td width="75%" class="form-field">{{ field }}</td>
+						    	</tr>
+							{% endfor %}
+						    </table>
+						</fieldset>
+					{% endfor %}
+				</td>
+			</tr>
 		</table>
+		
+		<table>
+			{% csrf_token %}
+			<tr>
+				<td  width="33%">
+					{% for set in fieldsetsBank1 %}
+						<fieldset {% if set.styleClass %}class="{{ set.styleClass }}">{% endif %}
+						  <legend style="color:black">{{ set.legend }}</legend>
+						  	<table>
+						  	{% for field in set %}
+						  		<tr>
+								    <td width="10%">{{ field.errors }}</td>
+								    <td width="15%" class="form-title">{{ field.help_text }}</td>
+								    <td width="75%" class="form-field">{{ field }}</td>
+						    	</tr>
+							{% endfor %}
+						    </table>
+						</fieldset>
+					{% endfor %}
+				</td>
+				<td  width="33%">
+					{% for set in fieldsetsBank2 %}
+						<fieldset {% if set.styleClass %}class="{{ set.styleClass }}">{% endif %}
+						  <legend style="color:black">{{ set.legend }}</legend>
+						  	<table>
+						  	{% for field in set %}
+						  		<tr>
+								    <td width="10%">{{ field.errors }}</td>
+								    <td width="15%" class="form-title">{{ field.help_text }}</td>
+								    <td width="75%" class="form-field">{{ field }}</td>
+						    	</tr>
+							{% endfor %}
+						    </table>
+						</fieldset>
+					{% endfor %}
+				</td>
+				<td  width="33%">
+					{% for set in fieldsetsBank3 %}
+						<fieldset {% if set.styleClass %}class="{{ set.styleClass }}">{% endif %}
+						  <legend style="color:black">{{ set.legend }}</legend>
+						  	<table>
+						  	{% for field in set %}
+						  		<tr>
+								    <td width="10%">{{ field.errors }}</td>
+								    <td width="15%" class="form-title">{{ field.help_text }}</td>
+								    <td width="75%" class="form-field">{{ field }}</td>
+						    	</tr>
+							{% endfor %}
+						    </table>
+						</fieldset>
+					{% endfor %}
+				</td>
+			</tr>
+		</table>
+
 		<div class="submit-container">
 		   	{%  if dbOperation == 'Create' %}
             	<input class="submit-button" type="submit" name="submit" value="CREATE" />
