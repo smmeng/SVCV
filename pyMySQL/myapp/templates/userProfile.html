@@ -28,7 +28,7 @@
 	{% else %}
 		<h2>Your Profile*</h2>
 	{% endif %}
-	<h3><a href="/changePassword/">Change Password</a></h3>
+	
 	
   	{%  if dbOperation == "Create" %}
        <form class="form-container" id="UserProfile_form" method="post" action="/save_UserProfile/">
@@ -66,20 +66,41 @@
 				</td>
 
 				<td  width="50%" style="vertical-align: top;">
-					{% for set in fieldsetsOthers %}
-						<fieldset {% if set.styleClass %}class="{{ set.styleClass }}">{% endif %}
-						  <legend style="color:black">{{ set.legend }}</legend>
-						  	<table>
-						  	{% for field in set %}
-						  		<tr>
-								    <td width="10%">{{ field.errors }}</td>
-								    <td width="15%" class="form-title">{{ field.help_text }}</td>
-								    <td width="75%" class="form-field">{{ field }}</td>
-						    	</tr>
+					<table>
+					{% if user.id == myUserId  %}
+					<tr>
+						<td>
+							<fieldset class="form_name_info">
+							<legend style="color:black">Other Options</legend>
+							<table>
+								<tr><td>
+								  <h3><a href="/changePassword/">Change Password</a></h3>
+								</td></tr>
+							</table>
+							</fieldset>
+						</td>
+					</tr>
+					{% endif %}
+					<tr>
+						<td> 
+							{% for set in fieldsetsOthers %}
+								<fieldset {% if set.styleClass %}class="{{ set.styleClass }}">{% endif %}
+								  <legend style="color:black">{{ set.legend }}</legend>
+								  	<table>
+								  	{% for field in set %}
+								  		<tr>
+										    <td width="10%">{{ field.errors }}</td>
+										    <td width="15%" class="form-title">{{ field.help_text }}</td>
+										    <td width="75%" class="form-field">{{ field }}</td>
+								    	</tr>
+									{% endfor %}
+								    </table>
+								</fieldset>
 							{% endfor %}
-						    </table>
-						</fieldset>
-					{% endfor %}
+
+						</td>
+					</tr>
+				</table>
 				</td>
 			</tr>
 		</table>

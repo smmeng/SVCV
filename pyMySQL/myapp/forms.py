@@ -55,19 +55,19 @@ class UserProfileForm(forms.ModelForm):
     
         #Bank instructions x 3
     bank1Name = forms.CharField(widget=forms.TextInput, help_text='Bank1 Name',required=False)
-    bank1UserName = forms.CharField(widget=forms.TextInput, help_text='Bank1 Account Name',required=False)
-    bank1Rounting = forms.CharField(widget=forms.TextInput, help_text='Bank1 ABA/Routing#',required=False)
-    bank1AccountNumber = forms.CharField(widget=forms.TextInput, help_text='Bank1 Account#',required=False)
+    bank1UserName = forms.CharField(widget=forms.TextInput, help_text='Account Name1',required=False)
+    bank1Rounting = forms.CharField(widget=forms.TextInput, help_text='Routing1#',required=False)
+    bank1AccountNumber = forms.CharField(widget=forms.TextInput, help_text='Account1#',required=False)
     
     bank2Name = forms.CharField(widget=forms.TextInput, help_text='Bank2 Name',required=False)
-    bank2UserName = forms.CharField(widget=forms.TextInput, help_text='Bank2 Account Name',required=False)
-    bank2Rounting = forms.CharField(widget=forms.TextInput, help_text='Bank2 ABA/Routing#',required=False)
-    bank2AccountNumber = forms.CharField(widget=forms.TextInput, help_text='Bank2 Account#',required=False)
+    bank2UserName = forms.CharField(widget=forms.TextInput, help_text='Account Name2',required=False)
+    bank2Rounting = forms.CharField(widget=forms.TextInput, help_text='Routing2#',required=False)
+    bank2AccountNumber = forms.CharField(widget=forms.TextInput, help_text='Account2#',required=False)
 
     bank3Name = forms.CharField(widget=forms.TextInput, help_text='Bank3 Name',required=False)
-    bank3UserName = forms.CharField(widget=forms.TextInput, help_text='Bank3 Account Name',required=False)
-    bank3Rounting = forms.CharField(widget=forms.TextInput, help_text='Bank3 ABA/Routing#',required=False)
-    bank3AccountNumber = forms.CharField(widget=forms.TextInput, help_text='Bank3 Account#',required=False)
+    bank3UserName = forms.CharField(widget=forms.TextInput, help_text='Account Name3',required=False)
+    bank3Rounting = forms.CharField(widget=forms.TextInput, help_text='Routing3#',required=False)
+    bank3AccountNumber = forms.CharField(widget=forms.TextInput, help_text='Account3#',required=False)
 
     # An inline class to provide additional information on the form.
     class Meta:

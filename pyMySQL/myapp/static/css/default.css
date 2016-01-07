@@ -625,7 +625,7 @@ table { margin: auto; }
 /***************************************** form style */
 form { 
 	margin: auto; 
-	max-width: 60%;
+	max-width: 80%;
 }
 .form-container {
    border: 1px solid #f2e3d2;

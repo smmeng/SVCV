@@ -12,6 +12,7 @@ from myapp.forms import ProjectForm,  UserProfileForm
 from myapp.models import PROJECT, InvestmentActivity, UserProfile
 
 from myapp.utility import Utility, FieldSet
+from django.views.decorators.csrf import csrf_exempt  
 #from myapp import RegisterTableColumns
 #import MySQLdb
 
@@ -112,7 +113,6 @@ def add_project(request, id=None):
     if not user.is_staff  and not user.is_superuser : 
         print 'not staff or superuser!! Forward to home'
         return render(request, 'index.html')
-
     
     if id:
         project = PROJECT.objects.get(pk=id)
@@ -264,17 +264,19 @@ def get_activity(request, orderBy=None):
 
 ################## for updating userProfile
 @login_required
-def get_userProfile(request, form=None):
-    myUserId = None
-    
+@csrf_exempt
+def get_userProfile(request, form=None, id=None):
     user = request.user
-    if user.is_staff or user.is_superuser: #check security
+    myUserId = user.id
+            
+    if request.method == 'POST' and (user.is_staff or user.is_superuser): #check security
         myUserId = request.POST.get('investorId')
+    print 'request.method[', request.method , '] myUserId=[', myUserId
 
-    if myUserId == None:
-        myUserId = user.id
+    if request.method == 'POST' and id is not  None:
+        myUserId = id
 
-    print 'get_userProfile() myUserId=[', myUserId, 'form is None:', form is None
+    print 'get_userProfile() myUserId=[', myUserId, '] form is None:', form is None
 
     profileInfo = UserProfile.objects.filter(UserId = myUserId )
     
@@ -334,6 +336,7 @@ def get_userProfile(request, form=None):
     fieldsetsBank3 = (FieldSet(form, ('bank3Name','bank3UserName', 'bank3Rounting', 'bank3AccountNumber'), 
                         legend="Bank3 Instructions", styleClass="form_name_info"), )
     
+    #print 'user.id - myUserId', user.id, '-', myUserId, 'same user? [', (user.id == myUserId), ' > ', user.id >  myUserId, ' <= ', user.id <= myUserId
     return render(request, 'userProfile.html', 
                   {'myUserId':myUserId, 'investorName':userName, 'investorId':myUserId, 'dbOperation':dbOperation, 'allUser_list':allUser_list, 
                     'form': form, 'fieldsetsPersonalInfo': fieldsetsPersonalInfo, 'fieldsetsOthers':fieldsetsOthers, 
@@ -345,16 +348,22 @@ def  save_userProfile(request, id=None):
     user = request.user
     myUserId = user.id
     
-    #print 'save_userProfile recv id=[', id
+    print 'save_userProfile  for uid=[', id
     if id == None:
         print 'create'
         form = UserProfileForm(request.POST, request.FILES)
-    else:
+    else: # fraud detection
+        if user.is_staff or user.is_superuser:
         #form = ProjectForm(request.POST, instance=project)
-        print 'update'
+            print 'super user updating regular user'
+        elif id is not None and myUserId != id :
+            print 'prevent [', user.id, '] fake super user updating regular user'
+            return get_userProfile(request, None, user.id)
+        
         object_to_edit = get_object_or_404(UserProfile, UserId=id) #Or slug=slug
         print 'Found object_to_edit[{}]'.format(object_to_edit)
         form = UserProfileForm(data = request.POST or None, instance=object_to_edit)
+        
 
     #print 'UserProfileForm=', form
     print 'before committing request.method=[', request.method , "] validation=[", form.is_valid()
@@ -371,7 +380,7 @@ def  save_userProfile(request, id=None):
         #return render(request, 'userProfile.html', {'myUserId':myUserId,  'form': form})
 
     print 'after committing'
-    return get_userProfile(request)
+    return get_userProfile(request, form, id)
 
 @login_required
 def change_password(request):
@@ -380,6 +389,7 @@ def change_password(request):
 def  save_password(request):
     user = request.user
     myUserId = user.id
+    error_msg = None
 
     if request.method == 'POST':
         oldPassword = request.POST['oldPassword'].strip()
@@ -393,9 +403,10 @@ def  save_password(request):
             saveuser.set_password(newPassword1);
             saveuser.save()
         else:
-            print 'bad password [', oldPassword, ' for user[', myUserId
+            error_msg ='The old password doesn\'t match. Try again!'
+            print error_msg
 
-    return get_userProfile(request)
+    return render(request, 'passwordUpdate.html', {"error_msg": error_msg})
 ########################################################################
 # index.html
 def index(request):
