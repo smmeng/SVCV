@@ -5,7 +5,7 @@ Design by TEMPLATED
 http://templated.co
 Released for free under the Creative Commons Attribution License
 
-Name       : SVCV Partners LLC 
+Name       : S. Meng, SVCV Partners LLC 
 Description: A two-column, fixed-width design with dark color scheme.
 Version    : 1.0
 Released   : 20130412
@@ -16,6 +16,7 @@ Released   : 20130412
 <meta name="keywords" content="" />
 <meta name="description" content="" />
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SVCV Partners LLC</title>
 <link href='http://fonts.googleapis.com/css?family=Oswald:400,300' rel='stylesheet' type='text/css' />
 <link href='http://fonts.googleapis.com/css?family=Abel|Satisfy' rel='stylesheet' type='text/css' />
@@ -26,8 +27,13 @@ Released   : 20130412
 <!--[if IE 6]>
 <link href="default_ie6.css" rel="stylesheet" type="text/css" />
 <![endif]-->
+<script type="text/javascript"> //<![CDATA[ 
+var tlJsHost = ((window.location.protocol == "https:") ? "https://secure.comodo.com/" : "http://www.trustlogo.com/");
+document.write(unescape("%3Cscript src='" + tlJsHost + "trustlogo/javascript/trustlogo.js' type='text/javascript'%3E%3C/script%3E"));
+//]]>
+</script>
 </head>
-<body>
+<body >
 	<div id="header-wrapper">
 		<div id="header">
 			<div id="logo">
@@ -56,11 +62,14 @@ Released   : 20130412
 			</div>
 		</div>
 		{% if user.is_authenticated %}
-			<div id="menu2">	{% include "top-nav.html" %} 
+			<div id="menu2">	
+				{% include "top-nav.html" %} 
 			</div>
 		{% else %}
 			<div id="banner">
-				<div class="img-border"> <a href="#"><img src="{% static "images/header-img.jpg" %}" width="840" height="300" alt="" /></a> </div>
+				<div class="img-border"> 
+					<a href="#"><img src="{% static "images/header-img.jpg" %}" style="width:100%; height:100%" alt="" /></a> 
+					</div>
 			</div>
 		{% endif %}
 	</div>
@@ -83,5 +92,9 @@ Released   : 20130412
 <div id="footer_CopyRight" class="container">
 	<p>&copy; 2013~2016 SVCV Partners LLC. All Rights Reserved. </p>
 </div>
+<script language="JavaScript" type="text/javascript">
+TrustLogo("https://www.svcvllc.com/static/images/comodo_secure_52x63_transp.png", "CL1", "none");
+</script>
+<a  href="https://www.positivessl.com/" id="comodoTL">Positive SSL</a>
 </body>
 </html>

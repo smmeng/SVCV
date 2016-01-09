@@ -1,5 +1,55 @@
 
-/*
+/** Responsive Web Design - rwd ***/
+* {
+    box-sizing: border-box;
+}
+
+.rwd_menu {
+    width: 25%;
+    float: left;
+}
+.rwd_main {
+    width: 75%;
+    float: left;
+}
+
+.rwd_col-1 {width: 8.33%;}
+.rwd_col-2 {width: 16.66%;}
+.rwd_col-3 {width: 25%;}
+.rwd_col-4 {width: 33.33%;}
+.rwd_col-5 {width: 41.66%;}
+.rwd_col-6 {width: 50%;}
+.rwd_col-7 {width: 58.33%;}
+.rwd_col-8 {width: 66.66%;}
+.rwd_col-9 {width: 75%;}
+.rwd_col-10 {width: 83.33%;}
+.rwd_col-11 {width: 91.66%;}
+.rwd_col-12 {width: 100%;}
+
+[class*="rwd_col-"] {
+    float: left;
+    padding: 15px;
+    border: 1px solid red;
+}
+
+.rwd_row:after {
+    content: "";
+    clear: both;
+    display: block;
+}
+
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    [class*=".rwd_col-"] {
+        width: 100%;
+    }
+}
+
+video {
+    max-width: 100%;
+    height: auto;
+}
+/**************************************************************************************************************************************************
 Design by TEMPLATED
 http://templated.co
 Released for free under the Creative Commons Attribution License
@@ -50,6 +100,11 @@ a:hover {
 
 a img {
 	border: none;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
 }
 
 img.border {
