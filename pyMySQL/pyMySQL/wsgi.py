@@ -12,8 +12,8 @@ import os
 #There's an old mod_wsgi bug. 
 #The current WSGI plugin for apache has a bug so we need to include the path in the environment. Uncomment the following before final deployment on Linux.
 #import sys 
-#sys.path.append('/var/www/html')
-#sys.path.append('/var/www/html/pyMySQL')
+#sys.path.append('/var/www') # we need to prevent port 80 directory browsing
+#sys.path.append('/var/www/pyMySQL')
 
 from django.core.wsgi import get_wsgi_application
 

@@ -39,19 +39,19 @@ class InvestmentActivityForm(forms.ModelForm):
         
 class UserProfileForm(forms.ModelForm):
     UserId =  forms.IntegerField(widget=forms.TextInput, help_text="UserID")
-    Telephone = forms.CharField(widget=forms.TextInput, help_text="Telephone#:")
-    Cell = forms.CharField(widget=forms.TextInput, help_text="Cell#:")
-    Address1 = forms.CharField(widget=forms.TextInput, help_text="Address1:")
+    Telephone = forms.CharField(widget=forms.TextInput, help_text="Telephone#:", required=False)
+    Cell = forms.CharField(widget=forms.TextInput, help_text="Cell#:", required=False)
+    Address1 = forms.CharField(widget=forms.TextInput, help_text="Address1:", required=False)
     Address2 = forms.CharField(widget=forms.TextInput, help_text="Address2:",required=False)
-    City = forms.CharField(widget=forms.TextInput, help_text="City:")
-    State = forms.CharField(widget=forms.TextInput, help_text="State:")
-    ZipCode = forms.CharField(widget=forms.TextInput, help_text="Zip:")
-    W9Ready = forms.BooleanField(required=False, help_text="W-9 Ready?:")
-    website = forms.URLField(widget=forms.URLInput, required=False,help_text="Website:")
+    City = forms.CharField(widget=forms.TextInput, help_text="City:", required=False)
+    State = forms.CharField(widget=forms.TextInput, help_text="State:", required=False)
+    ZipCode = forms.CharField(widget=forms.TextInput, help_text="Zip:", required=False)
+    W9Ready = forms.BooleanField(help_text="W-9 Ready?:", required=False)
+    website = forms.URLField(widget=forms.URLInput, help_text="Website:", required=False)
 
     minCommitment = forms.IntegerField(widget=forms.TextInput, help_text="Minimum Commitment")
     maxCommitment = forms.IntegerField(widget=forms.TextInput, help_text="Maximum Commitment")
-    lastCommitmentDate = forms.DateField(widget=forms.DateInput, initial=timezone.now(), help_text="Last Commitment Date:")
+    lastCommitmentDate = forms.DateField(widget=forms.DateInput, initial=timezone.now(), help_text="Last Commitment Date:", required=False)
     
         #Bank instructions x 3
     bank1Name = forms.CharField(widget=forms.TextInput, help_text='Bank1 Name',required=False)
@@ -65,7 +65,7 @@ class UserProfileForm(forms.ModelForm):
     bank2AccountNumber = forms.CharField(widget=forms.TextInput, help_text='Account2#',required=False)
 
     bank3Name = forms.CharField(widget=forms.TextInput, help_text='Bank3 Name',required=False)
-    bank3UserName = forms.CharField(widget=forms.TextInput, help_text='Account Name3',required=False)
+    bank3UserName = forms.CharField(widget=forms.TextInput, help_text='Account Name3', required=False)
     bank3Rounting = forms.CharField(widget=forms.TextInput, help_text='Routing3#',required=False)
     bank3AccountNumber = forms.CharField(widget=forms.TextInput, help_text='Account3#',required=False)
 
