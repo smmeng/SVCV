@@ -7,9 +7,10 @@
 
 {% if user.is_authenticated %}
 	{% if user.is_staff or user.is_superuser%}
-		<h1>Select An Investor to View: </h1>
+	<div class="table-responsive">
+		<h3>Select An Investor to View: </h3>
 		
-		<form  method="post" action="/activity/"><span>
+		<form  method="post" action="/activity/" role="form"><span>
 			{% csrf_token %}
 			<select name="investorId" onchange="javascript: this.form.submit(); " >
 			  	<option >---</option>
@@ -25,13 +26,13 @@
 			<noscript><input type="submit" name="submit" value="View" ></noscript>
 		</span></form>
 		<hr />
-		<h2>Requested Investment Activities for <font color=blue>{{ investorName }}</font>*</h2>
+		<h3>Requested Investment Activities for <font color=blue>{{ investorName }}</font>*</h3>
 	{% else %}
-		<h2>Your Investment Activities*</h2>
+		<h3>Your Investment Activities*</h3>
 	{% endif %}
 	
-*-Most recent activities may not be included. 
-	<table class="CSSTableGenerator">
+<p>*-Most recent activities may not be included.</p> 
+	<table class="CSSTableGenerator table-hover ">
 		<tr >
 		{% if user.is_staff or user.is_superuser%}
 			<td><a href="/activity/NONE/">UserName</a> </td>
@@ -127,6 +128,7 @@
 			<td style="text-align: right;">  <b><font color=red size=5> Total Outstanding Principal: ${{total_amount |intcomma }} </font></b></td>
 		</tr>
 	</table>
+	</div>
 {% else %}
 <h1>Please authenticate first!</h1>
 {% endif %}

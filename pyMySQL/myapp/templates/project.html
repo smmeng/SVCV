@@ -6,12 +6,13 @@
 {% load humanize %}
 
 {% if user.is_authenticated %}
+	<div class="table-responsive">    
         <h1>Projects</h1>
         {% if user.is_staff or user.is_superuser %}
 	        <a href="/add_project">New</a>
         {% endif %}
         {% if projects %}
-        <table class="CSSTableGenerator">
+        <table class="CSSTableGenerator table-hover ">
 			<tr>
 				<td>Project Name </td>
 				<td>Description </td>
@@ -91,6 +92,7 @@
         {% else %}
             No project exists!
         {% endif %}
+	</div>
 {% else %}
 <div class="form-title"><h2>Please authenticate first!</h2></div>
 {% endif %}

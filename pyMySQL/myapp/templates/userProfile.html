@@ -7,10 +7,10 @@
 
 {% if user.is_authenticated %}
 	{% if user.is_staff or user.is_superuser%}
-		<h1>Select A Profile to View: </h1>
+		<h3>Select A Profile to View: </h3>
 		
 		<form  method="post" action="/profile/"><span>
-			<select name="investorId" onchange="javascript: this.form.submit(); " >
+			<select name="investorId" onchange="javascript: this.form.submit(); " role="form">
 			  	<option >---</option>
 			  	<option value="ALL">ALL</option>
 				{% for userId in allUser_list %}
@@ -24,49 +24,48 @@
 			<noscript><input type="submit" name="submit" value="View" ></noscript>
 		</span></form>
 		<hr />
-		<h2>Profile for <font color=blue>{{ investorName}}</font> </h2>     	
+		<h3>Profile for <font color=blue>{{ investorName}}</font> </h3>     	
 	{% else %}
-		<h2>Your Profile*</h2>
+		<h3>Your Profile*</h3>
 	{% endif %}
 	
 	
   	{%  if dbOperation == "Create" %}
-       <form class="form-container" id="UserProfile_form" method="post" action="/save_UserProfile/">
+       <form class="form-container" id="UserProfile_form" method="post" action="/save_UserProfile/" role="form">
     {% else %}
-       <form class="form-container" id="UserProfile_form" method="post" action="/save_UserProfile/{{myUserId}}/">
+       <form class="form-container" id="UserProfile_form" method="post" action="/save_UserProfile/{{myUserId}}/" role="form">
     {% endif %}
 	  {%  if dbOperation == "Create" %}
-       	<div class="form-title"><h2>{{dbOperation}} A New Profile for {{investorName}}. (Investor ID is {{myUserId}}) :</h2></div>
+       	<div class="form-title"><h3>{{dbOperation}} A New Profile for {{investorName}}. (Investor ID is {{myUserId}}) :</h3></div>
       {% else %}
-       	<div class="form-title"><h2>{{dbOperation}} {{investorName}}'s Profile (Investor ID is {{myUserId}}):</h2></div>
+       	<div class="form-title"><h3>{{dbOperation}} {{investorName}}'s Profile (Investor ID is {{myUserId}}):</h3></div>
       {% endif %}
     	
-		<table>
-		{% csrf_token %}
-			<tr>
-				<td  width="50%">
-					{% for set in fieldsetsPersonalInfo %}
-						<fieldset {% if set.styleClass %}class="{{ set.styleClass }}">{% endif %}
-						  <legend style="color:black">{{ set.legend }}</legend>
-						  	<table>
-						  	{% for field in set %}
-						  		{%  if field.name == "UserId" %}
-					          		<input  id="id_UserId" name="{{field.name}}" type="hidden" value="{{field.value}}" /> 
-					          	{% else %}
-							  		<tr>
-									    <td width="10%">{{ field.errors }}</td>
-									    <td width="15%" class="form-title">{{ field.help_text }}</td>
-									    <td width="75%" class="form-field">{{ field }}</td>
-							    	</tr>
-							    {% endif %}
-							{% endfor %}
-						    </table>
-						</fieldset>
-					{% endfor %}
-				</td>
+		<div class="row">
+			{% csrf_token %}
+			<div class="col-sm-6 table-responsive">
+				{% for set in fieldsetsPersonalInfo %}
+					<fieldset {% if set.styleClass %}class="{{ set.styleClass }}">{% endif %}
+					  <legend style="color:black">{{ set.legend }}</legend>
+					  	<table>
+					  	{% for field in set %}
+					  		{%  if field.name == "UserId" %}
+				          		<input  id="id_UserId" name="{{field.name}}" type="hidden" value="{{field.value}}" /> 
+				          	{% else %}
+						  		<tr>
+								    <td width="10%">{{ field.errors }}</td>
+								    <td width="15%" class="form-title">{{ field.help_text }}</td>
+								    <td width="75%" class="form-field">{{ field }}</td>
+						    	</tr>
+						    {% endif %}
+						{% endfor %}
+					    </table>
+					</fieldset>
+				{% endfor %}
+			</div>
 
-				<td  width="50%" style="vertical-align: top;">
-					<table>
+			<div class="col-sm-6 table-responsive">
+				<table>
 					{% if user.id == myUserId  %}
 					<tr>
 						<td>
@@ -74,7 +73,7 @@
 							<legend style="color:black">Other Options</legend>
 							<table>
 								<tr><td>
-								  <h3><a href="/changePassword/">Change Password</a></h3>
+								  <h4><a href="/changePassword/">Change Password</a></h4>
 								</td></tr>
 							</table>
 							</fieldset>
@@ -88,11 +87,25 @@
 								  <legend style="color:black">{{ set.legend }}</legend>
 								  	<table>
 								  	{% for field in set %}
-								  		<tr>
-										    <td width="10%">{{ field.errors }}</td>
-										    <td width="15%" class="form-title">{{ field.help_text }}</td>
-										    <td width="75%" class="form-field">{{ field }}</td>
-								    	</tr>
+										{%  if   user.is_staff or user.is_superuser or field.name != "W9Ready" and field.name != "lastCommitmentDate" %}
+									  		<tr>
+											    <td width="10%">{{ field.errors }}</td>
+											    <td width="15%" class="form-title">{{ field.help_text }}</td>
+											    <td width="75%" class="form-field">{{ field }}</td>
+									    	</tr>
+							          	{% elif field.name == "lastCommitmentDate" %}
+							          		<tr>
+											    <td width="10%">{{ field.errors }}</td>
+											    <td width="15%" class="form-title">{{ field.help_text }}</td>
+											    <td width="75%" class="form-field"><input type="text" value="{{field.value}}" disabled/> </td>
+									    	</tr>
+							          	{% elif field.name == "W9Ready" %}
+							          		<tr>
+											    <td width="10%">{{ field.errors }}</td>
+											    <td width="15%" class="form-title">{{ field.help_text }}</td>
+											    <td width="75%" class="form-field"><input type="checkbox" value="{{field.value}}" disabled/> </td>
+									    	</tr>
+									    {% endif %}
 									{% endfor %}
 								    </table>
 								</fieldset>
@@ -101,12 +114,12 @@
 						</td>
 					</tr>
 				</table>
-				</td>
-			</tr>
-		</table>
+				
+			</div>
+		</div>
 		
+		{% if false %}
 		<table>
-			{% csrf_token %}
 			<tr>
 				<td  width="33%">
 					{% for set in fieldsetsBank1 %}
@@ -158,6 +171,7 @@
 				</td>
 			</tr>
 		</table>
+		{% endif %}
 
 		<div class="submit-container">
 		   	{%  if dbOperation == 'Create' %}

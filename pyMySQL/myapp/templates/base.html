@@ -12,47 +12,98 @@ Released   : 20130412
 
 -->
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta name="keywords" content="" />
-<meta name="description" content="" />
-<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SVCV Partners LLC</title>
-<link href='http://fonts.googleapis.com/css?family=Oswald:400,300' rel='stylesheet' type='text/css' />
-<link href='http://fonts.googleapis.com/css?family=Abel|Satisfy' rel='stylesheet' type='text/css' />
-<link href="{% static "css/default.css" %}" rel="stylesheet" type="text/css" media="all" />
-<link rel="shortcut icon" href="{% static "images/favicon.ico" %}" type="image/x-icon">
-<link rel="icon" href="{% static "images/favicon.ico" %}" type="image/x-icon">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="SVCV Partners Website">
+    <meta name="author" content="S. Meng">
+    <link rel="icon" href="{% static "images/favicon.ico" %}" type="image/x-icon">
 
-<!--[if IE 6]>
-<link href="default_ie6.css" rel="stylesheet" type="text/css" />
-<![endif]-->
-<script type="text/javascript"> //<![CDATA[ 
-var tlJsHost = ((window.location.protocol == "https:") ? "https://secure.comodo.com/" : "http://www.trustlogo.com/");
-document.write(unescape("%3Cscript src='" + tlJsHost + "trustlogo/javascript/trustlogo.js' type='text/javascript'%3E%3C/script%3E"));
-//]]>
-</script>
-</head>
-<body >
-	<div id="header-wrapper">
-		<div id="header">
-			<div id="logo">
-				<h1><a href="/">SVCV Partners</a></h1>
-			</div>
-			<div id="menu">
-				<ul>
+	<meta name="keywords" content="" />
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+	<title>SVCV Partners LLC</title>
+	<link href='http://fonts.googleapis.com/css?family=Oswald:400,300' rel='stylesheet' type='text/css' />
+	<link href='http://fonts.googleapis.com/css?family=Abel|Satisfy' rel='stylesheet' type='text/css' />
+
+    <!-- Bootstrap core CSS -->
+    <!-- Custom styles for this template -->
+    <link href="{% static "bootstrap-3.3.6/dist/css/bootstrap.min.css" %}" rel="stylesheet">
+	<link href="{% static "css/navbar.css" %}" rel="stylesheet">
+	<link href="{% static "css/default.css" %}" rel="stylesheet" type="text/css" media="all" />
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="{% static "bootstrap-3.3.6/assets/css/ie10-viewport-bug-workaround.css" %}" rel="stylesheet">
+
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="/static/bootstrap-3.3.6/assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="{% static "bootstrap-3.3.6/assets/js/ie-emulation-modes-warning.js" %}"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <!--[if IE 6]>
+	<link href="default_ie6.css" rel="stylesheet" type="text/css" />
+	<![endif]-->
+	<script type="text/javascript"> //<![CDATA[ 
+	var tlJsHost = ((window.location.protocol == "https:") ? "https://secure.comodo.com/" : "http://www.trustlogo.com/");
+	document.write(unescape("%3Cscript src='" + tlJsHost + "trustlogo/javascript/trustlogo.js' type='text/javascript'%3E%3C/script%3E"));
+	//]]>
+	</script>
+  </head>
+
+  <body>
+
+    <div class="container">
+
+      <!-- Static navbar -->
+      <nav   class="navbar navbar-default">
+        <div id="header-wrapper" class="container-fluid">
+          <div id="logo" class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <h1><a href="/" >SVCV Partners</a></h1>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+          	<div id="menu" >
+				<ul class="nav navbar-nav navbar-right" >
+					<li ><a href="/" accesskey="1" title="">Home</a></li>
+
 		            {% if user.is_authenticated %}
+					  <li class="dropdown">
+		                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" 
+		                	aria-expanded="false">Menus <span class="caret"></span></a>
+		                <ul class="dropdown-menu">
+	                	  <li><a href="/projects/">Projects</a></li>
+	                	  <li><a href="/activity/">Activities</a></li>
+
+		                  <li id="menu_profile" role="separator" class="divider " ></li>
+		                  <li id="menu_profile" class="dropdown-header">Profile Options</li>
+		                  <li id="menu_profile"><a href="/changePassword/">Change Password</a></li>
+		                </ul>
+		              </li>
+		            	<li >
 		            	{% if user.is_superuser%}
-			                <li><a href="#" style="color:green;">Welcome, Superuser {{ user.first_name }}! </a></li>
+			                <a href="#" style="color:green; padding-left:30px;">Welcome, Superuser {{ user.first_name }}! </a>
 		                {% elif user.is_staff %}
-			                 <li><a href="#" style="color:blue;">Welcome, Staff {{ user.first_name }}! </a> </li>
+			                 <li><a href="#" style="color:blue; padding-left:30px;">Welcome, Staff {{ user.first_name }}! </a> 
 		                {% else %}
-			                <li><a href="#">Welcome, {{ user.first_name }}!</a> </li>
+			                <li><a href="#" style="padding-left:30px;">Welcome, {{ user.first_name }}!</a> 
 		                {%endif %}
+		                </li>
 		                <li><a href="/profile/">Profile</a></li>
 		                <li><a href="/logout/">Logout</a></li>
 		            {% else %}
-						<li class="current_page_item"><a href="/" accesskey="1" title="">Home</a></li>
 						<li><a href="/" accesskey="2" title="">Projects</a></li>
 						<li><a href="/about-us.html" accesskey="3" title="">About Us</a></li>
 						<li><a href="/contact-us.html" accesskey="4" title="">Contact Us</a></li>
@@ -60,41 +111,51 @@ document.write(unescape("%3Cscript src='" + tlJsHost + "trustlogo/javascript/tru
 		            {% endif %}
 				</ul>
 			</div>
-		</div>
-		{% if user.is_authenticated %}
-			<div id="menu2">	
-				{% include "top-nav.html" %} 
-			</div>
-		{% else %}
-			<div id="banner">
-				<div class="img-border"> 
-					<a href="#"><img src="{% static "images/header-img.jpg" %}" style="width:100%; height:100%" alt="" /></a> 
-					</div>
-			</div>
-		{% endif %}
-	</div>
-	{% if user.is_authenticated %}
-		<div id="announcement">
-			<h2> Announcement</h2>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
+
+	  {% if user.is_authenticated %}
+		<div id="announcement" class="jumbotron">
+			<h2> Announcement:</h2>
 			<ul >
 				<li ><a href="http://2341hilo.com/">2341 Hilo Ct, Mtn View, CA</a> is completed</li>
 			</ul>
 		</div>
-	{% endif %}
-	
-    <!-- Page specific content goes here -->
-    <div>
-        {% block body_block %}{% endblock %}
-    </div>
+	  {% else %}
+	  	<div class="well well-sm" style="max-width:100%; float: center;">
+				<a href="/"><p> <img alt="" src="{% static "images/nevada-woodside.gif" %}" class="img-responsive" 
+					style="max-width:100%; max-height:100%; display: block;margin-left: auto;margin-right: auto;">
+					<noscript><a href="http://slideful.com/v20150321_1452924877050201_pf.htm">View the slide show</a>
+					</noscript>
+				</p></a>
 
-<hr/>
+		</div> 
+	  {% endif %}
+      <!-- Page specific content goes here -->
+	    <div>
+	        {% block body_block %}{% endblock %}
+	    </div>
 
-<div id="footer_CopyRight" class="container">
-	<p>&copy; 2013~2016 SVCV Partners LLC. All Rights Reserved. </p>
-</div>
-<script language="JavaScript" type="text/javascript">
-TrustLogo("https://www.svcvllc.com/static/images/comodo_secure_52x63_transp.png", "CL1", "none");
-</script>
-<a  href="https://www.positivessl.com/" id="comodoTL">Positive SSL</a>
-</body>
+		<hr/>
+		
+		<div id="footer_CopyRight" class="container">
+			<p>&copy; 2013~2016 SVCV Partners LLC. All Rights Reserved. </p>
+		</div>
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="{% static "bootstrap-3.3.6/dist/js/bootstrap.min.js" %}"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="{% static "bootstrap-3.3.6/assets/js/ie10-viewport-bug-workaround.js" %}"></script>
+    
+    <script language="JavaScript" type="text/javascript">
+	TrustLogo("https://www.svcvllc.com/static/images/comodo_secure_52x63_transp.png", "CL1", "none");
+	</script>
+	<a  href="https://www.positivessl.com/" id="comodoTL">Positive SSL</a>
+  </body>
 </html>

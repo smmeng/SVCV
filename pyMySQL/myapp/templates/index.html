@@ -1,22 +1,12 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 
 {% block title %}SVCV Home{% endblock %}
 
 {% block body_block %}
-<div id="wrapper">
-	<div id="page-wrapper">
-		<div id="page">
-			<div id="content">
-				<h2>Welcome to SVCV Partners LLC!</h2>
-				<p> <img alt="" src="/static/images/nevada-woodside.gif">
-					<noscript><a href="http://slideful.com/v20150321_1452924877050201_pf.htm">View the slide show</a>
-					</noscript>
-				</p>
-				<p><strong>SVCV Partners</strong>, located in the heart of Silicon Valley, provides access to real estate as an asset class to a select group of sophisticated, high-net worth clients that deliver significantly high risk adjusted returns, relatives to other asset classes, over an extended period of time. </p>
-				<p>SVCV 伙伴有限责任公司坐落于美国高科技重镇硅谷中心. 附近的邻居有斯坦福大学,苹果,古狗, 脸书, 雅虎, 思科, 英特儿等等公司. 她为高资产,高收入人士提供当地有关地产投资业务.</p>
-				<p class="button-style"><a href="#">More Details</a></p>
-			</div>
-			<div id="sidebar">
+<div id="wrapper"  class="container-fluid">
+		<div class="row">
+			<div  class="col-sm-3">
 				{% if user.is_authenticated %}
 					{% include "project-history.html" %} 
 				{% else %}
@@ -28,26 +18,30 @@
 					</ul>
 				{% endif %}
 			</div>
+			<div class="col-sm-9">
+				<div class="panel panel-default">
+					<div class="panel-heading"><h3>Welcome to SVCV Partners LLC!</h3></div>
+  					<div class="panel-body">
+  						
+						<p><strong>SVCV Partners</strong>, located in the heart of Silicon Valley, provides access to real estate as an asset class to a select group of sophisticated, high-net worth clients that deliver significantly high risk adjusted returns, relatives to other asset classes, over an extended period of time. </p>
+						<p>SVCV 伙伴有限责任公司坐落于美国高科技重镇硅谷中心. 附近的邻居有斯坦福大学,苹果,古狗, 脸书, 雅虎, 思科, 英特儿等等公司. 她为高资产,高收入人士提供当地有关地产投资业务.</p>
+						<p class="button-style"><a href="#">More Details</a></p>
+					</div>
+				</div>
+			</div>
 		</div>
-	</div>
 </div>
-<div id="footer-bg">
-	<div id="footer-content" class="container">
-		<div id="column1">
+<div id="footer-bg" class="container">
+	<div id="footer-content" >
+		<div id="column1"  class="col-sm-6">
 			<h2>Recommended Links</h2>
 			<ul class="style1">
 				<li class="first"></li>
 				<li></li>
 			</ul>
 		</div>
-		<div id="column2">
-			<h2>推荐联接</h2>
-			<ul class="style1">
-				<li class="first"></li>
-				<li></li>
-			</ul>
-		</div>
-		<div id="column3">
+		
+		<div id="column2"  class="col-sm-6">
 			<h2>Social</h2>
 			<ul class="style1">
 				<li class="first"><a href="#">Google +</a></li>
