@@ -7,16 +7,7 @@
 <div id="wrapper"  class="container-fluid">
 		<div class="row">
 			<div  class="col-sm-3">
-				{% if user.is_authenticated %}
-					{% include "project-history.html" %} 
-				{% else %}
-					<h2>Our Specialties</h2>
-					<ul>
-						<li>Residential Property Renovation or Flipping</li>
-						<li>Commercial Projects</li>
-						<li>Industrial Projects</li>
-					</ul>
-				{% endif %}
+				{% include "project-history.html" %}
 			</div>
 			<div class="col-sm-9">
 				<div class="panel panel-default">
@@ -24,27 +15,33 @@
   					<div class="panel-body">
   						
 						<p><strong>SVCV Partners</strong>, located in the heart of Silicon Valley, provides access to real estate as an asset class to a select group of sophisticated, high-net worth clients that deliver significantly high risk adjusted returns, relatives to other asset classes, over an extended period of time. </p>
-						<p>SVCV 伙伴有限责任公司坐落于美国高科技重镇硅谷中心. 附近的邻居有斯坦福大学,苹果,古狗, 脸书, 雅虎, 思科, 英特儿等等公司. 她为高资产,高收入人士提供当地有关地产投资业务.</p>
-						<p class="button-style"><a href="#">More Details</a></p>
+						<p class="button-style"><a href="/about-us.html/">More Details</a></p>
 					</div>
 				</div>
 			</div>
 		</div>
 </div>
-<div id="footer-bg" class="container">
+<div id="footer-bg" >
 	<div id="footer-content" >
 		<div id="column1"  class="col-sm-6">
 			<h2>Recommended Links</h2>
 			<ul class="style1">
-				<li class="first"></li>
-				<li></li>
+				<li class="first"><a href="http://www.sfgate.com/realestate/">SF Real Estate</a></li>
+				<li><a href="http://http://www.car.org/">CA Association of Realtors</a></li>
+				<li><a href="http://www.redfin">Redfin</a></li>
+				<li><a href="http://www.trulia.com">Trulia</a></li>
+				<li><a href="http://www.zillow">Zillow</a></li>
 			</ul>
 		</div>
 		
 		<div id="column2"  class="col-sm-6">
-			<h2>Social</h2>
+			<h2>Social Media</h2>
 			<ul class="style1">
-				<li class="first"><a href="#">Google +</a></li>
+				<li class="first"><a href="#"><img src="/static/images/google-plus.png" alt="Google+" width="32"/></a></li>
+				<li><a href="https://groups.google.com/d/forum/svcv-group" ><img src="/static/images/google-groups.png" alt="Google Group" width="32"/></a></li>
+				<li><a href="https://facebook.com" ><img src="/static/images/facebook.png" alt="FaceBook" width="32"/></a></li>
+				<li><a href="https://linkedin.com" ><img src="/static/images/linkedin.png" alt="LinkedIn" width="32"/></a></li>
+				<li><a href="https://wechat.com" ><img src="/static/images/wechat-icon.jpg" alt="Wechat" width="32"/></a></li>
 			</ul>
 		</div>
 	</div>

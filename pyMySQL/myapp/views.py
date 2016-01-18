@@ -421,3 +421,5 @@ def contactUs(request):
 def disclaimer(request):
     return render(request, "disclaimer.html")
 
+def get_ourProjects(request):
+    return render(request, "ourProjects.html")

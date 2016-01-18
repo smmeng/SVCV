@@ -104,7 +104,7 @@ Released   : 20130412
 		                <li><a href="/profile/">Profile</a></li>
 		                <li><a href="/logout/">Logout</a></li>
 		            {% else %}
-						<li><a href="/" accesskey="2" title="">Projects</a></li>
+						<li><a href="/ourProjects.html" accesskey="2" title="">Projects</a></li>
 						<li><a href="/about-us.html" accesskey="3" title="">About Us</a></li>
 						<li><a href="/contact-us.html" accesskey="4" title="">Contact Us</a></li>
 						<li><a href="/login/" accesskey="5" title="">Member Login</a></li>
@@ -118,8 +118,8 @@ Released   : 20130412
 	  {% if user.is_authenticated %}
 		<div id="announcement" class="jumbotron">
 			<h2> Announcement:</h2>
-			<ul >
-				<li ><a href="http://2341hilo.com/">2341 Hilo Ct, Mtn View, CA</a> is completed</li>
+			<ul class="style2">
+				<li ><a href="http://2341hilo.com/">2341 Hilo Ct, Mtn View, CA</a> is completed as of 12/28/2015</li>
 			</ul>
 		</div>
 	  {% else %}

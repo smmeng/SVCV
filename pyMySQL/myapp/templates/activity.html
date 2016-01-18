@@ -34,9 +34,6 @@
 <p>*-Most recent activities may not be included.</p> 
 	<table class="CSSTableGenerator table-hover ">
 		<tr >
-		{% if user.is_staff or user.is_superuser%}
-			<td><a href="/activity/NONE/">UserName</a> </td>
-		{% endif %}
 		<td><a href="/activity/Type/">Type</a> </td>
 		<td><a href="/activity/Date/">Date</a> </td>
 		<td>Status</td>
@@ -48,9 +45,6 @@
 		</tr>
 	{% for activity in activities %}
 		<tr>
-		{% if user.is_staff or user.is_superuser%}
-			<td> {{ activity.UserId }} </td>
-		{% endif %}
 			<td> {{ activity.Type_id }} </td>
 			<td> {{ activity.Date }} </td>
 			<td>{% if activity.ProjectId.Status.Status == 'Completed' %}
@@ -94,9 +88,6 @@
 	{% endfor %}
 
 		<tr>
-			{% if user.is_staff or user.is_superuser%}
-				<td/>
-			{% endif %}
 			<td/>
 			<td/>
 			<td/>
@@ -105,9 +96,6 @@
 			
 		</tr>
 		<tr>
-			{% if user.is_staff or user.is_superuser%}
-				<td/>
-			{% endif %}
 			<td/>
 			<td/>
 			<td/>
@@ -119,9 +107,6 @@
 			
 		</tr>
 		<tr>
-		{% if user.is_staff or user.is_superuser%}
-			<td> {{ activity.UserId_id }} </td>
-		{% endif %}
 			<td/>
 			<td/>
 			<td/>

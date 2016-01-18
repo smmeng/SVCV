@@ -1,39 +1,55 @@
-<div id="projects" class="panel panel-default ">
-	<div class="panel-heading ">
-		<a class="collapsed" data-toggle="collapse" data-target="#completed" aria-expanded="true" aria-controls="completed">
-        	<h4>Completed Projects</h4>
-        </a>
+{% if user.is_authenticated %}
+	<div id="projects" class="panel panel-default ">
+		<div class="panel-heading ">
+			<a class="collapsed" data-toggle="collapse" data-target="#completed" aria-expanded="true" aria-controls="completed">
+	        	<h4>Completed Projects</h4>
+	        </a>
+		</div>
+		<div id="completed" class="panel-body navbar-collapse collapse">
+			<ul >
+				<li ><a href="http://2341hilo.com/">2341 Hilo Ct, Mtn View, CA</a></li>
+				<li ><a href="http://15107montalvo.com/">15107 Montalvo Rd, Saratoga, CA</a></li>
+				<li><a href="https://www.redfin.com/CA/San-Francisco/3663-Folsom-St-94110/home/1784745#photoSlideShow">3663 Folsom St, San Francisco, CA 94110</a></li>
+			</ul>
+		</div>
+	
+		<div class="panel-heading">
+	        <a class="collapsed" data-toggle="collapse" data-target="#ongoing" aria-expanded="true" aria-controls="ongoing">
+				<h4>Ongoing Projects</h4>
+			</a>
+		</div>
+		<div id="ongoing" class="panel-body navbar-collapse collapse">
+			<ul >
+				<li class="first">563 Washington Ave, Sunnyvale, CA 94086 </li>
+				<li><a href="https://www.redfin.com/CA/San-Francisco/3663-Folsom-St-94110/home/1784745#photoSlideShow">Athwood St, Redwood City, CA</a></li>
+			</ul>
+		</div>
+		<div class="panel-heading">
+			<a class="collapsed" data-toggle="collapse" data-target="#upcoming" aria-expanded="true" aria-controls="upcoming">
+				<h4>Upcoming Projects</h4>
+			</a>
+		</div>
+		<div id="upcoming" class="panel-body navbar-collapse collapse">
+			<ul >
+				<li class="first">Sacremento, CA</li>
+				<li >Lincoln, Carmel By the Sea, CA</li>
+			</ul>
+		</div>
+	
+		<p class="button-style"><a href="#">More Projects</a></p>
+	</div> 
+{% else %}
+	<div class="panel panel-default ">
+		<div class="panel-heading">
+			<h3>Our Specialties</h3>
+		</div>
+		<div class="panel-body">
+			<ul class="style2">
+				<li>Residential Property Renovation</li>
+				<li>Residential Property Flipping</li>
+				<li>Commercial Projects</li>
+				<li>Industrial Projects</li>
+			</ul>
+		</div>
 	</div>
-	<div id="completed" class="panel-body navbar-collapse collapse">
-		<ul >
-			<li ><a href="http://2341hilo.com/">2341 Hilo Ct, Mtn View, CA</a></li>
-			<li ><a href="http://15107montalvo.com/">15107 Montalvo Rd, Saratoga, CA</a></li>
-			<li><a href="https://www.redfin.com/CA/San-Francisco/3663-Folsom-St-94110/home/1784745#photoSlideShow">3663 Folsom St, San Francisco, CA 94110</a></li>
-		</ul>
-	</div>
-
-	<div class="panel-heading">
-        <a class="collapsed" data-toggle="collapse" data-target="#ongoing" aria-expanded="true" aria-controls="ongoing">
-			<h4>Ongoing Projects</h4>
-		</a>
-	</div>
-	<div id="ongoing" class="panel-body navbar-collapse collapse">
-		<ul >
-			<li class="first">563 Washington Ave, Sunnyvale, CA 94086 </li>
-			<li><a href="https://www.redfin.com/CA/San-Francisco/3663-Folsom-St-94110/home/1784745#photoSlideShow">Athwood St, Redwood City, CA</a></li>
-		</ul>
-	</div>
-	<div class="panel-heading">
-		<a class="collapsed" data-toggle="collapse" data-target="#upcoming" aria-expanded="true" aria-controls="upcoming">
-			<h4>Upcoming Projects</h4>
-		</a>
-	</div>
-	<div id="upcoming" class="panel-body navbar-collapse collapse">
-		<ul >
-			<li class="first">Sacremento, CA</li>
-			<li >Lincoln, Carmel By the Sea, CA</li>
-		</ul>
-	</div>
-
-	<p class="button-style"><a href="#">More Projects</a></p>
-</div>
+{% endif %}
