@@ -42,7 +42,7 @@ class PROJECT(models.Model):
     Status =  models.ForeignKey(Status, default="open")
     
     def __unicode__(self):  #For Python 2, use __str__ on Python 3
-        return u'%s' % (self.DESCRIPTION)
+        return u'%d: %s [%s]' % (self.ProjectId, self.ProjectName, self.DESCRIPTION)
 
 class TransactionType(models.Model):
     Type = models.CharField(primary_key=True, max_length=20, default="Deposit")
@@ -52,17 +52,17 @@ class TransactionType(models.Model):
     
 class InvestmentActivity(models.Model):
     ActivityId = models.AutoField(primary_key=True)
-    UserId =models.ForeignKey(User, default="1")
-    Type = models.ForeignKey(TransactionType, default="Deposit")
+    UserId =models.ForeignKey(User, default="1", related_name='InvestmentActivity')
+    Type = models.ForeignKey(TransactionType, default="Deposit", related_name='InvestmentActivity')
     Date = models.DateField(auto_now=False, auto_now_add=False,  null=True)
-    ProjectId = models.ForeignKey(PROJECT, default="999")
+    ProjectId = models.ForeignKey(PROJECT, default="999", related_name='InvestmentActivity')
     Memo = models.CharField(max_length=1024, unique=False)
     Amount = models.FloatField(default=0.0)
     CreatedOn = models.DateField('Creaetd On', default=datetime.now)
 
     
     def __unicode__(self):  #For Python 2, use __str__ on Python 3
-        return u'%s' % (self.UserId)
+        return u'%s-%s-%s-%10.2f' % (self.UserId, self.Memo, self.ProjectId, self.Amount)
 
 class InvestmentActivityCopy(models.Model):
     ActivityId = models.AutoField(primary_key=True)

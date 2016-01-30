@@ -9,11 +9,22 @@
 #    url(r'^admin/', include(admin.site.urls)),
 #]
 from django.conf.urls import patterns, include, url
-from myapp import views
+from rest_framework.urlpatterns import format_suffix_patterns
+from rest_framework import renderers
+from rest_framework.routers import DefaultRouter
+
+from myapp import views, adminViews
 
 # Uncomment the next two lines to enable the admin:
 #from django.contrib import admin
 #admin.autodiscover()
+
+#RESTful Framework
+#investor_list = InvestorViewSet.as_view({'get': 'list'})
+
+router = DefaultRouter()
+router.register(r'InvestorList', adminViews.InvestorViewSet)
+router.register(r'users', adminViews.UserViewSet)
 
 urlpatterns = patterns('',
         url(r'^$', views.index, name='index'),     
@@ -36,5 +47,12 @@ urlpatterns = patterns('',
         # Change Password URLs:
         url(r'^changePassword/$', views.change_password),
         url(r'^savePassword/$', views.save_password),
+        #RESTful implementation for ADMIN pages
+        #url(r'^InvestorList/(?P<Pid>[0-9]+)/$', adminViews.InvestorDetail.as_view(),  name='InvestorList'),  
+        url(r'^restapi', include(router.urls)),
+        url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 )
+
+
+#urlpatterns = format_suffix_patterns(urlpatterns)
 

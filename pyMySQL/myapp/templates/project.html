@@ -28,7 +28,7 @@
 			</tr>
             {% for project in projects %}
                 <tr>
-                	<td><a href='/edit_project/{{ project.ProjectId }}'>{{ project.ProjectId }}. {{ project.ProjectName }}</a></td>
+                	<td><a href='/edit_project/{{ project.ProjectId }}'>{{ project.ProjectId }}. {{ project.ProjectName }}</a> - <a href='/restapiInvestorList/?ProjectId={{project.ProjectId }}&UserId=&Type='>Investors</a></td>
                 <td>{% if project.Status_id == 'Completed' %}
                 		<strike>{{ project.DESCRIPTION }} </strike>
                 	{% else  %}

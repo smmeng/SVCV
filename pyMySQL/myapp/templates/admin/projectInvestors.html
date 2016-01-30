@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}SVCV Projects{% endblock %}
+
+{% block body_block %}
+{% load humanize %}
+
+{% if user.is_authenticated and user.is_staff  %}
+{% else %}
+<div class="form-title"><h2>Please authenticate as staff first!</h2></div>
+{% endif %}
+
+{% endblock %}
