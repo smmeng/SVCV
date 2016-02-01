@@ -3,9 +3,104 @@
 {% block title %}SVCV Projects{% endblock %}
 
 {% block body_block %}
-{% load humanize %}
+
 
 {% if user.is_authenticated and user.is_staff  %}
+	<div class="table-responsive" ng-app="myApp" ng-controller="customersCtrl">    
+		{% verbatim %}
+			<h2>Project: <font color="blue">{{ projectName }} </font></h2>
+		{% endverbatim %}
+		<table class="CSSTableGenerator table-hover ">
+			<tr >
+				<td>Type </td>
+				<td>Date </td>
+				<td>Name</td>
+				<td>Description</td>
+				<td>Principal</td>
+				<td><strong><font color=yellow>Distribution</font></strong> </td>
+				<td><strong><font color=yellow>Interest</font></strong> </td>
+				<td><strong><font color=yellow>Dividend</font></strong> </td>
+			</tr>
+			<tr ng-repeat="x in names">
+			{% verbatim %}
+			    <td>{{ x.Type }}</td>
+			    <td>{{ x.Date }}</td>
+			    <td>{{ x.first_name }} {{ x.last_name }}</td>
+			    <td>{{ x.ProjectId }} </td>
+			{% endverbatim %}
+			{% verbatim %}
+			    <td ng-if="x.Type == 'Investment deposit of principal'">{{ x.Amount| currency }} </td>
+			    <td ng-if="x.Type != 'Investment deposit of principal'"> </td>
+			{% endverbatim %}
+
+			{% verbatim %}
+			    <td ng-if="x.Type == 'Distribution of principal'">{{ x.Amount| currency }} </td>
+			    <td ng-if="x.Type != 'Distribution of principal'"> </td>
+		   	{% endverbatim %}
+			
+			{% verbatim %}
+			    <td ng-if="x.Type == 'Interest distribution'">{{ x.Amount| currency }} </td>
+			    <td ng-if="x.Type != 'Interest distribution'">  </td>
+		   	{% endverbatim %}
+
+			{% verbatim %}
+			    <td ng-if="x.Type == 'Dividend distribution'">{{ x.Amount| currency }} </td>
+			    <td ng-if="x.Type != 'Dividend distribution'"> </td>
+		   	{% endverbatim %}
+
+			</tr>
+			<tr>
+				<td/><td/><td/>
+				{% verbatim %}
+					<td style="text-align: right;"> <b>Total Outstanding Principle: {{ (totalPrincipal + totalDistribution)| currency }}</b></td>
+				    <td > {{ totalPrincipal| currency }} </td>
+				    <td > <strong> <font color=red>{{ totalDistribution| currency }}</font></strong> </td>
+				    <td > <strong> <font color=green>{{ totalInt| currency }}</font></strong> </td>
+				    <td > <strong> <font color=green>{{ totalDiv| currency }}</font></strong> </td>
+		   		{% endverbatim %}
+			</tr>
+		</table>
+	</div>
+	
+	<script>
+		var app = angular.module('myApp', []);
+		app.controller('customersCtrl', function($scope, $http) {
+			//Fetch URL paramter for projectId
+			var projectId = location.search.split('projectId=')[1];
+			console.log("projectId=" + projectId);
+			
+			var jsonURL = "/restapi/InvestorList/?ProjectId=" + projectId + "&format=json";
+			
+			$scope.names = [];
+		    $http.get(jsonURL).success(function (data) {
+		    	$scope.names = data;
+
+		        var totalPrincipal = 0, totalDistribution = 0, totalInt = 0, totalDiv = 0;
+		        console.log('length=' + $scope.names.length);
+		        for(var i = 0; i < $scope.names.length; i++){
+		            console.log($scope.names[i]);
+		            var amount  = $scope.names[i].Amount;
+		            $scope.projectName = $scope.names[i].ProjectId;
+		            
+		            if ($scope.names[i].Type == 'Investment deposit of principal')
+		            	totalPrincipal += amount;
+		            else if ($scope.names[i].Type == 'Distribution of principal')
+		            	totalDistribution += amount;
+		            else if ($scope.names[i].Type == 'Interest distribution')
+		            	totalInt += amount;
+		            else 
+		            	totalDiv += amount;
+		            		
+		        }
+		        
+		        $scope.totalPrincipal = totalPrincipal;
+		        $scope.totalDistribution = totalDistribution;
+		        $scope.totalInt = totalInt
+		        $scope.totalDiv = totalDiv
+			    
+		    });
+		});
+	</script>
 {% else %}
 <div class="form-title"><h2>Please authenticate as staff first!</h2></div>
 {% endif %}

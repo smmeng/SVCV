@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from myapp.models import InvestmentActivity, PROJECT, TransactionType #,Vendor, Company, Status, UserProfile, 
+from myapp.models import InvestmentActivity, PROJECT, TransactionType, UserProfile #Vendor, Company, Status,  
 from django.contrib.auth.models import   User
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -14,7 +14,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         return obj.first_name + ' ' + obj.last_name
 
 class InvestorSerializer(serializers.HyperlinkedModelSerializer):
-    Type = serializers.ReadOnlyField(source='Type.Description')
+    Type  = serializers.ReadOnlyField(source='Type.Description')
     ProjectId = serializers.ReadOnlyField(source='ProjectId.ProjectName')
     UserId = serializers.ReadOnlyField(source='UserId.username')
     first_name = serializers.ReadOnlyField(source='UserId.first_name')
@@ -27,12 +27,26 @@ class InvestorSerializer(serializers.HyperlinkedModelSerializer):
         #UserLastName = serializers.ReadOnlyField(source='User.last_name')
         
         model = InvestmentActivity
-        fields = ('UserId', 'first_name', 'last_name', 'Type', 'ProjectId', 'Amount', 'CreatedOn')
+        fields = ('UserId', 'first_name', 'last_name', 'Type',  'ProjectId', 'Amount', 'Date')
         
         
-class ProjectSerializer(serializers.HyperlinkedModelSerializer):
+class ProjectSerializer(serializers.ModelSerializer):
     
     class Meta:
         # Provide an association between the ModelForm and a model
         model = PROJECT
-        fields = ('ProjectId', 'ProjectName', 'DESCRIPTION', 'Committed', 'VendorId', 'CompanyId', 'Status')
+        fields = ('ProjectId', 'ProjectName', 'DESCRIPTION','Allocation', 'Committed', 'StartDate', 'EndDate', 'VendorId', 'CompanyId', 'Status', 'website', 'SinglePhase')
+        
+class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
+    UserId = serializers.ReadOnlyField(source='UserId.username')
+    first_name = serializers.ReadOnlyField(source='UserId.first_name')
+    last_name = serializers.ReadOnlyField(source='UserId.last_name')
+    email = serializers.ReadOnlyField(source='UserId.email')
+    isStaff = serializers.ReadOnlyField(source='UserId.is_staff')
+    
+    class Meta:
+        # Provide an association between the ModelForm and a model
+        
+        model = UserProfile
+        fields = ('UserId', 'isStaff', 'first_name', 'last_name', 'email', 'Telephone', 'Cell', 'Address1', 'Address2', 'City', 'State', 'ZipCode', 'W9Ready', 'website', 
+                  'minCommitment', 'maxCommitment', 'lastCommitmentDate')

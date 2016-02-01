@@ -1,6 +1,8 @@
 from myapp.utility import Utility
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404, RequestContext
 from django.contrib.auth.models import   User
+from pip._vendor import requests
 
 ################## To generate all user list based on the current role
 @login_required
@@ -33,8 +35,8 @@ from rest_framework import permissions
 from rest_framework import filters
 from rest_framework.response import Response
 
-from myapp.models import InvestmentActivity
-from myapp.serializers import InvestorSerializer, ProjectSerializer, UserSerializer
+from myapp.models import InvestmentActivity, PROJECT, UserProfile
+from myapp.serializers import InvestorSerializer, ProjectSerializer, UserSerializer, UserProfileSerializer
 
 class InvestorList(APIView):
     """
@@ -64,10 +66,40 @@ class InvestorViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = InvestorSerializer
     
     queryset = InvestmentActivity.objects.all()
-    #print queryset
     filter_backends = (filters.DjangoFilterBackend,)
     filter_fields = ('ProjectId', 'UserId', 'Type')
+    #print queryset
     
     ##permission_classes = (permissions.IsAuthenticatedOrReadOnly)
 
+class ProjectViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update` and `destroy` actions.
+
+    Additionally we also provide an extra `highlight` action.
+    """
+    serializer_class = ProjectSerializer
     
+    queryset = PROJECT.objects.all()
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_fields = ('Status',)
+    
+    
+class UserProfileViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update` and `destroy` actions.
+
+    Additionally we also provide an extra `highlight` action.
+    """
+    serializer_class =UserProfileSerializer
+    queryset = UserProfile.objects.all()
+    
+####
+def get_projectInvestors(request):
+    return render(request, "admin/projectInvestors.html")
+
+
+def get_testAG(request):
+    return render(request, "testAG.html")

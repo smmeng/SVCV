@@ -7,9 +7,10 @@
 
 {% if user.is_authenticated %}
 	<div class="table-responsive">    
-        <h1>Projects</h1>
         {% if user.is_staff or user.is_superuser %}
-	        <a href="/add_project">New</a>
+	        <h1>Projects <a href="/add_project">New</a> </h1>
+	    {% else %}
+	    	<h1>Projects</h1>
         {% endif %}
         {% if projects %}
         <table class="CSSTableGenerator table-hover ">
@@ -28,7 +29,7 @@
 			</tr>
             {% for project in projects %}
                 <tr>
-                	<td><a href='/edit_project/{{ project.ProjectId }}'>{{ project.ProjectId }}. {{ project.ProjectName }}</a> - <a href='/restapiInvestorList/?ProjectId={{project.ProjectId }}&UserId=&Type='>Investors</a></td>
+                	<td><a href='/edit_project/{{ project.ProjectId }}'>{{ project.ProjectId }}. {{ project.ProjectName }}</a> - <a href='/projectInvestors?projectId={{ project.ProjectId }}'>Investors</a></td>
                 <td>{% if project.Status_id == 'Completed' %}
                 		<strike>{{ project.DESCRIPTION }} </strike>
                 	{% else  %}
@@ -66,6 +67,7 @@
 					<td/>
 					<td/>
 					<td style="text-align: center; color:red">  ${{total_principal|intcomma }} </td>
+					<td/>
 					
 				</tr>
 				<tr>
@@ -86,6 +88,12 @@
 					<td style="text-align: right;color:blue">  <b> Overall Amount: ${{total_amount |intcomma }} </b></td>
 					<td/>
 					<td/>
+					<td/>
+					<td/>
+					<td/>
+					<td/>
+					<td/>
+					
 				</tr>
 				{% endif %}
            </table>

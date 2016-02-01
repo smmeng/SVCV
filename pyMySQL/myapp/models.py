@@ -40,9 +40,10 @@ class PROJECT(models.Model):
     StartDate = models.DateField('Started On', default=datetime.now)
     EndDate = models.DateField('Ended On', default=datetime.now)
     Status =  models.ForeignKey(Status, default="open")
+    website = models.URLField(max_length=1024, default="")
     
     def __unicode__(self):  #For Python 2, use __str__ on Python 3
-        return u'%d: %s [%s]' % (self.ProjectId, self.ProjectName, self.DESCRIPTION)
+        return u'%d: %s [%s] [%s]' % (self.ProjectId, self.ProjectName, self.DESCRIPTION, self.Status)
 
 class TransactionType(models.Model):
     Type = models.CharField(primary_key=True, max_length=20, default="Deposit")
