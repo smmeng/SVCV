@@ -55,6 +55,8 @@ urlpatterns = patterns('',
         url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
         url(r'^projectInvestors/$', adminViews.get_projectInvestors),
         url(r'^testAG/$', adminViews.get_testAG),
+        url(r'^encryptIt/$', adminViews.encryptIt),
+        url(r'^decryptIt/$', adminViews.decryptIt),
 )
 
 

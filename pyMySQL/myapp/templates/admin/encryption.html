@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}SVCV Encryption/Decryption Utility{% endblock %}
+
+{% block body_block %}
+
+
+{% if user.is_authenticated and user.is_staff  %}
+	<div class="table-responsive" ng-app="myApp" ng-controller="customersCtrl">    
+		{% if errorMsg  %}
+			<h2> <font color='red'>Error: {{ errorMsg }}</font></h2>
+		{% endif %}
+		
+		<form class="form-container" method="post" name="EncryptionForm" id="EncryptionForm"  action="/encryptIt/" >
+			<h3>Encryption Form</h3>
+			{% csrf_token %}
+			<table>
+	          <tr>	          	
+	          	<td width="30%" class="form-title">
+	              	Information to Encrypt:
+	              </td>
+	          	<td width="70%" class="form-field">
+	              	<input type="text" name="info2Encrypt" value="{{ info2Encrypt }}"/>
+	             </td>
+	          </tr>
+	          <tr>	          	
+	          	<td width="30%" class="form-title">
+	              	Password:
+	            </td>
+	          	<td width="70%" class="form-field">
+	              	<input type="password" name="EncryptPassword" id="EncryptPassword" value="{{ EncryptPassword }}"/>
+	             </td>
+	          </tr>
+
+	          <tr>	          	
+	          	<td width="30%" class="form-title">
+	              	种子:
+	            </td>
+	          	<td width="70%" class="form-field">
+	              	<output>{{ seed }}</output>
+	             </td>
+	          </tr>
+	          <tr>	          	
+	          	<td width="30%" class="form-title">
+	              	加秘结果:
+	            </td>
+	          	<td width="70%" class="form-field">
+	              	<output><strong><font color='blue'>{{ encryptedInfo }}</font></strong></output>
+	             </td>
+	          </tr>
+	    	</table>
+			<div class="submit-container">
+	   	      	<input  class="submit-button" type="submit" name="submit" value="Encrypt"/>/>
+			</div>	
+		</form>
+		<hr/>
+		
+		<form class="form-container" method="post" name="DecryptionForm" id="DecryptionForm"  action="/decryptIt/" >
+			<h3>Decryption Form</h3>
+			
+			{% csrf_token %}
+			<table>
+	          <tr>	          	
+	          	<td width="30%" class="form-title">
+	              	Information to Decrypt:
+	              </td>
+	          	<td width="70%" class="form-field">
+	              	<input type="text" name="info2Decrypt" value="{{ info2Decrypt }}"/>
+	             </td>
+	          </tr>
+	          	<td width="30%" class="form-title">
+	              	解秘种子:
+	              </td>
+	          	<td width="70%" class="form-field">
+	              	<input type="text" name="seed2" value="{{ seed2 }}"/>
+	             </td>
+	          </tr>
+	          <tr>	          	
+	          	<td width="30%" class="form-title">
+	              	Password:
+	            </td>
+	          	<td width="70%" class="form-field">
+	              	<input type="password" name="DecryptPassword" id="DecryptPassword" value="{{ DecryptPassword }}"/>
+	             </td>
+	          </tr>
+
+	          <tr>	          	
+	          	<td width="30%" class="form-title">
+	              	解秘结果:
+	            </td>
+	          	<td width="70%" class="form-field">
+	              	<output><strong><font color='blue'>{{ decryptedInfo }}</font></strong></output>
+	             </td>
+	          </tr>
+	    	</table>
+			<div class="submit-container">
+	   	      	<input  class="submit-button" type="submit" name="submit" value="Decrypt"/>/>
+			</div>	
+		</form>
+		
+	</div>
+{% else %}
+	<div class="form-title"><h2>Please authenticate as staff first!</h2></div>
+{% endif %}
+
+{% endblock %}

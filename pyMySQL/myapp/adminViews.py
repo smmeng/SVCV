@@ -97,9 +97,115 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
     
 ####
+@login_required
 def get_projectInvestors(request):
     return render(request, "admin/projectInvestors.html")
 
-
+@login_required
 def get_testAG(request):
     return render(request, "testAG.html")
+
+from Crypto.Cipher import AES
+import base64
+import os
+import binascii
+
+@login_required
+def encryptIt(request):
+    print 'In encryptIt()'
+    info2Encrypt = ''
+    EncryptPassword = ''
+    seed = ''
+    encryptedInfo = ''
+    errorMsg = ''
+    
+    try:
+        if request.method == 'POST':
+            info2Encrypt = request.POST.get('info2Encrypt')
+            EncryptPassword = request.POST.get('EncryptPassword')
+            print 'info2Encrypt=', info2Encrypt, '  EncryptPassword=',EncryptPassword
+            print 'info2Encrypt=[', len(info2Encrypt), '] EncryptPasswords[', len(EncryptPassword)
+            #32 bytes = 256 bits
+            #16 = 128 bits
+            # the block size for cipher obj, can be 16 24 or 32. 16 matches 128 bit.
+            BLOCK_SIZE = 16
+            # the character used for padding
+            # used to ensure that your value is always a multiple of BLOCK_SIZE
+            PADDING = '{'
+            # function to pad the functions. Lambda
+            # is used for abstraction of functions.
+            # basically, its a function, and you define it, followed by the param
+            # followed by a colon,
+            # ex = lambda x: x+5
+            pad = lambda s: s + (BLOCK_SIZE - len(s) % BLOCK_SIZE) * PADDING
+            # encrypt with AES, encode with base64
+            EncodeAES = lambda c, s: base64.b64encode(c.encrypt(pad(s)))
+            # generate a randomized secret key with urandom
+            secret = os.urandom(BLOCK_SIZE)
+            print 'encryption secret1:', secret
+            seed = binascii.hexlify(secret)
+            print 'encryption hexlify secret:', seed
+        
+            if len(EncryptPassword) > BLOCK_SIZE:
+                EncryptPassword = EncryptPassword[0:BLOCK_SIZE]
+            else:
+                EncryptPassword = EncryptPassword.ljust(BLOCK_SIZE, '!')
+            print 'DecryptPassword=', EncryptPassword
+            
+            secret = secret + str(EncryptPassword)
+            print 'encryption secret22:', secret
+            #print 'encryption secret encoded:',secret.encode('utf-8')
+            # creates the cipher obj using the key
+            cipher = AES.new(secret)
+            print 'encryption cipher:', cipher
+            # encodes you private info!
+            encryptedInfo = EncodeAES(cipher, info2Encrypt)
+            print 'Encrypted string:', encryptedInfo
+        
+    except Exception:
+        errorMsg = 'Error occured during encryption'
+        
+    return render(request, "admin/encryption.html",  {'info2Encrypt':info2Encrypt, 'EncryptPassword':EncryptPassword, 'seed':seed, 'encryptedInfo':encryptedInfo, 'errorMsg':errorMsg} )
+
+@login_required
+def decryptIt(request):
+    BLOCK_SIZE = 16
+    print 'In decryptIt()'
+    info2Decrypt = ''
+    DecryptPassword = ''
+    seed2 = ''
+    decryptedInfo = ''
+    errorMsg = ''
+    
+    try:
+        if request.method == 'POST':
+            info2Decrypt = request.POST.get('info2Decrypt')
+            DecryptPassword = request.POST.get('DecryptPassword')
+            seed2 = request.POST.get('seed2')
+            
+            if len(DecryptPassword) > BLOCK_SIZE:
+                DecryptPassword = DecryptPassword[0:BLOCK_SIZE]
+            else:
+                DecryptPassword = DecryptPassword.ljust(BLOCK_SIZE, '!')
+            print 'DecryptPassword=', DecryptPassword
+            
+            print 'info2Decrypt=', info2Decrypt, '  DecryptPassword=',DecryptPassword, ' seed2=',seed2
+    
+            PADDING = '{'
+            DecodeAES = lambda c, e: c.decrypt(base64.b64decode(e)).rstrip(PADDING)
+            
+            #Key is FROM the printout of 'secret' in encryption
+            #below is the encryption.
+            encryption = info2Decrypt
+            key = binascii.unhexlify(seed2)
+            print 'key: ', key
+            password = str(DecryptPassword)
+            cipher = AES.new(key+password)
+            
+            decryptedInfo = str(DecodeAES(cipher, encryption))
+            print 'Decrypted string:', decryptedInfo
+    except Exception:
+        errorMsg = 'Error occured during decryption'
+        
+    return render(request, "admin/encryption.html",  {'info2Decrypt':info2Decrypt, 'DecryptPassword':DecryptPassword, 'seed2':seed2, 'decryptedInfo':decryptedInfo, 'errorMsg':errorMsg} )
+    

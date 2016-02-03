@@ -29,7 +29,11 @@
 			</tr>
             {% for project in projects %}
                 <tr>
-                	<td><a href='/edit_project/{{ project.ProjectId }}'>{{ project.ProjectId }}. {{ project.ProjectName }}</a> - <a href='/projectInvestors?projectId={{ project.ProjectId }}'>Investors</a></td>
+                	<td><a href='/edit_project/{{ project.ProjectId }}'>{{ project.ProjectId }}. {{ project.ProjectName }}</a> - 
+                		{% if   user.is_staff or user.is_superuser %}
+                			<a href='/projectInvestors?projectId={{ project.ProjectId }}'>Investors</a>
+                		{% endif %}
+                	</td>
                 <td>{% if project.Status_id == 'Completed' %}
                 		<strike>{{ project.DESCRIPTION }} </strike>
                 	{% else  %}

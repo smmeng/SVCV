@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}SVCV Projects{% endblock %}
+{% block title %}SVCV Project's Investors{% endblock %}
 
 {% block body_block %}
 
@@ -8,7 +8,7 @@
 {% if user.is_authenticated and user.is_staff  %}
 	<div class="table-responsive" ng-app="myApp" ng-controller="customersCtrl">    
 		{% verbatim %}
-			<h2>Project: <font color="blue">{{ projectName }} </font></h2>
+			<h2>Project: <font color="blue">{{ projectName }} Investor list and activities </font></h2>
 		{% endverbatim %}
 		<table class="CSSTableGenerator table-hover ">
 			<tr >

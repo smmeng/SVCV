@@ -37,7 +37,7 @@
 		<td><a href="/activity/Type/">Type</a> </td>
 		<td><a href="/activity/Date/">Date</a> </td>
 		<td>Status</td>
-		<td>Description</td>
+		<td><a href="/activity/ProjectId/">Description</a></td>
 		<td>Principal</td>
 		<td><strong><font color=yellow>Distribution</font></strong> </td>
 		<td><strong><font color=yellow>Interest</font></strong> </td>
@@ -45,8 +45,21 @@
 		</tr>
 	{% for activity in activities %}
 		<tr>
-			<td> {{ activity.Type_id }} </td>
-			<td> {{ activity.Date }} </td>
+			<td> 
+				{% if activity.ProjectId.Status.Status == 'Completed' %}
+					<strike>{{ activity.Type_id }} </strike>
+				{% else %}
+					{{ activity.Type_id }} 
+				{% endif %}			
+			</td>
+			<td> 
+				{% if activity.ProjectId.Status.Status == 'Completed' %}
+					<strike>{{ activity.Date }} </strike>
+				{% else %}
+					{{ activity.Date }} 
+				{% endif %}			
+
+			</td>
 			<td>{% if activity.ProjectId.Status.Status == 'Completed' %}
                 		<font color="green" > 
                 	{% elif activity.ProjectId.Status.Status == 'In Progress' %}
@@ -56,12 +69,17 @@
                 	{% else  %}
                 		<font color="navy">
                 	{% endif %}
-                	{{ activity.ProjectId.Status.Status }} </font>
+					{% if activity.ProjectId.Status.Status == 'Completed' %}
+						<strike>{{ activity.ProjectId.Status.Status }} </strike>
+					{% else %}
+						{{ activity.ProjectId.Status.Status }}
+					{% endif %}	
+                	</font>
 			</td>
 			<td>{% if activity.ProjectId.Status.Status == 'Completed' %}
-					<strike>{{ activity.Memo }}, {{ activity.ProjectId }}</strike> 
+					<strike>{{ activity.ProjectId }}</strike> 
 				{% else %}
-					{{ activity.Memo }}, {{ activity.ProjectId }}
+					{{ activity.ProjectId }}
 				{% endif %}
 			</td>
 			<td>
@@ -93,7 +111,9 @@
 			<td/>
 			<td style="text-align: right;"> <b>Subtotal:</b> </td>
 			<td> <font color=red> ${{total_principal|intcomma }} </font></td>
-			
+			<td>
+			<td>
+			<td>
 		</tr>
 		<tr>
 			<td/>
@@ -111,6 +131,10 @@
 			<td/>
 			<td/>
 			<td style="text-align: right;">  <b><font color=red size=5> Total Outstanding Principal: ${{total_amount |intcomma }} </font></b></td>
+			<td>
+			<td>
+			<td>
+			<td>
 		</tr>
 	</table>
 	</div>
