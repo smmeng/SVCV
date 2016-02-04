@@ -1,3 +1,4 @@
+from django.db.models import Q
 from myapp.utility import Utility
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, RequestContext
@@ -101,10 +102,115 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 def get_projectInvestors(request):
     return render(request, "admin/projectInvestors.html")
 
+import json
+from django.http import HttpResponse
+
+@login_required
+def get_projectInvestorSummary(request):
+    return render(request, "admin/projectInvestorSummary.html")
+
+@login_required
+def get_projectInvestorSummaryData(request):
+    #projectList = [{"UserId":"lsun011","first_name":"Lei","last_name":"Sun","Type":"Investment deposit of principal","ProjectId":"Black Square","Amount":50000.0,"Date":"2014-06-16"},{"UserId":"yqin2000","first_name":"Ying","last_name":"Qin","Type":"Investment deposit of principal","ProjectId":"Black Square","Amount":50000.0,"Date":"2014-06-09"}]
+    
+    activity_list = InvestmentActivity.objects.all().filter (Q(ProjectId__Status ="In Progress") | Q(ProjectId__Status ="Closed") ).filter(Q(Type='Deposit')|Q(Type='Check'))
+    investorDict = {}
+    projectDict = {}
+    print 'activity_list=', activity_list
+    
+    for row in activity_list:
+        userId = str(row.UserId)
+        projectId = str(row.ProjectId)
+        #print userId, ' - ', projectId
+        
+        if investorDict.has_key(userId):
+            innerInvestorDict = investorDict[userId]
+            
+            if innerInvestorDict.has_key(projectId):
+                innerInvestorDict[projectId] = innerInvestorDict[projectId] + row.Amount
+            else:
+                innerInvestorDict[projectId] = row.Amount
+            #print 'Existing innerInvestorDict', innerInvestorDict
+        else:
+            innerInvestorDict = {projectId:row.Amount}
+            investorDict[userId] = innerInvestorDict 
+            #print 'New innerInvestorDict', innerInvestorDict
+            
+        if projectDict.has_key(projectId):
+            innerProjectDict = projectDict[projectId]
+            
+            if innerProjectDict.has_key(userId):
+                innerProjectDict[userId] = innerProjectDict[userId] + row.Amount
+            else:
+                innerProjectDict[userId] = row.Amount
+            #print 'Existing innerProjectDict', innerProjectDict
+        else:
+            innerProjectDict = {userId:row.Amount}
+            projectDict[projectId] = innerProjectDict 
+            #print 'New innerProjectDict', innerProjectDict
+        
+    #### construct the final 2-D list for HTML report
+    finalSummaryList = []    
+    #first row is header
+    userIds = investorDict.keys() # need to sort by highest outstanding principal later
+    projectRow=[]
+    projectRow.append('Project Name')#{'projectId':'Project Name'})
+    projectRow.append('Project Total')        
+    for userId in userIds: #columns
+        projectRow.append(userId)
+    
+    print 'first row adds[', projectRow
+    finalSummaryList.append(projectRow)
+    grandProjectTotalAmount = 0
+    grandUserTotal = {}
+    
+    for projectId in projectDict.keys():
+        #projectId = str(projectId).replace('[', '').replace('\]', '')
+        print 'prepare projectRow=', projectId
+        innerProjectDict =  projectDict[projectId]
+        projectRow=[]
+        projectRow.append(projectId)
+        projectTotalAmount = 0
+        
+        for userId in userIds: #columns
+            innerInvestorDict = investorDict[userId]
+            if innerProjectDict.has_key(userId):
+                #print 'prepare user col=', userId
+                projectRow.append(innerProjectDict[userId])
+                projectTotalAmount += innerProjectDict[userId]
+                if grandUserTotal.has_key(str(userId)):
+                    grandUserTotal[str(userId)] = grandUserTotal[str(userId)]  +  innerProjectDict[userId]
+                else:
+                    grandUserTotal[str(userId)] = innerProjectDict[userId]
+            else:
+                projectRow.append('  ')
+                
+                
+        print 'projectRow=[',projectRow
+                
+        projectRow.insert(1, projectTotalAmount)
+        grandProjectTotalAmount += projectTotalAmount
+        finalSummaryList.append(projectRow)
+    
+    # Grand Total row
+    projectRow=[]
+    projectRow.append('Grand Total')#{'projectId':'Project Name'})
+    projectRow.append(grandProjectTotalAmount )    
+    
+    for userId in userIds:
+        projectRow.append(grandUserTotal[str(userId)]);
+        
+    finalSummaryList.append(projectRow)
+    
+    return HttpResponse(
+        json.dumps(finalSummaryList),
+        content_type = 'text/javascript; charset=utf8'
+    )
 @login_required
 def get_testAG(request):
     return render(request, "testAG.html")
 
+######## Encryption Decryption
 from Crypto.Cipher import AES
 import base64
 import os

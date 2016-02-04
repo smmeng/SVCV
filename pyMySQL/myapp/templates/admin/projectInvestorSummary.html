@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}SVCV Project's Investors{% endblock %}
+
+{% block body_block %}
+
+
+{% if user.is_authenticated and user.is_staff  %}
+	<div class="table-responsive" ng-app="myApp" ng-controller="customersCtrl">    
+		{% verbatim %}
+			<h2>Project - Investor Summary</h2>
+		{% endverbatim %}
+		<table class="CSSTableGenerator table-hover ">
+			<!-- tr ng-repeat="name in colName">
+			
+		    	{% verbatim %}
+			    <td >  {{ name}} </td>
+				{% endverbatim %}
+		    </tr-->
+			<tr ng-repeat="row in summary">
+			{% verbatim %}
+			    <td ng-repeat="column in row track by $index" > {{ column }}  </td>
+			{% endverbatim %}
+			</tr>
+		</table>
+	</div>
+	
+	<script>
+		var app = angular.module('myApp', []);
+		app.controller('customersCtrl', function($scope, $filter, $http) {
+			var jsonURL = "/projectInvestorSummaryData/";
+			
+			//$scope.summary = [];
+		    $http.get(jsonURL).success(function (data) {
+		    	$scope.summary = data;
+		    	$scope.colName = $scope.summary[0];
+		    	for(var i = 0; i < $scope.summary.length; i++)
+		    	{
+		    		row = $scope.summary[i];
+		    		col = ''
+		    		for(var j = 0; j < row.length; j++)
+			    	{
+		    			col += row[j] + ", ";
+		    			
+		    			if (angular.isNumber(row[j]))
+		    				row[j]= $filter('currency')(row[j]);
+			    	}
+		    		console.log(col);
+		    		console.log(angular.isNumber(row[3]));
+		    	}
+		            
+		    });
+		        
+		   
+		});
+		
+		
+	</script>
+{% else %}
+<div class="form-title"><h2>Please authenticate as staff first!</h2></div>
+{% endif %}
+
+{% endblock %}

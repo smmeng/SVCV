@@ -26,7 +26,7 @@ class Status(models.Model):
     Status = models.CharField(max_length=32, primary_key=True)
     Description = models.CharField(max_length=1024)
     def __unicode__(self):  #For Python 2, use __str__ on Python 3
-        return u'%s, %s' % (self.Status, self.Description)
+        return u'%s' % (self.Status)
     
 class PROJECT(models.Model):
     ProjectId = models.AutoField(primary_key=True)
@@ -43,13 +43,13 @@ class PROJECT(models.Model):
     website = models.URLField(max_length=1024, default="")
     
     def __unicode__(self):  #For Python 2, use __str__ on Python 3
-        return u'%d: %s [%s] [%s]' % (self.ProjectId, self.ProjectName, self.DESCRIPTION, self.Status)
+        return u'%d: [%s] - %s' % (self.ProjectId, self.ProjectName, self.Status)
 
 class TransactionType(models.Model):
     Type = models.CharField(primary_key=True, max_length=20, default="Deposit")
     Description = models.CharField(max_length=256, unique=False)
     def __unicode__(self):  #For Python 2, use __str__ on Python 3
-        return u'%s %s' % (self.Type, self.Description)
+        return u'%s' % (self.Type)
     
 class InvestmentActivity(models.Model):
     ActivityId = models.AutoField(primary_key=True)
