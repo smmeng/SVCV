@@ -6,17 +6,40 @@
 
 
 {% if user.is_authenticated and user.is_staff  %}
+<script type="text/javascript">
+   $(document).ready(function() {
+	$('#fixed_hdr3').fxdHdrCol({
+		fixedCols:  0,
+		width:     "100%",
+		height:    400,
+		colModal: [
+			   { width: 50, align: 'center' },
+			   { width: 110, align: 'center' },
+			   { width: 170, align: 'left' },
+			   { width: 250, align: 'left' },
+			   { width: 100, align: 'left' },
+			   { width: 70, align: 'left' },
+			   { width: 100, align: 'left' },
+			   { width: 100, align: 'center' },
+			   { width: 90, align: 'left' },
+			   { width: 400, align: 'left' }
+		],
+	});
+   });
+</script>
 	<div class="table-responsive" ng-app="myApp" ng-controller="customersCtrl">    
 		{% verbatim %}
 			<h2>Project - Investor Summary</h2>
 		{% endverbatim %}
-		<table class="CSSTableGenerator table-hover ">
-			<!-- tr ng-repeat="name in colName">
-			
-		    	{% verbatim %}
-			    <td >  {{ name}} </td>
-				{% endverbatim %}
-		    </tr-->
+		<table class="CSSTableGenerator table-hover " id="fixed_hdr3">
+			<!-- thead>
+				 <th ng-repeat="name in colName">
+				
+			    	{% verbatim %}
+				      {{ name}} 
+					{% endverbatim %}
+				</th>
+		    </thead -->
 			<tr ng-repeat="row in summary">
 			{% verbatim %}
 			    <td ng-repeat="column in row track by $index" > {{ column }}  </td>
@@ -34,6 +57,8 @@
 		    $http.get(jsonURL).success(function (data) {
 		    	$scope.summary = data;
 		    	$scope.colName = $scope.summary[0];
+		    	//data.splice(0, 1);
+		    	//$scope.summary = data;
 		    	for(var i = 0; i < $scope.summary.length; i++)
 		    	{
 		    		row = $scope.summary[i];
