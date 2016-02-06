@@ -42,11 +42,11 @@ class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
     first_name = serializers.ReadOnlyField(source='UserId.first_name')
     last_name = serializers.ReadOnlyField(source='UserId.last_name')
     email = serializers.ReadOnlyField(source='UserId.email')
-    isStaff = serializers.ReadOnlyField(source='UserId.is_staff')
+    #isStaff = serializers.ReadOnlyField(source='UserId.is_staff')
     
     class Meta:
         # Provide an association between the ModelForm and a model
         
         model = UserProfile
-        fields = ('UserId', 'isStaff', 'first_name', 'last_name', 'email', 'Telephone', 'Cell', 'Address1', 'Address2', 'City', 'State', 'ZipCode', 'W9Ready', 'website', 
+        fields = ('UserId',  'first_name', 'last_name', 'email', 'Telephone', 'Cell', 'Address1', 'Address2', 'City', 'State', 'ZipCode', 'W9Ready', 'website', 
                   'minCommitment', 'maxCommitment', 'lastCommitmentDate')

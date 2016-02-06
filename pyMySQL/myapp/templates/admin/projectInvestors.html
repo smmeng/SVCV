@@ -11,7 +11,7 @@
 			<h2>Project: <font color="blue">{{ projectName }} Investor list and activities </font></h2>
 		{% endverbatim %}
 		<table class="CSSTableGenerator table-hover ">
-			<tr >
+			<thead >
 				<td>Type </td>
 				<td>Date </td>
 				<td>Name</td>
@@ -20,7 +20,7 @@
 				<td><strong><font color=yellow>Distribution</font></strong> </td>
 				<td><strong><font color=yellow>Interest</font></strong> </td>
 				<td><strong><font color=yellow>Dividend</font></strong> </td>
-			</tr>
+			</thead>
 			<tr ng-repeat="x in names">
 			{% verbatim %}
 			    <td>{{ x.Type }}</td>

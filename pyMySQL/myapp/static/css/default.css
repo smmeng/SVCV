@@ -614,7 +614,8 @@ table { margin: auto; }
 	-moz-border-radius-topright:10px;
 	-webkit-border-top-right-radius:10px;
 	border-top-right-radius:10px;
-}.CSSTableGenerator tr:last-child td:first-child{
+}
+.CSSTableGenerator tr:last-child td:first-child{
 	-moz-border-radius-bottomleft:10px;
 	-webkit-border-bottom-left-radius:10px;
 	border-bottom-left-radius:10px;
@@ -639,10 +640,28 @@ table { margin: auto; }
 }.CSSTableGenerator tr:last-child td:last-child{
 	border-width:0px 0px 0px 0px;
 }
-.CSSTableGenerator tr:first-child td{
-		background:-o-linear-gradient(bottom, #ff7f00 5%, #7f0000 100%);	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ff7f00), color-stop(1, #7f0000) );
+.CSSTableGenerator thead th {
+	background:-o-linear-gradient(bottom, #ff7f00 5%, #7f0000 100%);	
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ff7f00), color-stop(1, #7f0000) );
 	background:-moz-linear-gradient( center top, #ff7f00 5%, #7f0000 100% );
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#ff7f00", endColorstr="#7f0000");	background: -o-linear-gradient(top,#ff7f00,7f0000);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#ff7f00", endColorstr="#7f0000");	
+	background: -o-linear-gradient(top,#ff7f00,7f0000);
+
+	background-color:#ff7f00;
+	border:0px solid #000000;
+	text-align:center;
+	border-width:0px 0px 1px 1px;
+	font-size:14px;
+	font-family:Arial;
+	font-weight:bold;
+	color:#ffffff;
+}
+.CSSTableGenerator thead  td{
+	background:-o-linear-gradient(bottom, #ff7f00 5%, #7f0000 100%);	
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ff7f00), color-stop(1, #7f0000) );
+	background:-moz-linear-gradient( center top, #ff7f00 5%, #7f0000 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#ff7f00", endColorstr="#7f0000");	
+	background: -o-linear-gradient(top,#ff7f00,7f0000);
 
 	background-color:#ff7f00;
 	border:0px solid #000000;
@@ -653,6 +672,16 @@ table { margin: auto; }
 	font-weight:bold;
 	color:#ffffff;
 }
+
+.CSSTableGenerator tfoot  td{
+	border:0px solid #000000;
+	border-width:0px 0px 1px 1px;
+	font-size:12px;
+	font-family:Arial;
+	font-weight:bold;
+	color:#ffffff;
+}
+/**
 .CSSTableGenerator tr:first-child:hover td{
 	background:-o-linear-gradient(bottom, #ff7f00 5%, #7f0000 100%);	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ff7f00), color-stop(1, #7f0000) );
 	background:-moz-linear-gradient( center top, #ff7f00 5%, #7f0000 100% );
@@ -663,6 +692,7 @@ table { margin: auto; }
 .CSSTableGenerator tr:first-child td:first-child{
 	border-width:0px 0px 1px 0px;
 }
+**/
 .CSSTableGenerator tr:first-child td:last-child{
 	border-width:0px 0px 1px 1px;
 }
@@ -801,3 +831,5 @@ form {
    vertical-align: middle;
    }
   
+ /**** Custome add-on for projectInvestorSummary ****/
+ 	

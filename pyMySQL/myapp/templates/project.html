@@ -14,7 +14,7 @@
         {% endif %}
         {% if projects %}
         <table class="CSSTableGenerator table-hover ">
-			<tr>
+			<thead>
 				<td>Project Name </td>
 				<td>Description </td>
 				<td>Status </td>
@@ -26,7 +26,7 @@
 				<td>Allocation </td>
 				<td><font color=green>Committed</font> </td>
 				{% endif %}
-			</tr>
+			</thead>
             {% for project in projects %}
                 <tr>
                 	<td><a href='/edit_project/{{ project.ProjectId }}'>{{ project.ProjectId }}. {{ project.ProjectName }}</a> - 
