@@ -674,11 +674,14 @@ table { margin: auto; }
 }
 
 .CSSTableGenerator tfoot  td{
+
+	background-color:#8080ff;
 	border:0px solid #000000;
+	text-align: right;
 	border-width:0px 0px 1px 1px;
-	font-size:12px;
-	font-family:Arial;
-	font-weight:bold;
+	font-size: 12px;
+	font-family: Arial;
+	font-weight: bold;
 	color:#ffffff;
 }
 /**
@@ -832,4 +835,6 @@ form {
    }
   
  /**** Custome add-on for projectInvestorSummary ****/
- 	
+ 	.td_100px { 
+		width:100px !important;
+	}

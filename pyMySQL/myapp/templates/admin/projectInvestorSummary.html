@@ -23,23 +23,17 @@
 
  <body -->
 {% extends 'base.html' %}
-<script>
-	<style>
-	.td_100px { 
-		width:200px !important;
-	}
-	</style>
-</script>
+
 {% block title %}SVCV Project's Investors{% endblock %}
 
 {% block body_block %}
 {% if user.is_authenticated and user.is_staff  %}
  
- 	<div ng-app="myApp" class="table-responsive" ng-controller="customersCtrl" >    
+ 	<div ng-app="myApp" class="table-responsive" ng-controller="projectInvestorSummarysCtrl" >    
     <table class="CSSTableGenerator table-hover" style="height: 600px !important;" fixed-header>
         <thead>
         	<tr>
-               <th ng-repeat="name in colName">					
+               <th ng-repeat="name in colName" ng-class="{'td_100px': $index == 0}" >					
 				{% verbatim %}
 				  {{ name}} 
 				{% endverbatim %}
@@ -55,7 +49,7 @@
         </tbody>
         <tfoot >
             <tr >
-            <td ng-repeat="val in grandTotalRow track by $index">
+            <td ng-repeat="val in grandTotalRow track by $index" ng-class="{'td_100px': $index == 0}" >
 				{% verbatim %}
 				  {{ val}} 
 				{% endverbatim %}

@@ -1,6 +1,6 @@
 var app = angular.module('myApp', ['anguFixedHeaderTable']);
 
-app.controller('customersCtrl', function($scope, $filter, $http) {
+app.controller('projectInvestorSummarysCtrl', function($scope, $filter, $http) {
 	var jsonURL = "/projectInvestorSummaryData/";
 	
 	//$scope.summary = [];
@@ -21,7 +21,7 @@ app.controller('customersCtrl', function($scope, $filter, $http) {
     			col += row[j] + ", ";
     			
     			if (angular.isNumber(row[j]))
-    				row[j]= $filter('currency')(row[j]);
+    				row[j]= $filter('currency')(row[j]).slice(0, -3);
 	    	}
     		//console.log(col);
     	}
