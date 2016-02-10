@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '$g##*hx#_+)6)(pybh*t2hb5!ej@c389k&t^hw1yqf@_u990kh'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True #False
 #CSRF_FAILURE_VIEW =True
 
 ALLOWED_HOSTS = ['*']
@@ -120,6 +120,7 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
+# Django Rest Framework settings
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
@@ -138,16 +139,21 @@ REST_FRAMEWORK = {
 }
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
-
 STATIC_URL = '/static/'
+STATIC_ROOT= os.path.join(BASE_DIR, 'myapp/static')
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
-    'C:/github/trunk/pyMySQL/myapp/static',
-    '/home/ec2-user/downloads/pyMySQL/myapp/static',
+    #os.path.join(STATIC_ROOT, 'static'),
+    #'C:/github/trunk/pyMySQL/myapp/static',
+    #'/var/www/pyMySQL/myapp/static',
+    #'/home/ec2-user/downloads/pyMySQL/myapp/static',
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    )
+    ("js", os.path.join(STATIC_ROOT,'js')),
+    ("css", os.path.join(STATIC_ROOT,'css')),
+    ("images", os.path.join(STATIC_ROOT,'images')),
+    ("bootstrap-3.3.6", os.path.join(STATIC_ROOT,'bootstrap-3.3.6')),
+)
 
 LOGIN_URL = '/login/'
 AUTO_LOGOUT_DELAY = 15 #equivalent to 5 minutes
