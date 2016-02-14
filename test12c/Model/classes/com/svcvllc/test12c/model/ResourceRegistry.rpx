@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Application xmlns="http://xmlns.oracle.com/adfm/application" version="12.2.1.0.31" id="ResourceRegistry"
+             SeparateXMLFiles="false" Package="com.svcvllc.test12c.model" ClientType="Generic">
+  <pageMap>
+    <page path="Jdev1221_SnippetVO1" usageId="Jdev1221_RestAppModule_SnippetVOResources"/>
+    <page path="Jdev1221_AuthUserVO1" usageId="Jdev1221_RestAppModule_AuthUserVOResources"/>
+    <page path="Jdev1221_SnippetVO2" usageId="Jdev1221_RestAppModule_AuthUserVOResources"/>
+  </pageMap>
+  <dataControlUsages>
+    <BC4JDataControl id="RestAppModuleDataControl" Package="com.svcvllc.test12c.model.service"
+                     FactoryClass="oracle.adf.model.bc4j.DataControlFactoryImpl" SupportsTransactions="true"
+                     SupportsFindMode="true" SupportsRangesize="true" SupportsResetState="true"
+                     SupportsSortCollection="true" Configuration="RestAppModuleLocal" syncMode="Immediate"
+                     xmlns="http://xmlns.oracle.com/adfm/datacontrol"/>
+  </dataControlUsages>
+  <pageDefinitionUsages>
+    <page id="Jdev1221_RestAppModule_SnippetVOResources"
+          path="com.svcvllc.test12c.model.service.rest.Jdev1221.RestAppModule_SnippetVOResources"/>
+    <page id="Jdev1221_RestAppModule_AuthUserVOResources"
+          path="com.svcvllc.test12c.model.service.rest.Jdev1221.RestAppModule_AuthUserVOResources"/>
+  </pageDefinitionUsages>
+</Application>

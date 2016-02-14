@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="SnippetEO"
+  Version="12.2.1.0.31"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="snippets_snippet"
+  AliasName="SnippetEO"
+  BindingStyle="JDBC"
+  RowClass="com.svcvllc.test12c.model.Entity.SnippetEOImpl">
+  <DesignTime>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Attribute
+    Name="Id"
+    IsNotNull="true"
+    ColumnName="id"
+    SQLType="INTEGER"
+    Type="java.lang.Integer"
+    ColumnType="INT"
+    TableName="snippets_snippet"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Created"
+    IsNotNull="true"
+    ColumnName="created"
+    SQLType="TIMESTAMP"
+    Type="java.sql.Timestamp"
+    ColumnType="DATETIME"
+    TableName="snippets_snippet"/>
+  <Attribute
+    Name="Title"
+    IsNotNull="true"
+    Precision="100"
+    ColumnName="title"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR"
+    TableName="snippets_snippet">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Code"
+    IsNotNull="true"
+    Domain="com.svcvllc.test12c.model.Longtext1"
+    ColumnName="code"
+    SQLType="STRUCT"
+    Type="com.svcvllc.test12c.model.common.Longtext1"
+    ColumnType="LONGTEXT"
+    TableName="snippets_snippet"/>
+  <Attribute
+    Name="Linenos"
+    IsNotNull="true"
+    ColumnName="linenos"
+    SQLType="BIT"
+    Type="java.lang.Boolean"
+    ColumnType="BIT"
+    TableName="snippets_snippet"/>
+  <Attribute
+    Name="Language"
+    IsNotNull="true"
+    Precision="100"
+    ColumnName="language"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR"
+    TableName="snippets_snippet">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Style"
+    IsNotNull="true"
+    Precision="100"
+    ColumnName="style"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR"
+    TableName="snippets_snippet">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Highlighted"
+    IsNotNull="true"
+    Domain="com.svcvllc.test12c.model.Longtext1"
+    ColumnName="highlighted"
+    SQLType="STRUCT"
+    Type="com.svcvllc.test12c.model.common.Longtext1"
+    ColumnType="LONGTEXT"
+    TableName="snippets_snippet"/>
+  <Attribute
+    Name="OwnerId"
+    IsNotNull="true"
+    ColumnName="owner_id"
+    SQLType="INTEGER"
+    Type="java.lang.Integer"
+    ColumnType="INT"
+    TableName="snippets_snippet">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </Attribute>
+  <Key
+    Name="Primary1"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PRIMARY"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.svcvllc.test12c.model.Entity.SnippetEO.Id"/>
+    </AttrArray>
+  </Key>
+</Entity>

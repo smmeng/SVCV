@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE AppModule SYSTEM "jbo_03_01.dtd">
+<!---->
+<AppModule
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="RestAppModule"
+  Version="12.2.1.0.31"
+  InheritPersonalization="merge"
+  ClearCacheOnRollback="true"
+  ComponentClass="com.svcvllc.test12c.model.service.RestAppModuleImpl">
+  <DesignTime>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="com.svcvllc.test12c.model.service.RestAppModule_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <ViewUsage
+    Name="SnippetVO1"
+    ViewObjectName="com.svcvllc.test12c.model.View.SnippetVO"/>
+  <ViewUsage
+    Name="AuthUserVO1"
+    ViewObjectName="com.svcvllc.test12c.model.View.AuthUserVO"/>
+  <ViewUsage
+    Name="SnippetVO2"
+    ViewObjectName="com.svcvllc.test12c.model.View.SnippetVO"/>
+  <ViewLinkUsage
+    Name="User2SnippetsvL1"
+    ViewLinkObjectName="com.svcvllc.test12c.model.View.User2SnippetsvL"
+    SrcViewUsageName="com.svcvllc.test12c.model.service.RestAppModule.AuthUserVO1"
+    DstViewUsageName="com.svcvllc.test12c.model.service.RestAppModule.SnippetVO2"
+    Reversed="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.svcvllc.test12c.model.ModelBundle"/>
+  </ResourceBundle>
+</AppModule>

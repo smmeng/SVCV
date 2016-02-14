@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.0.31"
+                id="RestAppModule_SnippetVOResources" Package="com.svcvllc.test12c.model.service.rest.Jdev1221"
+                usageMode="RESTClient">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="SnippetVO1" RangeSize="5" DataControl="RestAppModuleDataControl" id="SnippetVO1Iter"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="SnippetVO1Iter" id="SnippetVO1" AccessorFolder="Always">
+      <nodeDefinition DefName="com.svcvllc.test12c.model.View.SnippetVO"
+                      Name="com.svcvllc.test12c.model.View.SnippetVO"/>
+    </tree>
+  </bindings>
+</pageDefinition>

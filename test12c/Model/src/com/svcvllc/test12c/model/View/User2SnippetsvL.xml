@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewLink SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewLink
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="User2SnippetsvL"
+  Version="12.2.1.0.31"
+  InheritPersonalization="merge">
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="com.svcvllc.test12c.model.View.User2SnippetsvL_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <ViewLinkDefEnd
+    Name="AuthUserVO"
+    Cardinality="1"
+    Source="true"
+    Owner="com.svcvllc.test12c.model.View.AuthUserVO">
+    <DesignTime>
+      <Attr Name="_isUpdateable" Value="true"/>
+      <Attr Name="_finderName" Value="AuthUserVO"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.svcvllc.test12c.model.View.AuthUserVO.Id"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+  <ViewLinkDefEnd
+    Name="SnippetVO"
+    Cardinality="-1"
+    Owner="com.svcvllc.test12c.model.View.SnippetVO">
+    <DesignTime>
+      <Attr Name="_isUpdateable" Value="true"/>
+      <Attr Name="_finderName" Value="SnippetVO"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.svcvllc.test12c.model.View.SnippetVO.OwnerId"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.svcvllc.test12c.model.ModelBundle"/>
+  </ResourceBundle>
+</ViewLink>

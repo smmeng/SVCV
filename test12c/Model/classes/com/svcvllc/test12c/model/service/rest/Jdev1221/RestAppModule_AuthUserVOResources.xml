@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.0.31"
+                id="RestAppModule_AuthUserVOResources" Package="com.svcvllc.test12c.model.service.rest.Jdev1221"
+                usageMode="RESTClient">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="AuthUserVO1" RangeSize="5" DataControl="RestAppModuleDataControl" id="AuthUserVO1Iter"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="AuthUserVO1Iter" id="AuthUserVO1" AccessorFolder="Always">
+      <nodeDefinition DefName="com.svcvllc.test12c.model.View.AuthUserVO"
+                      Name="com.svcvllc.test12c.model.View.AuthUserVO">
+        <Actions>
+          <Action Name="create" Enabled="#{false}"/>
+          <Action Name="delete" Enabled="#{false}"/>
+        </Actions>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="AuthUserVO1Iter" id="SnippetVO2" AccessorFolder="Always">
+      <nodeDefinition DefName="com.svcvllc.test12c.model.View.AuthUserVO"
+                      Name="com.svcvllc.test12c.model.View.AuthUserVO">
+        <Accessors>
+          <Item Value="SnippetVO"/>
+        </Accessors>
+      </nodeDefinition>
+      <nodeDefinition DefName="com.svcvllc.test12c.model.View.SnippetVO"
+                      Name="com.svcvllc.test12c.model.View.SnippetVO"/>
+    </tree>
+  </bindings>
+</pageDefinition>
