@@ -28,7 +28,12 @@ def user_login(request):
                 # while the request.POST['<variable>'] will raise key error exception
         username = request.POST.get('username')
         password = request.POST.get('password')
-
+        #HttpResponse.set_cookie(this, "agree2disclaimer", value='true', max_age=365 * 24 * 60 * 60, expires=None, path='/', domain=None, secure=None, httponly=False)
+        response = HttpResponse()
+        content = 'Testing cookie serialization.'
+        response.content = content
+        response.set_cookie('agree2disclaimer', 'true')
+        
         # Use Django's machinery to attempt to see if the username/password
         # combination is valid - a User object is returned if it is.
         user = authenticate(username=username, password=password)
@@ -53,10 +58,11 @@ def user_login(request):
 
     # The request is not a HTTP POST, so display the login form.
     # This scenario would most likely be a HTTP GET.
-    else:
+    else: #get to load the login page
         # No context variables to pass to the template system, hence the
         # blank dictionary object...
-        return render(request, 'login.html', {})
+        agree2disclaimer = request.COOKIES.get('agree2disclaimer') 
+        return render(request, 'login.html', {'agree2disclaimer':agree2disclaimer})
     
 @login_required
 def user_logout(request):

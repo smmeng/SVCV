@@ -19,8 +19,8 @@
 			</div>
 
 			<div class="form-group">
-				<input type="checkbox" name="agreement" id="disclaimerBox" onclick ="onClickDisclaimerBox()" >
-					By clicking this box, I agree to the following disclaimer.
+				<input type="checkbox" name="agreement" id="disclaimerBox" onclick ="onClickDisclaimerBox()" value="{{ agree2disclaimer }}">
+					By clicking this box, I agree to the following disclaimer.{{ agree2disclaimer }}
 			</div>
 			<br />
 			
@@ -47,7 +47,11 @@
 			</script>
 			
 			<div class="submit-container">
+			{% if agree2disclaimer == 'true' %} 
+				<input class="submit-button-disabled" id="loginBtn" type="submit" value="Submit" />
+			{% else %}
 				<input class="submit-button-disabled" id="loginBtn" type="submit" value="Submit" disabled />
+			{% endif %}
 			</div>
 			{% include "disclaimer.html" %}
 		</form>
