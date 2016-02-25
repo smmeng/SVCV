@@ -25,8 +25,8 @@ import org.apache.commons.logging.LogFactory;
 
 public class QBActivity2MySQL {
     private static final Log logger=LogFactory.getLog(QBActivity2MySQL.class);
-    final static String QBFile = "C:\\Users\\smeng1\\Downloads\\qb.csv";
-    final static String QBInterestFile = "C:\\Users\\smeng1\\Downloads\\qb-int.csv";
+    final static String QBFile = "C:\\Users\\smmeng\\Downloads\\qb.csv";
+    final static String QBInterestFile = "C:\\Users\\smmeng\\Downloads\\qb-int.csv";
     final static String MySQLString = "jdbc:mysql://www.svcvllc.com:3306/security", MySQLUser = "svcvllc", MySQLPassword ="intelinside";
     //final static String MySQLString = "jdbc:mysql://sncsmeng03:3306/security", MySQLUser = "smmeng", MySQLPassword ="shanghai0";
     
