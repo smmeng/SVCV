@@ -109,8 +109,8 @@ public class QBActivity2MySQL {
                 pstmt.setString(2, fields[1].replaceAll("\"", ""));
                 pstmt.setString(3, activityDate[2] + "-" + activityDate[0] + "-" + activityDate[1]); //
                 pstmt.setString(4, memo); //
-                pstmt.setFloat(5, Float.parseFloat(amount[1])); //
-                pstmt.setInt(6, Integer.parseInt(projectId)); //
+                pstmt.setFloat(5, Float.parseFloat(amount[1].trim())); //
+                pstmt.setInt(6, Integer.parseInt(projectId.trim())); //
                 pstmt.setInt(7, userId.intValue()); //
                 pstmt.setDate(8, timestamp); //
                 pstmt.addBatch();
@@ -246,8 +246,8 @@ public class QBActivity2MySQL {
                 pstmt.setString(2, "Interest");//fields[1].replaceAll("\"", ""));
                 pstmt.setString(3, activityDate[2] + "-" + activityDate[0] + "-" + activityDate[1]); //
                 pstmt.setString(4, memo); //
-                pstmt.setFloat(5, Float.parseFloat(amount[1])); //
-                pstmt.setInt(6, Integer.parseInt(projectId)); //
+                pstmt.setFloat(5, Float.parseFloat(amount[1].trim())); //
+                pstmt.setInt(6, Integer.parseInt(projectId.trim())); //
                 pstmt.setInt(7, userId.intValue()); //
                 pstmt.setDate(8, timestamp); //
                 pstmt.addBatch();
@@ -339,8 +339,8 @@ public class QBActivity2MySQL {
     }
 
     public static void main(String[] args) {
-        //QBActivity2MySQL.uploadPrincipalActivity();
-        QBActivity2MySQL.uploadInterestActivity();
+        QBActivity2MySQL.uploadPrincipalActivity();
+        //QBActivity2MySQL.uploadInterestActivity();
     }
 
         
