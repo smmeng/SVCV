@@ -82,7 +82,7 @@ class UserProfile(models.Model):
     # This line is required. Links UserProfile to a User model instance.
     #user = models.OneToOneField(User)
     #UserId =models.ForeignKey(User, primary_key=True)
-    UserId =models.OneToOneField(settings.AUTH_USER_MODEL, primary_key=True)
+    UserId =models.OneToOneField(settings.AUTH_USER_MODEL, primary_key=True,default=999999)
 
     # The additional attributes we wish to include.
     Telephone = models.CharField('Phone#', max_length=32, null=True)
@@ -94,6 +94,7 @@ class UserProfile(models.Model):
     ZipCode = models.CharField(max_length=16, null=True)
     W9Ready = models.BooleanField('W-9 Filed?', default=False)
     website = models.URLField(null=True)
+    wechatId = models.CharField(max_length=256, null=True)
 
     minCommitment = models.IntegerField(default=0)
     maxCommitment = models.IntegerField(default=0)
@@ -120,3 +121,13 @@ class UserProfile(models.Model):
     # Override the __unicode__() method to return out something meaningful!
     def __unicode__(self):
         return u'%s' % (self.UserId)
+    
+class Announcement(models.Model):
+    AnnouncementId = models.AutoField(primary_key=True)
+    OutputText = models.CharField(max_length=8192, null=False)
+    Comments = models.CharField(max_length=1024, null=True)
+    CreatedOn = models.DateField('Creaetd On', default=datetime.now)
+    ExpireOn = models.DateField('Expire On', null=False)
+    
+    def __unicode__(self):  #For Python 2, use __str__ on Python 3
+        return u'%s' % ( self.OutputText)

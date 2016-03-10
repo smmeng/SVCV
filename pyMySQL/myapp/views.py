@@ -7,9 +7,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import   User
 from django.db.models import Q
+from datetime import date
 
 from myapp.forms import ProjectForm,  UserProfileForm
-from myapp.models import PROJECT, InvestmentActivity, UserProfile
+from myapp.models import PROJECT, InvestmentActivity, UserProfile,Announcement
 
 from myapp.utility import Utility, FieldSet
 from django.views.decorators.csrf import csrf_exempt  
@@ -413,6 +414,15 @@ def  save_password(request):
             print error_msg
 
     return render(request, 'passwordUpdate.html', {"error_msg": error_msg})
+
+@login_required
+def get_announcement(request):
+    msgs=None
+    #only query latest 3 messages
+    queryset = Announcement.objects.filter(ExpireOn__gte= date.today()).order_by('-ExpireOn')[:3]
+    print "announcement[", queryset
+    
+    return render(request, "announcement.html", {"messages":queryset})
 ########################################################################
 # index.html
 def index(request):
@@ -429,3 +439,4 @@ def disclaimer(request):
 
 def get_ourProjects(request):
     return render(request, "ourProjects.html")
+

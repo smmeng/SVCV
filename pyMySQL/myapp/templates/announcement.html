@@ -1,0 +1,11 @@
+{% if user.is_authenticated %}
+	<div id="projects" class="panel panel-default ">
+		<div id="announcements" class="panel-body navbar-collapse collapse">
+			<h4>ANNOUNCEMENT</h4>
+			<ul >
+				{% for message in messages %}
+					<li >{{ message}} </li>
+				{% endfor %}
+			</ul>
+		</div>
+{% endif %}
