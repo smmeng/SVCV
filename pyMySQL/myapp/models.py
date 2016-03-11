@@ -61,7 +61,13 @@ class InvestmentActivity(models.Model):
     Amount = models.FloatField(default=0.0)
     CreatedOn = models.DateField('Creaetd On', default=datetime.now)
 
-    
+    def related_user(self):
+        print 'self.user_id=[', self.UserId
+        try:
+            return User.objects.get(pk=self.UserId)
+        except User.DoesNotExist:
+            return None
+            
     def __unicode__(self):  #For Python 2, use __str__ on Python 3
         return u'%s-%s-%s-%10.2f' % (self.UserId, self.Memo, self.ProjectId, self.Amount)
 
@@ -131,3 +137,4 @@ class Announcement(models.Model):
     
     def __unicode__(self):  #For Python 2, use __str__ on Python 3
         return u'%s' % ( self.OutputText)
+    

@@ -37,7 +37,7 @@ from rest_framework import filters
 from rest_framework.response import Response
 
 from myapp.models import InvestmentActivity, PROJECT, UserProfile
-from myapp.serializers import InvestorSerializer, ProjectSerializer, UserSerializer, UserProfileSerializer
+from myapp.serializers import InvestorSerializer, ProjectSerializer, UserSerializer, UserProfileSerializer, InvestorProfitSerializer
 
 class InvestorList(APIView):
     """
@@ -315,3 +315,79 @@ def decryptIt(request):
         
     return render(request, "admin/encryption.html",  {'info2Decrypt':info2Decrypt, 'DecryptPassword':DecryptPassword, 'seed2':seed2, 'decryptedInfo':decryptedInfo, 'errorMsg':errorMsg} )
     
+################## To all investor profit
+from django.db.models import Sum
+def getInvestorProfitsData(sort=None):
+    investorsProfits = InvestmentActivity.objects.select_related().filter(Q(Type='Interest')|Q(Type='Dividend')).values('UserId__username', 'UserId__first_name', 'UserId__last_name').annotate(Sum('Amount')).order_by('Amount__sum')
+    #InvestmentActivity.objects.filter(UserId = userId).order_by(orderBy)
+    print 'Aggregate investorsProfits=[',investorsProfits
+
+    returnedEquities = InvestmentActivity.objects.select_related().filter(Q(Type='Check')).values('UserId__username').annotate(Sum('Amount'))
+    print 'Aggregate returnedEquities=[',returnedEquities
+    
+    depositedEquities = InvestmentActivity.objects.select_related().filter(Q(Type='Deposit')).values('UserId__username').annotate(Sum('Amount'))
+    print 'Aggregate depositedEquities=[',depositedEquities
+    
+    #look for user name match and then insert the new field for return equity
+    for profit in investorsProfits:
+        for returnedEquity in returnedEquities:
+            #print 'profit.user=', profit['UserId__username'], ' REUser=', returnedEquity['UserId__username']
+            if profit['UserId__username'] == returnedEquity['UserId__username']:
+                profit['returnEquityAmount']= returnedEquity['Amount__sum']
+                break #break out the inner for loop
+    
+    #look for user name match and then insert the new field for return equity
+    for profit in investorsProfits:
+        for depositedEquity in depositedEquities:
+            #print 'profit.user=', profit['UserId__username'], ' REUser=', returnedEquity['UserId__username']
+            if profit['UserId__username'] == depositedEquity['UserId__username']:
+                profit['depositedEquityAmount']= depositedEquity['Amount__sum']
+                profit['remainingEquityAmount']= depositedEquity['Amount__sum'] + profit['returnEquityAmount']
+                
+                break #break out the inner for loop
+
+    print 'Aggregate investorsProfits=[',investorsProfits
+    
+    return {'investorsProfits':investorsProfits}
+
+class InvestProfitsViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update` and `destroy` actions.
+
+    Additionally we also provide an extra `highlight` action.
+    """
+    serializer_class =InvestorProfitSerializer
+    print 'Done serializer_class=', serializer_class
+    outcome = getInvestorProfitsData(None)
+    print 'outcome=', outcome
+    
+    queryset = outcome['investorsProfits']
+    
+
+@login_required
+def getInvestorProfits(request, sort=None):
+    outcome = getInvestorProfitsData(None)
+    print 'outcome=', outcome
+    
+    investorsProfits = outcome['investorsProfits']
+    
+    total= 0
+    for profit in investorsProfits:
+        #print 'profit=', profit
+        total += profit['Amount__sum']
+        
+    print 'total=[', total
+    
+    return render(request, 'admin/investorProfit.html', {'investorsProfits':investorsProfits, 'total':total})
+    
+
+from django import template
+register = template.Library()
+#@login_required    
+@register.simple_tag
+def get_username_from_userid(user_id):
+    try:
+        return User.objects.get(id=user_id).username
+    except User.DoesNotExist:
+        return 'Unknown'

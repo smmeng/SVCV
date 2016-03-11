@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from myapp.models import InvestmentActivity, PROJECT, TransactionType, UserProfile #Vendor, Company, Status,  
 from django.contrib.auth.models import   User
+from django.db.models import Sum,Q
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     #InvestorList = serializers.HyperlinkedRelatedField(many=True, view_name='InvestorViewSet', read_only=True)
@@ -50,3 +51,19 @@ class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
         model = UserProfile
         fields = ('UserId',  'first_name', 'last_name', 'email', 'Telephone', 'Cell', 'Address1', 'Address2', 'City', 'State', 'ZipCode', 'W9Ready', 'website', 
                   'minCommitment', 'maxCommitment', 'lastCommitmentDate')
+        
+class InvestorProfitSerializer(serializers.HyperlinkedModelSerializer):
+    UserId = serializers.ReadOnlyField(source='UserId__username')
+    first_name = serializers.ReadOnlyField(source='UserId__first_name')
+    last_name = serializers.ReadOnlyField(source='UserId__last_name')
+    Amount__sum = serializers.ReadOnlyField(source='Amount__sum')
+    depositedEquityAmount = serializers.ReadOnlyField(source='Amount__sum')
+    returnEquityAmount= serializers.ReadOnlyField(source='Amount__sum')
+    remainingEquityAmount = serializers.ReadOnlyField(source='Amount__sum')
+    #isStaff = serializers.ReadOnlyField(source='UserId.is_staff')
+    class Meta:
+        # Provide an association between the ModelForm and a model
+        model=InvestmentActivity.objects.select_related().values('UserId__username', 'UserId__first_name', 'UserId__last_name').annotate(Sum('Amount'))
+        fields = ('UserId',  'first_name', 'last_name','Amount__sum', 'depositedEquityAmount', 'returnEquityAmount','remainingEquityAmount')
+    
+    

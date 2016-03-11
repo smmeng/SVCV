@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Login Form{% endblock %}
+
+{% block body_block %}
+{% load humanize %}
+
+{% if user.is_authenticated and user.is_staff  %}
+	<table class="CSSTableGenerator table-hover ">
+		<thead >
+			<td>Investor</td>
+			<td>Full Name</td>
+			<td>Profit (int + div)</td>
+			<td>Total Deposit</td>
+			<td>Total Returned Equity</td>
+			<td>Outstanding Equity</td>
+		</thead>
+	{% for investorsProfit in investorsProfits %}
+		<tr>
+			<td> 
+					{{ investorsProfit.UserId__username  }} 
+			</td>
+			<td> 
+					{{ investorsProfit.UserId__first_name }} {{ investorsProfit.UserId__last_name }}
+			</td>
+			<td> 
+					${{ investorsProfit.Amount__sum |intcomma  }} 
+			</td>
+			<td> 
+					${{ investorsProfit.depositedEquityAmount |intcomma  }} 
+			</td>
+			<td style="color: green; font-weight: bold;"> 
+					${{ investorsProfit.returnEquityAmount |intcomma  }} 
+			</td>
+			<td style="color: red; font-weight: bold;"> 
+					${{ investorsProfit.remainingEquityAmount |intcomma  }} 
+			</td>
+		</tr>
+	{% endfor %}
+		<tr>
+			<td> 
+					
+			</td>
+			<td style="text-align: right;"> 
+					 <b><font  size=5>Grand Profit:</font></b>
+			</td>
+			<td> 
+					<b><font  size=5>${{ total |intcomma  }} </font></b>
+			</td>
+		</tr>
+	</table>
+{% else %}
+	<div class="form-title"><h2>Please authenticate as staff first!</h2></div>
+{% endif %}
+	
+{% endblock %}

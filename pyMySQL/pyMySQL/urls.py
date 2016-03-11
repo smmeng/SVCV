@@ -27,6 +27,7 @@ router.register(r'InvestorList', adminViews.InvestorViewSet)
 router.register(r'users', adminViews.UserViewSet)
 router.register(r'projects', adminViews.ProjectViewSet)
 router.register(r'userProfiles', adminViews.UserProfileViewSet)
+router.register(r'investorProfits2', adminViews.InvestProfitsViewSet)
 
 urlpatterns = patterns('',
         url(r'^$', views.index, name='index'),     
@@ -56,6 +57,7 @@ urlpatterns = patterns('',
         url(r'^projectInvestors/$', adminViews.get_projectInvestors),
         url(r'^projectInvestorSummaryData/$', adminViews.get_projectInvestorSummaryData),
         url(r'^projectInvestorSummary/$', adminViews.get_projectInvestorSummary),
+        url(r'^investorProfits/$', adminViews.getInvestorProfits),
         url(r'^testAG/$', adminViews.get_testAG),
         url(r'^encryptIt/$', adminViews.encryptIt),
         url(r'^decryptIt/$', adminViews.decryptIt),
