@@ -71,7 +71,7 @@ Released   : 20130412
 	<script type="text/javascript" src="{% static "js/app.js" %}"> </script>
   </head>
 
-  <body  ng-app="">
+  <body  >
 
     <div class="container">
 
@@ -139,13 +139,7 @@ Released   : 20130412
       </nav>
 
 	  {% if user.is_authenticated %}
-		<!-- div id="announcement" class="jumbotron">
-			<h2> Announcement:</h2>
-			<ul class="style2">
-				<li ><a href="http://2341hilo.com/">2341 Hilo Ct, Mtn View, CA</a> is completed as of 12/28/2015</li>
-			</ul>
-		</div-->
-		<div ng-include="'/announcement'"></div>
+
 	  {% else %}
 	  	<div class="well well-sm" style="max-width:100%; float: center;">
 				<a href="/"><p> <img alt="" src="{% static "images/nevada-woodside.gif" %}" class="img-responsive" 
