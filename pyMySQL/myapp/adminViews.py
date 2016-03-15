@@ -321,18 +321,18 @@ def getInvestorProfitsData(sort=None):
     investorsProfits = InvestmentActivity.objects.filter(Q(Type='Interest')|Q(Type='Dividend')).values('UserId__username', 'UserId__first_name', 'UserId__last_name').annotate(Sum('Amount')).order_by('Amount__sum')
     
     #InvestmentActivity.objects.filter(UserId = userId).order_by(orderBy)
-    print 'Aggregate investorsProfits=[',investorsProfits
+    #print 'Aggregate investorsProfits=[',investorsProfits
     investorsProfits.extra(select={'returnEquityAmount':0})
     investorsProfits.extra(select={'depositedEquityAmount':0})
     investorsProfits.extra(select={'remainingEquityAmount':0})
-    print 'Aggregate2 investorsProfits=[',investorsProfits
+    #print 'Aggregate2 investorsProfits=[',investorsProfits
     
 
     returnedEquities = InvestmentActivity.objects.filter(Q(Type='Check')).values('UserId__username').annotate(Sum('Amount'))
-    print 'Aggregate returnedEquities=[',returnedEquities
+    #print 'Aggregate returnedEquities=[',returnedEquities
     
     depositedEquities = InvestmentActivity.objects.filter(Q(Type='Deposit')).values('UserId__username').annotate(Sum('Amount'))
-    print 'Aggregate depositedEquities=[',depositedEquities
+    #print 'Aggregate depositedEquities=[',depositedEquities
     
     #look for user name match and then insert the new field for return equity
     for profit in investorsProfits:

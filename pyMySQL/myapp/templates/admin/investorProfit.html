@@ -6,7 +6,12 @@
 {% load humanize %}
 
 {% if user.is_authenticated and user.is_staff  %}
-	<table class="CSSTableGenerator table-hover ">
+<!-- div ng-app="myApp" ng-controller="excelCtrl" class="table-responsive"  >    
+	<button class="btn btn-link" ng-click="exportToExcel('#investProfitTable')">
+        Export to Excel
+    </button>
+    <div id="investProfitTable">
+	<table class="CSSTableGenerator table-hover" >
 		<thead >
 			<td>Investor</td>
 			<td>Full Name</td>
@@ -49,6 +54,11 @@
 			</td>
 		</tr>
 	</table>
+	</div>
+</div-->
+	<div  ng-app="appInvestorProfit" ng-controller="MainCtrl">
+      <div ui-grid="gridOptions" ui-grid-selection ui-grid-exporter class="grid"></div>
+    </div>
 {% else %}
 	<div class="form-title"><h2>Please authenticate as staff first!</h2></div>
 {% endif %}

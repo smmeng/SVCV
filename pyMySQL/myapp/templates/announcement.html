@@ -4,7 +4,7 @@
 		<div id="announcements" class="panel-body navbar-collapse collapse">
 			<ul >
 				{% for message in messages %}
-					<li >{{ message}} </li>
+					<li >{% autoescape off %}{{ message }}{% endautoescape %}  </li>
 				{% endfor %}
 			</ul>
 		</div>

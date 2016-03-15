@@ -838,3 +838,9 @@ form {
  	.td_100px { 
 		width:100px !important;
 	}
+
+	.grid {
+	  max-width: 100%;
+	  min-height: 600px;
+	}
+		
