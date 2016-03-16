@@ -342,7 +342,7 @@ def getInvestorProfitsData(sort=None):
                 profit['returnEquityAmount']= returnedEquity['Amount__sum']
                 break #break out the inner for loop
     
-    #look for user name match and then insert the new field for return equity
+    #look for user name match and then insert the new field for remaining equity
     for profit in investorsProfits:
         for depositedEquity in depositedEquities:
             #print 'profit.user=', profit['UserId__username'], ' REUser=', returnedEquity['UserId__username']
@@ -352,17 +352,42 @@ def getInvestorProfitsData(sort=None):
                 
                 break #break out the inner for loop
 
+
+    #formatting, totalling
+    total_Amount__sum = 0
+    total_depositedEquityAmount = 0
+    total_remainingEquityAmount = 0
+    total_returnEquityAmountv = 0
+    
+    for profit in investorsProfits:
+        #print 'profit=', profit
+        #total += profit['Amount__sum']
+        total_Amount__sum += profit['Amount__sum']
+        total_depositedEquityAmount += profit['depositedEquityAmount']
+        total_remainingEquityAmount += profit['remainingEquityAmount']
+        total_returnEquityAmountv += profit['returnEquityAmount']
+        
+        print 'Before formating [', profit['UserId__username'], profit['depositedEquityAmount'] ,profit['returnEquityAmount'],profit['remainingEquityAmount'], profit['Amount__sum']
+        profit['returnEquityAmount'] = int(profit['returnEquityAmount'])
+        profit['depositedEquityAmount'] = int(profit['depositedEquityAmount'])
+        profit['remainingEquityAmount'] = int(profit['remainingEquityAmount'])
+        profit['Amount__sum'] = int(profit['Amount__sum'])
+        #profit['Amount__sum'] = '${:,.2f}'.format(profit['Amount__sum'])
+        
+        print 'After  formating [', profit['UserId__username'], profit['depositedEquityAmount'] ,profit['returnEquityAmount'],profit['remainingEquityAmount'], profit['Amount__sum']
+
     print 'Aggregate final investorsProfits=',investorsProfits
     
     return {'investorsProfits':investorsProfits}
     
 from django.http import JsonResponse
-    
+@login_required
 def getInvestorProfitsJSON(request, sort=None):
     outcome = getInvestorProfitsData(sort)    
     
     list_of_outcome = outcome['investorsProfits'][0:]
     return  JsonResponse(list_of_outcome,safe=False  )
+    #return HttpResponse(json.dumps(list_of_outcome) 
 
 @login_required
 def getInvestorProfits(request, sort=None):
@@ -372,9 +397,10 @@ def getInvestorProfits(request, sort=None):
     investorsProfits = outcome['investorsProfits']
     
     total= 0
-    for profit in investorsProfits:
-        #print 'profit=', profit
-        total += profit['Amount__sum']
+    #for profit in investorsProfits:
+    #    print 'profit=', profit
+        #total += profit['Amount__sum']
+        #profit['Amount__sum'] = '${:,.2f}'.format(profit['Amount__sum'])
         
     print 'total=[', total
     

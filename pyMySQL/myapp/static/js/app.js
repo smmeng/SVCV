@@ -37,17 +37,21 @@ app.controller('projectInvestorSummarysCtrl', function($scope, $filter, $http) {
 //http://ui-grid.info/docs/#/tutorial/206_exporting_data
 app = angular.module('appInvestorProfit', ['ngAnimate', 'ngTouch', 'ui.grid', 'ui.grid.selection', 'ui.grid.exporter']);
 
-app.controller('MainCtrl', ['$scope', '$http', function ($scope, $http) {
+app.controller('appInvestorProfitCtrl', ['$scope', 'uiGridConstants','$http', function ($scope, uiGridConstants, $http) {
 	console.log("MainCtrl()	");
+	
   $scope.gridOptions = {
+    showGridFooter: true,
+    showColumnFooter: true,
+    //enableFiltering: true,
     columnDefs: [
-		{ field: 'UserId__username' },
-		{ field: 'UserId__first_name', visible: true},
-		{ field: 'UserId__last_name', visible: true},
-		{ field: 'Amount__sum' },
-		{ field: 'depositedEquityAmount', visible: false },
-		{ field: 'returnEquityAmount' },
-		{ field: 'remainingEquityAmount' },
+		{ field: 'UserId__username', displayName: 'User', visible: false},
+		{ field: 'UserId__first_name', displayName: 'First Name',  visible: true},
+		{ field: 'UserId__last_name', displayName: 'Last Name', visible: true},
+		{ field: 'Amount__sum', displayName: 'Total Profit', aggregationType: uiGridConstants.aggregationTypes.sum },
+		{ field: 'depositedEquityAmount', displayName: 'Total Investment', visible: false , aggregationType: uiGridConstants.aggregationTypes.sum},
+		{ field: 'returnEquityAmount', displayName: 'Total Returned Equity', aggregationType: uiGridConstants.aggregationTypes.sum },
+		{ field: 'remainingEquityAmount', displayName: 'Outstanding Equity', aggregationType: uiGridConstants.aggregationTypes.sum },
     ],
     enableGridMenu: true,
     enableSelectAll: true,
@@ -73,38 +77,7 @@ app.controller('MainCtrl', ['$scope', '$http', function ($scope, $http) {
     }
   };
  
-  $http.get('/investorProfitsJSON/').success(function(data) {
-	  
-	$scope.summary = data;
-  	// no first row for header
-	
-	console.log("table rows="+$scope.summary.length);
-  	for(var i = 0; i < $scope.summary.length; i++)
-  	{
-  		row = $scope.summary[i];
-  		col = ''
-  		console.log("table columns="+row.length + " row="+data[1,1]);
-  		
-  		for(var j = 0; j < row.length; j++)
-	    	{
-  			col += row[j] + ", ";
-  			
-  			if (angular.isNumber(row[j]))
-  				column =row[j];
-
-  				row[j]= $filter('currency')(column).slice(0, -3);
-
-  				console.log("table row["+i+"] "  + row[0] + "= " + column + " final value="+row[j]);
-	    	}
-  		console.log(col);
-  	}
-
-  	// construct last row for grand total
-  	$scope.grandTotalRow = data[ $scope.summary.length - 1];
-  	console.log("Total: " + $scope.grandTotalRow);
-  	data.splice($scope.summary.length - 1, 1);
-  	$scope.summary = data;
-  	
+  $http.get('/investorProfitsJSON/').success(function(data) {  	
 	// Final Display
     $scope.gridOptions.data = data;
   });
