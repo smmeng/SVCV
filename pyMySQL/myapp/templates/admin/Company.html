@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Companies{% endblock %}
+
+{% block body_block %}
+{% load humanize %}
+
+{% if user.is_authenticated and user.is_staff  %}
+	<div class="table-responsive"> 
+		<table id="Companies" class="CSSTableGenerator table-hover ">
+		  <thead >
+			<td>Company ID </td>
+			<td>Company Name </td>
+			<td>Bank Instruction </td>
+		  </thead>
+		  {% for company in object_list %}
+		  <tr>
+			<td>{{ company.CompanyId}} </td>
+			<td><a href="/company/{{company.CompanyId}}">{{ company.CompanyName }}</a></td>
+			<td>{{ company.BankInstruction }}</td>
+		  </tr>
+		  {% endfor %}
+		</table>
+	{% include 'library/pagination.html' %}
+{% else %}
+	<div class="form-title"><h2>Please authenticate as staff first!</h2></div>
+{% endif %}
+	
+{% endblock %}

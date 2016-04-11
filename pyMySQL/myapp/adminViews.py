@@ -5,6 +5,12 @@ from django.shortcuts import render, get_object_or_404, RequestContext
 from django.contrib.auth.models import   User
 from pip._vendor import requests
 
+from django.views.generic import ListView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.core.urlresolvers import reverse_lazy
+
+from myapp.models import Vendor, Company, Announcement
+
 ################## To generate all user list based on the current role
 @login_required
 def adminGetAllUsers(request):
@@ -63,7 +69,7 @@ class InvestorViewSet(viewsets.ReadOnlyModelViewSet):
 
     Additionally we also provide an extra `highlight` action.
     """
-    print ' InvestorViewSet=[', 
+    print 'InvestorViewSet=[', 
     serializer_class = InvestorSerializer
     
     queryset = InvestmentActivity.objects.all()
@@ -405,4 +411,30 @@ def getInvestorProfits(request, sort=None):
     print 'total=[', total
     
     return render(request, 'admin/investorProfit.html', {'investorsProfits':investorsProfits, 'total':total})
+
+#@login_required
+class VendorsListView(ListView):
+    model = Vendor
+    template_name = "admin/Vendors.html"
+    #paginate_by = 10
+    print 'Vendors'
     
+class CompanyListView(ListView):
+    model = Company
+    template_name = "admin/Company.html"
+    #paginate_by = 10
+    print 'Company'
+    
+class CompanyCreateView(CreateView):
+    model = Company
+    template_name = "admin/CompanyForm.html"
+    fields = ['CompanyName', 'BankInstruction']
+    success_url = '/company/'
+    print 'Company create'
+
+class CompanyUpdateView(UpdateView):
+    model = Company
+    template_name = "admin/CompanyForm.html"
+    fields = ['CompanyName', 'BankInstruction']
+    print 'Company update'
+    success_url = '/company/'

@@ -17,8 +17,8 @@ class Vendor(models.Model):
 
 class Company(models.Model):
     CompanyId = models.AutoField(primary_key=True)
-    CompanyName = models.CharField(max_length=128, unique=True)
-    BankInstruction = models.URLField(max_length=1024, null=True)
+    CompanyName = models.CharField(max_length=128, unique=True, verbose_name='Company Name')
+    BankInstruction = models.CharField(max_length=1024, null=True,verbose_name='Bank Instruction', blank=True)
     def __unicode__(self):  #For Python 2, use __str__ on Python 3
         return u'%s' % (self.CompanyName)
 

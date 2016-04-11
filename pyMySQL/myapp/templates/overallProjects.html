@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load humanize  %}
+{% block title %}Projects{% endblock %}
+
+{% block body_block %}
+{% if user.is_authenticated %}
+	<div class="table-responsive"> 
+		<table id="projects" class="CSSTableGenerator table-hover ">
+		  <thead >
+			<td>Project Name </td>
+			<td>Description </td>
+			<td>Status </td>
+			<td>Company </td>
+			<td>Vendor </td>
+			<td>Start </td>
+	        {% if user.is_staff or user.is_superuser %}
+			<td>Expected End </td>
+			<td>Allocation </td>
+			<td><font color=green>Committed</font> </td>
+			{% endif %}
+		  </thead>
+		  {% for project in object_list %}
+		  <tr>
+		  	<td><a href='/edit_project/{{ project.ProjectId }}'>{{ project.ProjectId }}. {{ project.ProjectName }}</a> - 
+			            		{% if   user.is_staff or user.is_superuser %}
+			            			<a href='/projectInvestors?projectId={{ project.ProjectId }}'>Investors</a>
+			            		{% endif %}
+			            	</td>
+			            <td>{% if project.Status_id == 'Completed' %}
+			            		<strike>{{ project.DESCRIPTION }} </strike>
+			            	{% else  %}
+			            		{{ project.DESCRIPTION }}
+			            	{% endif %}
+			            	</td>
+			            <td>{% if project.Status_id == 'Completed' %}
+			            		<font color="green" > <strong>{{ project.Status_id }}</strong>
+			            	{% elif project.Status_id == 'In Progress' %}
+			            		<font color="blue" > {{ project.Status_id }}
+			            	{% elif project.Status_id == 'Open' %}
+			            		<font color="Red" >{{ project.Status_id }}
+			            	{% else  %}
+			            		<font color="navy">{{ project.Status_id }}
+			            	{% endif %}
+			            	 	</font></td>
+			            <td>{{ project.CompanyId }}</td>
+			            <td>{{ project.VendorId }}</td>
+			            <td>{{ project.StartDate }}</td>
+			      {% if user.is_staff or user.is_superuser %}
+			            <td>{{ project.EndDate }}</td>
+			            <td>${{ project.Allocation |intcomma}}</td>
+			            <td><strong><font color=green>${{ project.Committed|intcomma }}</font></strong></td>
+			            {% endif %}
+			            </tr>
+			          {% endfor %}
+			          
+				  {% if user.is_staff or user.is_superuser%}
+			<tr>
+				<td/>
+				<td style="text-align: right;"> <b>Subtotal Outstanding Principal:</b> </td>
+			<td/>
+			<td/>
+			<td/>
+			<td/>
+			<td/>
+			<td style="text-align: center; color:red">  ${{total_principal|intcomma }} </td>
+				<td/>
+				
+			</tr>
+			<tr>
+				<td/>
+				<td style="text-align: right; color:green;"> <b>Subtotal Distribution:</b> </td>
+			
+			<td/>
+			<td/>
+			<td/>
+			<td/>
+			<td/>
+			<td/>
+			<td style="text-align: center;color:green"> ${{total_distribution|intcomma }}</td>
+				
+			</tr>
+			<tr>
+				<td/>
+				<td style="text-align: right;color:blue">  <b> Overall Amount: ${{total_amount |intcomma }} </b></td>
+				<td/>
+				<td/>
+				<td/>
+				<td/>
+				<td/>
+				<td/>
+				<td/>
+				
+			</tr>
+			{% endif %}
+	
+		</table>
+		{% include 'library/pagination.html' %}
+	</div>
+{% else %}
+<div class="form-title"><h2>Please authenticate first!</h2></div>
+{% endif %}
+
+{% endblock %}

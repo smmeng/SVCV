@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Vendors{% endblock %}
+
+{% block body_block %}
+{% load humanize %}
+
+{% if user.is_authenticated and user.is_staff  %}
+	<div class="table-responsive"> 
+		<table id="Vendors" class="CSSTableGenerator table-hover ">
+		  <thead >
+			<td>Vendor ID </td>
+			<td>Vendor Name </td>
+			<td>Comments </td>
+		  </thead>
+		  {% for vendor in object_list %}
+		  <tr>
+		  	<td> {{ vendor.VendorId }} </td>
+			<td>{{ vendor.VendorName }}</td>
+			<td>{{ vendor.Comments}} </td>
+		  </tr>
+		  {% endfor %}
+		</table>
+	{% include 'library/pagination.html' %}
+{% else %}
+	<div class="form-title"><h2>Please authenticate as staff first!</h2></div>
+{% endif %}
+	
+{% endblock %}

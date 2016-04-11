@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Companies{% endblock %}
+
+{% block body_block %}
+{% load humanize %}
+
+{% if user.is_authenticated and user.is_staff  %}
+	<form action="" method="post">
+		{% csrf_token %}
+	    {{ form.as_p }}
+	    <input type="submit" />
+	</form>
+{% else %}
+	<div class="form-title"><h2>Please authenticate as staff first!</h2></div>
+{% endif %}
+	
+{% endblock %}
