@@ -35,7 +35,7 @@ from rest_framework import filters
 
 ###############Log in
 def user_login(request):
-
+    agree2disclaimerCookieName = 'agree2disclaimer'
     # If the request is a HTTP POST, try to pull out the relevant information.
     if request.method == 'POST':
         # Gather the username and password provided by the user.
@@ -49,8 +49,9 @@ def user_login(request):
         response = HttpResponse()
         content = 'Testing cookie serialization.'
         response.content = content
-        response.set_cookie('agree2disclaimer', 'true')
-        
+        response.set_cookie(agree2disclaimerCookieName, 'true')
+        print 'login set cookie agree2disclaimer=true'
+         
         # Use Django's machinery to attempt to see if the username/password
         # combination is valid - a User object is returned if it is.
         user = authenticate(username=username, password=password)
@@ -78,8 +79,9 @@ def user_login(request):
     else: #get to load the login page
         # No context variables to pass to the template system, hence the
         # blank dictionary object...
-        agree2disclaimer = request.COOKIES.get('agree2disclaimer') 
-        return render(request, 'login.html', {'agree2disclaimer':agree2disclaimer})
+        agree2disclaimer = request.COOKIES.get(agree2disclaimerCookieName) 
+        print 'login cookie agree2disclaimer=', agree2disclaimer
+        return render(request, 'login.html', {agree2disclaimerCookieName:agree2disclaimer})
     
 @login_required
 def user_logout(request):
