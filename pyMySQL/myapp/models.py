@@ -45,6 +45,12 @@ class PROJECT(models.Model):
     def __unicode__(self):  #For Python 2, use __str__ on Python 3
         return u'%d: [%s] - %s' % (self.ProjectId, self.ProjectName, self.Status)
 
+class ProjectType(models.Model):
+    ProjectType = models.CharField(primary_key=True, max_length=100) #pnote or equity
+    Description = models.CharField(max_length=1024, unique=False)
+    def __unicode__(self):  #For Python 2, use __str__ on Python 3
+        return u'%s' % (self.Description)
+    
 class TransactionType(models.Model):
     Type = models.CharField(primary_key=True, max_length=20, default="Deposit")
     Description = models.CharField(max_length=256, unique=False)

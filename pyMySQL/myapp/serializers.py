@@ -52,4 +52,18 @@ class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
                   'minCommitment', 'maxCommitment', 'lastCommitmentDate')
         
     
+class ActivitySerializer(serializers.HyperlinkedModelSerializer):
+    ProjectId_id = serializers.ReadOnlyField(source='ProjectId.ProjectName')
+    ProjectStatus = serializers.ReadOnlyField(source='ProjectId.Status.Status')
+    UserId_id = serializers.ReadOnlyField(source='UserId.username')
+    Type  = serializers.ReadOnlyField(source='Type.Type')
+
+    #paginate_by = 10
+    print 'ActivitySerializer'
+    
+    class Meta:
+    # Provide an association between the ModelForm and a model
+    
+        model = InvestmentActivity
+        fields = ('ActivityId','UserId_id', 'Type','ProjectId_id', 'ProjectStatus', 'Date', 'Memo', 'Amount', 'CreatedOn')
     

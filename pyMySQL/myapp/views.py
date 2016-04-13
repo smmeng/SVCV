@@ -13,6 +13,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from myapp.forms import ProjectForm,  UserProfileForm
 from myapp.models import PROJECT, InvestmentActivity, UserProfile,Announcement, Vendor
+from myapp.serializers import ActivitySerializer
 
 from myapp.utility import Utility, FieldSet
 
@@ -25,6 +26,9 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.generic import FormView, RedirectView
+
+from rest_framework import viewsets
+from rest_framework import filters
 
 #from myapp import RegisterTableColumns
 #import MySQLdb
@@ -325,13 +329,31 @@ def get_activity(request, orderBy=None):
     # Go render the response and return it to the client.
     return render(request, 'activity.html', activity_dict)
 
-class ActivityList(ListView):
-    template_name = "activity.html"
-    #paginate_by = 10
-    print 'ActivityList'
+@login_required
+def get_activity2(request, orderBy=None):
+    return render(request, 'activity2.html')
+
+class activityViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update` and `destroy` actions.
+
+    Additionally we also provide an extra `highlight` action.
+    """
+    print 'activityViewSet', 
+    serializer_class = ActivitySerializer
+    
+    queryset = InvestmentActivity.objects.all()
     
     def get_queryset(self):
-        return InvestmentActivity.objects.filter(UserId = self.request.user)
+        #return InvestmentActivity.objects.filter(UserId = self.request.user)
+        user_id = self.request.user.id
+        print '-ActivitySerializer  get_queryset(),userId=', user_id
+        
+        if user_id:
+            return InvestmentActivity.objects.filter(UserId=user_id)
+        return super(activityViewSet, self).get_queryset()
+    #print queryset
 ################## for updating userProfile
 @login_required
 @csrf_exempt

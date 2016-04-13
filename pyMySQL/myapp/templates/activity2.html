@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
 
-{% block title %}Investor Profit Report{% endblock %}
+{% block title %}Login Form{% endblock %}
 
 {% block body_block %}
 {% load humanize %}
 
+<h2>Activity v. 2.0</h2>
 {% if user.is_authenticated and user.is_staff  %}
 
-	<div  ng-app="appInvestorProfit" ng-controller="appInvestorProfitCtrl" class="table-responsive">
+	<div  ng-app="appInvestmentActivity" ng-controller="appInvestmentActivityCtrl" class="table-responsive">
       <!-- button id="footerButton" class="btn btn-success" ng-click="toggleFooter()">Toggle Grid Footer</button>
       <button class="btn btn-success" ng-click="toggleColumnFooter()">Toggle Column Footer</button-->
       <div ui-grid="gridOptions" ui-grid-selection ui-grid-exporter class="grid"></div>

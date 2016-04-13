@@ -27,6 +27,7 @@ router.register(r'InvestorList', adminViews.InvestorViewSet)
 router.register(r'users', adminViews.UserViewSet)
 router.register(r'projects', adminViews.ProjectViewSet)
 router.register(r'userProfiles', adminViews.UserProfileViewSet)
+router.register(r'investmentActivity2', views.activityViewSet)
 
 urlpatterns = patterns('',
         url(r'^$', views.index, name='index'),     
@@ -44,7 +45,9 @@ urlpatterns = patterns('',
         url(r'^add_project/(?P<id>\d+)/$', views.add_project, {}, name='add_project'),
         url(r'^edit_project/(?P<id>\d+)/$', views.add_project, {}, name='add_project'),  
         url(r'^activity/(?P<orderBy>[a-zA-Z]+)/$', views.get_activity, {}, name='get_activity'),
-        url(r'^activity/', views.get_activity),        url(r'^profile/', views.get_userProfile),
+        url(r'^activity/', views.get_activity),        
+        url(r'^activity2/', views.get_activity2),
+        url(r'^profile/', views.get_userProfile),
         url(r'^announcement/', views.get_announcement),
         url(r'^save_UserProfile/$', views.save_userProfile),
         url(r'^save_UserProfile/(?P<id>\d+)/$', views.save_userProfile),

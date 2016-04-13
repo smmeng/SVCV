@@ -21,7 +21,7 @@ Released   : 20130412
     <meta name="author" content="S. Meng">
     <link rel="icon" href="{% static "images/favicon.ico" %}" type="image/x-icon">
 
-	<meta name="keywords" content="" />
+	<meta name="keywords" content="SVCV LLC,SVCV Partners,SVCV Partners LLC,Chinese RE investment, bay area chinese investment, located in the heart of Silicon Valleys" />
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
 	<title>SVCV Partners LLC</title>
@@ -32,6 +32,7 @@ Released   : 20130412
     <!-- Custom styles for this template -->
     <link href="{% static "bootstrap-3.3.6/dist/css/bootstrap.min.css" %}" rel="stylesheet">
 	<link href="{% static "css/navbar.css" %}" rel="stylesheet">
+	<link href="{% static "css/slideshow.css" %}" rel="stylesheet" type="text/css" media="all" />
 	<link href="{% static "css/default.css" %}" rel="stylesheet" type="text/css" media="all" />
 	
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
@@ -80,6 +81,82 @@ Released   : 20130412
 	<script src="{% static "js/grunt-scripts/ui-grid.js" %}"></script>
 	<link rel="stylesheet" href="{% static "css/ui-grid/ui-grid.css" %}" type="text/css">
 	
+	<!--  Utility scripts for showing slideshow via ngFader  -->
+	<script src="{% static "js/slideshow/jquery.slides.min.js" %}"></script>
+	
+
+	<script>
+    $(function(){
+      $("#slides").slidesjs({
+        width: 400,
+        height: 264,
+        start: 1,
+        navigation: {
+            active: true,
+              // [boolean] Generates next and previous buttons.
+              // You can set to false and use your own buttons.
+              // User defined buttons must have the following:
+              // previous button: class="slidesjs-previous slidesjs-navigation"
+              // next button: class="slidesjs-next slidesjs-navigation"
+            effect: "fade"
+              // [string] Can be either "slide" or "fade".
+          },
+          pagination: {
+              active: true,
+                // [boolean] Create pagination items.
+                // You cannot use your own pagination. Sorry.
+              effect: "fade"
+                // [string] Can be either "slide" or "fade".
+          },
+          play: {
+              active: true,
+                // [boolean] Generate the play and stop buttons.
+                // You cannot use your own buttons. Sorry.
+              effect: "fade",
+                // [string] Can be either "slide" or "fade".
+              interval: 4000,
+                // [number] Time spent on each slide in milliseconds.
+              auto: true,
+                // [boolean] Start playing the slideshow on load.
+              swap: true,
+                // [boolean] show/hide stop and play buttons
+              pauseOnHover: false,
+                // [boolean] pause a playing slideshow on hover
+              restartDelay: 2500
+                // [number] restart delay on inactive slideshow
+            },
+	    effect: {
+	        slide: {
+	          // Slide effect settings.
+	          speed: 200
+	            // [number] Speed in milliseconds of the slide animation.
+	        },
+	        fade: {
+	          speed: 300,
+	            // [number] Speed in milliseconds of the fade animation.
+	          crossfade: true
+	            // [boolean] Cross-fade the transition.
+	        }
+	      },
+	      callback: {
+	          loaded: function(number) {
+	            // Do something awesome!
+	            // Passes start slide number
+	          },
+	          start: function(number) {
+	            // Do something awesome!
+	            // Passes slide number at start of animation
+	          },
+	          complete: function(number) {
+	            // Do something awesome!
+	            // Passes slide number at end of animation
+	          }
+	        }
+      });
+    });
+  </script>
+
+
   </head>
 
   <body  >
@@ -152,14 +229,36 @@ Released   : 20130412
 	  {% if user.is_authenticated %}
 
 	  {% else %}
-	  	<div class="well well-sm" style="max-width:100%; float: center;">
+	  	<!-- div class="well well-sm" style="max-width:100%; float: center;" >
 				<a href="/"><p> <img alt="" src="{% static "images/nevada-woodside.gif" %}" class="img-responsive" 
 					style="max-width:100%; max-height:100%; display: block;margin-left: auto;margin-right: auto;">
 					<noscript><a href="http://slideful.com/v20150321_1452924877050201_pf.htm">View the slide show</a>
 					</noscript>
 				</p></a>
+		</div-->
+		
 
-		</div> 
+	<div class="well well-sm container" style="max-width:100%; ">
+		<div id="slides" style="max-width:50%; display: block; margin-left: auto ;margin-right: auto;">
+		    <img src="{% static "images/montalvo/s1.jpg" %}" class="img-responsive" >
+		    <img src="{% static "images/montalvo/s2.jpg" %}" class="img-responsive" >
+		    <img src="{% static "images/montalvo/s3.jpg" %}" class="img-responsive" >
+		    <img src="{% static "images/montalvo/s4.jpg" %}" class="img-responsive" >
+		    <img src="{% static "images/montalvo/s5.jpg" %}" class="img-responsive" >
+		    <img src="{% static "images/montalvo/s6.jpg" %}" class="img-responsive" >
+		    <img src="{% static "images/montalvo/s7.jpg" %}" class="img-responsive" >
+		    <img src="{% static "images/montalvo/s8.jpg" %}" class="img-responsive" >
+		    <img src="{% static "images/montalvo/s9.jpg" %}" class="img-responsive" >
+		    <img src="{% static "images/montalvo/s10.jpg" %}" class="img-responsive" >
+		    <img src="{% static "images/montalvo/s11.jpg" %}" class="img-responsive" >
+		    <img src="{% static "images/montalvo/s12.jpg" %}" class="img-responsive" >
+		    <img src="{% static "images/montalvo/s13.jpg" %}" class="img-responsive" >
+		    <img src="{% static "images/montalvo/s14.jpg" %}" class="img-responsive" >
+		    <img src="{% static "images/montalvo/s15.jpg" %}" class="img-responsive" >
+		</div>
+  	</div>
+
+
 	  {% endif %}
       <!-- Page specific content goes here -->
 	    <div>
