@@ -25,9 +25,10 @@ import org.apache.commons.logging.LogFactory;
 
 public class QBActivity2MySQL {
     private static final Log logger=LogFactory.getLog(QBActivity2MySQL.class);
-    final static String QBFile = "C:\\Users\\smmeng\\Downloads\\qb.csv";
-    final static String QBInterestFile = "C:\\Users\\smmeng\\Downloads\\qb-int.csv";
-    final static String MySQLString = "jdbc:mysql://www.svcvllc.com:3306/security", MySQLUser = "svcvllc", MySQLPassword ="intelinside";
+    final static String QBFile = "C:\\Users\\smmeng\\Downloads\\QB-reports\\qb.csv";
+    //final static String QBInterestFile = "C:\\Users\\smmeng\\Downloads\\qb-int.csv";
+    final static String QBInterestFile = "C:\\Users\\smmeng\\Downloads\\QB-reports\\qb-div.csv";
+    final static String MySQLString = "jdbc:mysql://www.svcvllc.com:3306/security", MySQLUser = "smmeng", MySQLPassword ="shanghai0";
     //final static String MySQLString = "jdbc:mysql://sncsmeng03:3306/security", MySQLUser = "smmeng", MySQLPassword ="shanghai0";
     
     final static String ProjectStr = "Project ";
@@ -138,6 +139,7 @@ public class QBActivity2MySQL {
                     try {
                         //Close the input stream
                         br.close();
+                        logger.info("Successfully import all activities!!");
                     } catch (Throwable t) { /* ensure close happens */
                     }
                 }
@@ -185,28 +187,6 @@ public class QBActivity2MySQL {
             logger.info("SQL Connection to database established!");
 
             svcvUserMap = findAllUser(connection);
-/**
-            // Get users first from a readonly query
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT  username, id,email FROM auth_user");
-            while (rs.next()) {
-
-                ArrayList user = new ArrayList();
-                user.add(rs.getObject(2));
-                user.add(rs.getObject(3));
-                svcvUserMap.put(rs.getObject(1).toString().toUpperCase(), user);
-        //                for (int i = 1; i <= numColumns; i++) {
-                    // Column numbers start at 1.
-                    // Also there are many methods on the result set to return
-                    //  the column as a particular type. Refer to the Sun documentation
-                    //  for the list of valid conversions.
-                    logger.info("id=["+rs.getObject(2) +"]\tuserName-[" +  rs.getObject(1)+ "]\t\temail=["+rs.getObject(3));
-        //                }
-                logger.info("");
-            }
-            rs.close();
-            statement.close();
-**/
 
             // Insert user transactions into the activity table
             PreparedStatement pstmt = null;
@@ -230,7 +210,10 @@ public class QBActivity2MySQL {
                 lineCounter++;
 
                 String[] activityDate = fields[2].split("/");
-                String projectId = fields[4];
+
+                String projectId ;
+                projectId = fields[4];
+                    
                 projectId = projectId.substring(projectId.indexOf(ProjectStr), projectId.length());
                 projectId = projectId.substring(ProjectStr.length(), projectId.indexOf("-"));
 
@@ -243,7 +226,11 @@ public class QBActivity2MySQL {
 
                 String[] amount = fields[5].split(",");
                 pstmt.setInt(1, 0);
-                pstmt.setString(2, "Interest");//fields[1].replaceAll("\"", ""));
+                if (QBInterestFile!=null && QBInterestFile.toLowerCase().indexOf("int")>-1)
+                    pstmt.setString(2, "Interest");//fields[1].replaceAll("\"", ""));
+                else
+                    pstmt.setString(2, "Dividend");//fields[1].replaceAll("\"", ""));
+                
                 pstmt.setString(3, activityDate[2] + "-" + activityDate[0] + "-" + activityDate[1]); //
                 pstmt.setString(4, memo); //
                 pstmt.setFloat(5, Float.parseFloat(amount[1].trim())); //
@@ -339,8 +326,8 @@ public class QBActivity2MySQL {
     }
 
     public static void main(String[] args) {
-        QBActivity2MySQL.uploadPrincipalActivity();
-        //QBActivity2MySQL.uploadInterestActivity();
+        //QBActivity2MySQL.uploadPrincipalActivity();
+        QBActivity2MySQL.uploadInterestActivity();// can be used for dividends too
     }
 
         
