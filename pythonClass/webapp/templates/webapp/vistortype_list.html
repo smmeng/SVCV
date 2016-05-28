@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Visitor Types{% endblock %}
+
+{% block body_block %}
+
+	<h2>Visitor Types</h2>
+	<div style="max-width: 80%;">
+		<table id="type" class="CSSTableGenerator table-hover " >
+		  <thead >
+			<th>Type</th>
+			<th>Description </th>
+		  </thead>
+		  {% for type in object_list %}
+		  <tr>
+			<td><a href="/visitorType/{{type.Type}}/">{{ type.Type }}</a></td>
+			<td>{{ type.Description }}</td>
+		  </tr>
+		  {% endfor %}
+		</table>
+	</div>
+{% endblock %}

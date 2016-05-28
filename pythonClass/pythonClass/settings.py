@@ -14,7 +14,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+print "BASE_DIR=[", BASE_DIR
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
@@ -31,8 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
-    'django.contrib.admin',
-    'django.contrib.auth',
+###    'django.contrib.admin',
+###    'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -44,11 +44,11 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+###    'django.contrib.auth.middleware.AuthenticationMiddleware',
+###    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
+###    'django.middleware.security.SecurityMiddleware',
 )
 
 ROOT_URLCONF = 'pythonClass.urls'
@@ -62,7 +62,7 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
+###                'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
         },
@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'pythonClass.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'vistors',
+        'NAME': 'visitors',
 #        'HOST': 'www.parkwhileaway.com',                                                 
         'HOST': 'dev.svcvllc.com',
         #'HOST': 'SNCSMENG03',                                                 
@@ -90,20 +90,21 @@ DATABASES = {
     }
 }
 '''
-
-from mongoengine import connect
-connect('localhost', )
-
-MONGODB_DATABASES = {
-    'default': {'name': 'mongoengine'}
-}
+#############################MongoDB settings
+import mongoengine
 DATABASES = {
-   'default' : {
-      'ENGINE': 'django.db.backends.dummy' ,
-      'NAME' : 'visitors'
-   }
+    'default': {
+        'ENGINE' : 'django_mongodb_engine',
+        'NAME': 'visitors',
+    }
 }
+#DBName = "visitors"
+#MONGO_DATABASE_NAME = 'visitors'
 
+#from mongoengine import connect, register_connection
+#connect('visitors')
+#register_connection('default', MONGO_DATABASE_NAME)
+###################################################################
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -122,4 +123,20 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
+
 STATIC_URL = '/static/'
+STATIC_ROOT= os.path.join(BASE_DIR, 'webapp/static')
+print 'STATIC_ROOT=[', STATIC_ROOT
+
+STATICFILES_DIRS = (
+    #os.path.join(STATIC_ROOT, 'static'),
+    #'C:/github/trunk/pyMySQL/myapp/static',
+    #'/var/www/pyMySQL/myapp/static',
+    #'/home/ec2-user/downloads/pyMySQL/myapp/static',
+    # Put strings here, like "/home/html/static" or "C:/www/django/static".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+    ("js", os.path.join(STATIC_ROOT,'js')),
+    ("css", os.path.join(STATIC_ROOT,'css')),
+    ("images", os.path.join(STATIC_ROOT,'images')),
+)
