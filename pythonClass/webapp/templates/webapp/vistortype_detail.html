@@ -7,11 +7,14 @@
 
 	<div style="margin-left: 200px;">
 		<H2>Visitor Type</H2>
-		<form action="" method="post" name="form">
+		<form action="" method="post" name="form" class="basic-grey">
 			{% csrf_token %}
+			<table class="table1" id="inputTable">
+			{{ form.as_table }}
+			</table>
 		    
 		    
-		    <table>
+		    <!--table class="table1">
 		    	<tr>
 		    		<td><lable>Type:</lable></td>
 		    		<td>{{ form.Type }}</td>
@@ -20,7 +23,7 @@
 		    		<td><lable>Description:</lable></td>
 		    		<td>{{form.Description}}</td>
 		    	</tr>
-		    </table>
+		    </table-->
 		  
 		    <!-- input type="submit" value="Save" /-->
 		    <a onclick="$(this).parent('form').submit();"> <img src="/static/images/check1.png" > </a>

@@ -16,9 +16,9 @@ urlpatterns = [
     #url(r'^admin/', include(admin.site.urls)),
     url(r'^$', views.index),
     url(r'^visitorType0/(?P<pk>[0-9a-zA-Z\d]+)/$', vistorType_detail, name='vistorType_detail'),
-    url(r'^visitorType/(?P<pk>[0-9a-zA-Z\d]+)/$', views.visitorTypeUpdateView.as_view()),
     url(r'^visitorType/$', vistorType_list, name='vistorType_list' ),
-    url(r'^visitorType/add/$', views.visitorTypeCreateView),
+    url(r'^visitorType/add/$', views.visitorTypeCreateView.as_view(), name='vistorType_create' ),
+    url(r'^visitorType/(?P<pk>[0-9a-zA-Z\d]+)/$', views.visitorTypeUpdateView.as_view()),
     #url(r'^update/', 'blog.blogapp.views.update'),
     #url(r'^delete/', 'blog.blogapp.views.delete'),
 ]
