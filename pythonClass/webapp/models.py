@@ -9,7 +9,7 @@ from djangotoolbox.fields import ListField
 class vistorType(models.Model):
     Type = models.CharField(primary_key=True, max_length=100) #pnote or equity
     Description = models.CharField(max_length=1024)
-    comments = ListField()
+    #comments = ListField()
     
     def __unicode__(self):  #For Python 2, use __str__ on Python 3
         return u'%s' % (self.Description)

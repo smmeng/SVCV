@@ -4,7 +4,9 @@
 
 {% block body_block %}
 
+<div style="margin-left: 200 px;">
 	<h2>Visitor Types</h2>
+	<a href="/visitorType/add/"><img src="/static/images/add.png" width="24px"> Add New</a>
 	<div style="max-width: 80%;">
 		<table id="type" class="CSSTableGenerator table-hover " >
 		  <thead >
@@ -13,10 +15,12 @@
 		  </thead>
 		  {% for type in object_list %}
 		  <tr>
-			<td><a href="/visitorType/{{type.Type}}/">{{ type.Type }}</a></td>
+			<td>{{ type.Type }} <a href="/visitorType/{{type.Type}}/"><img src="/static/images/edit.png" width="20 px;"> </a></td>
 			<td>{{ type.Description }}</td>
 		  </tr>
 		  {% endfor %}
 		</table>
+		
 	</div>
+</div>
 {% endblock %}

@@ -9,6 +9,8 @@ from models  import vistorType
 from mongogeneric import ListView, CreateView, DetailView, UpdateView
 from mongoengine import queryset
     
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
+    
 def index(request):
     return render_to_response('index.html')    
 ###
@@ -24,8 +26,21 @@ class visitorTypeListView(ListView):
 
     #def get_queryset(self):
     #    return vistorType.objects
+class visitorTypeUpdateView(UpdateView):
+    print 'entering svistorType update'
+    model = vistorType
+    template_name = "webapp/vistortype_detail.html"
+    fields = ['Type', 'Description']
+    print 'vistorType update'
+    success_url = '/visitorType/'
 
-
+class visitorTypeCreateView(CreateView):
+    print 'entering svistorType create'
+    model = vistorType
+    template_name = "webapp/vistortype_detail.html"
+    fields = ['Type', 'Description']
+    print 'vistorType create'
+    success_url = '/visitorType/'
 def visitorTypeForm(request):
     print 'entering visitorTypeForm'
     '''

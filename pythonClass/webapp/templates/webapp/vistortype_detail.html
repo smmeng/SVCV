@@ -5,11 +5,26 @@
 {% block body_block %}
 
 
-	<H2>Visitor Type</H2>
-	<form action="" method="post">
-		{% csrf_token %}
-	    {{ form.as_p }}
-	    <input type="submit" />
-	</form>
+	<div style="margin-left: 200px;">
+		<H2>Visitor Type</H2>
+		<form action="" method="post" name="form">
+			{% csrf_token %}
+		    
+		    
+		    <table>
+		    	<tr>
+		    		<td><lable>Type:</lable></td>
+		    		<td>{{ form.Type }}</td>
+		    	</tr>
+		    	<tr>
+		    		<td><lable>Description:</lable></td>
+		    		<td>{{form.Description}}</td>
+		    	</tr>
+		    </table>
+		  
+		    <!-- input type="submit" value="Save" /-->
+		    <a onclick="$(this).parent('form').submit();"> <img src="/static/images/check1.png" > </a>
+		</form>
+	</div>
 
 {% endblock %}

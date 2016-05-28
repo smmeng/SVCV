@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'djangotoolbox',
     'webapp',
 )
 
@@ -91,7 +92,6 @@ DATABASES = {
 }
 '''
 #############################MongoDB settings
-import mongoengine
 DATABASES = {
     'default': {
         'ENGINE' : 'django_mongodb_engine',
