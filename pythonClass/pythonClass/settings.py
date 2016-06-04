@@ -128,7 +128,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT= os.path.join(BASE_DIR, 'webapp/static')
 print 'STATIC_ROOT=[', STATIC_ROOT
 
-STATICFILES_DIRS = (
+STATICFILES_DIRS = [
     #os.path.join(STATIC_ROOT, 'static'),
     #'C:/github/trunk/pyMySQL/myapp/static',
     #'/var/www/pyMySQL/myapp/static',
@@ -139,4 +139,4 @@ STATICFILES_DIRS = (
     ("js", os.path.join(STATIC_ROOT,'js')),
     ("css", os.path.join(STATIC_ROOT,'css')),
     ("images", os.path.join(STATIC_ROOT,'images')),
-)
+]

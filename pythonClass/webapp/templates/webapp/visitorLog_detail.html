@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
-{% block title %}Visitor Type Form{% endblock %}
+{% block title %}Visitor Logging Form{% endblock %}
 
 {% block body_block %}
 	<div style="margin-left: 200px;">
-		<H2>Visitor Type</H2>
+		<H2>Visitor Logging System</H2>
 		<form action="" method="post" name="form" class="form">
 			{% csrf_token %}
-			<table class="table" id="inputTable">
+			<table class="" id="inputTable">
 			{{ form.as_table }}
 			</table>
 		    

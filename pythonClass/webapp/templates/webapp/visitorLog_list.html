@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Visitor Types{% endblock %}
+
+{% block body_block %}
+
+<div style="margin-left: 200 px;">
+	<h2>Visitor Log Details (ADMIN VIEW)</h2>
+	<!-- a href="/visitorType/add/"><img src="/static/images/add.png" width="24px"> Add New</a-->
+	<div style="max-width: 80%;">
+		<table id="log" class="table table-hover " >
+		  <thead >
+			<th>Type</th>
+			<th>First Name </th>
+			<th>Last Name </th>
+			<th>Destinations</th>
+			<th>Comments </th>
+			<th>Date </th>
+		  </thead>
+		  {% for log in object_list %}
+		  <tr>
+			<td>{{ log.Type }}-{{ log.id}} <a href="/visitorLog/{{log.id}}/"><img src="/static/images/edit.png" width="24 px;" alt="Edit"> </a></td>
+			<td>{{ log.fname }}</td>
+			<td>{{ log.lname }}</td>
+			<td>{{ log.employeeId }}</td>
+			<td>{{ log.Comments }}</td>
+			<td>{{ log.CreatedOn }}</td>
+		  </tr>
+		  {% endfor %}
+		  <tfoot>
+		  	<tr>
+		  		<td></td>
+		  		<td></td>
+		  		<td></td>
+		  		<td></td>
+		  		<td></td>
+		  	</tr>
+		  </tfoot>
+		</table>
+		
+	</div>
+</div>
+{% endblock %}

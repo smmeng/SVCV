@@ -678,11 +678,13 @@ table { margin: auto; }
 	background-color:#8080ff;
 	border:0px solid #000000;
 	text-align: right;
-	border-width:0px 0px 1px 1px;
+	border-width:0px 0px 2px 2px;
 	font-size: 12px;
 	font-family: Arial;
 	font-weight: bold;
 	color:#ffffff;
+	
+	
 }
 /**
 .CSSTableGenerator tr:first-child:hover td{

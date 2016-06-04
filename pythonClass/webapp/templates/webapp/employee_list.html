@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Employees{% endblock %}
+
+{% block body_block %}
+
+<div style="margin-left: 200 px;">
+	<h2>Employees</h2>
+	<a href="/employee/add/"><img src="/static/images/add.png" width="24px"> Add New</a>
+	<div style="max-width: 80%;">
+		<table id="emp" class="table table-hover " >
+		  <thead >
+			<th>ID</th>
+			<th>Name </th>
+		  </thead>
+		  {% for emp in object_list %}
+		  <tr>
+			<td>{{ emp.employeeId }}</td>
+			<td>{{ emp.employeeName }} <a href="/employee/{{emp.employeeId}}/"><img src="/static/images/edit.png" width="24 px;"> </a></td>
+		  </tr>
+		  {% endfor %}
+		</table>
+		
+	</div>
+</div>
+{% endblock %}

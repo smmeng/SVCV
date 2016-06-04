@@ -1,19 +1,24 @@
+from django.shortcuts import get_object_or_404
 from django.shortcuts import render_to_response
-from django.template import RequestContext
-import datetime
+from models  import vistorType, visitorLog, employee
+# Create your views here.    
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from django.shortcuts import render
-from models  import vistorType
-# Create your views here.
-
-from mongogeneric import ListView, CreateView, DetailView, UpdateView
-from mongoengine import queryset
-    
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
-    
+#############
+#############
+#############    
 def index(request):
     return render_to_response('index.html')    
-###
+
+def adminView(request):
+    return render_to_response('adminIndex.html')
+
+def contactUs(request):
+    return render_to_response('contact.html')    
+    
+def aboutUs(request):
+    return render_to_response('about.html')    
+######
 class visitorTypeListView(ListView):
     print 'entering visitorTypeListView'
     #model = vistorType
@@ -30,7 +35,7 @@ class visitorTypeUpdateView(UpdateView):
     print 'entering svistorType update'
     model = vistorType
     template_name = "webapp/vistortype_detail.html"
-    fields = ['Type', 'Description']
+    fields = ['Type', 'Description', 'Comments']
     print 'vistorType update'
     success_url = '/visitorType/'
 
@@ -41,24 +46,73 @@ class visitorTypeCreateView(CreateView):
     fields = ['Type', 'Description']
     print 'vistorType create'
     success_url = '/visitorType/'
-def visitorTypeForm(request):
-    print 'entering visitorTypeForm'
-    '''
-    if request.method == 'POST':
-       # save new post
-       type = request.POST['Type']
-       description = request.POST['Description']
 
-       visitorType = vistorType( )
-       visitorType.Type = type
-       visitorType.Description = description
-       visitorType.save()
+class visitorTypeDeleteView(DeleteView):
+    print 'entering svistorType create'
+    model = vistorType
+    template_name = "webapp/vistortype_detail.html"
+    fields = ['Type', 'Description']
+    print 'vistorType delete'
+    success_url = '/visitorType/'
+
+##################################### visitorLog
+class visitorLogUpdateView(UpdateView):
+    print 'entering visitorLog update'
+    model = visitorLog
+    template_name = "webapp/visitorLog_detail.html"
+    fields = ['id','Type', 'fname', 'lname', 'email', 'phone', 'employeeId', 'Comments','CreatedOn']
+    print 'visitorLog update'
+    success_url = '/visitorLog/'
+
+class visitorLogCreateView(CreateView):
+    print 'entering visitorLog create'
+    model = visitorLog
+    template_name = "webapp/visitorLog_detail.html"
+    fields = ['id','Type', 'fname', 'lname', 'email', 'phone', 'employeeId', 'Comments','CreatedOn']
+    print 'visitorLog create'
+    success_url = '/visitorLog/add/'
+
+ 
+##################################### employee
+class employeeUpdateView(UpdateView):
+    print 'entering employee update'
+    model = employee
+    template_name = "webapp/employee_detail.html"
+    fields = ['employeeName']
+    print 'employee update2'
+    success_url = '/employee/'
+
+class employeeCreateView(CreateView):
+    print 'entering employee create'
+    model = employee
+    template_name = "webapp/employee_detail.html"
+    fields = ['employeeId','employeeName']
+    print 'employee CreateView2'
+    success_url = '/employee/'
+    
+    def form_valid(self, form):
+        print '1 employee CreateView.form_valid()', form.instance
+        return super(employeeCreateView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        print '2 employee CreateView.form_invalid()', form.instance
+        return super(employeeCreateView, self).form_invalid(form)   
+    
+    def get_form(self, form_class):
+        form = super(employeeCreateView, self).get_form(form_class)
+        print 'employee CreateView.get_form() form_class=',form_class
+        #print 'employee CreateView.post(), form=', form
+        #course = get_object_or_404(Class, pk=self.kwargs['employeeId'])
+        form.instance.employeeId = employee.objects.count() + 1
+        print 'employee CreateView.get_form() employeeId', form.instance.employeeId 
+        return form
 '''
-    # Get all posts from DB
-    vType = vistorType()
-    vType.Type="Employee2"
-    vType.Description="Company Employees"
-    vType.save(force_insert=True)
-    print 'visitorType=  [', vType
-    return render_to_response('webapp/vistortype_detail.html', {'visitorType': vType},
-                              context_instance=RequestContext(request))
+
+
+    @classmethod
+    def create(cls, employeeId, employeeName):
+        newEmpId = employee.objects.count() + 1
+        print "In employee.create() newEmpId=", newEmpId
+        emp = cls(employeeId= newEmpId, employeeName=employeeName)
+        return emp
+'''
