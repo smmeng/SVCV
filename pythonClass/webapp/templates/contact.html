@@ -1,5 +1,11 @@
 {% extends 'base.html' %}
 
+{% block menuitems %}
+    {% with 'contactUs' as menu %}
+        {{ block.super }}
+    {% endwith %}
+{% endblock %}
+
 {% block title %}Contact Information{% endblock %}
 
 {% block body_block %}

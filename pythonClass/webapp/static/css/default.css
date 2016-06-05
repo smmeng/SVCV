@@ -91,7 +91,7 @@ a {
 	color: #5C5539;
 }
 
-a:hover {
+a: {
 	text-decoration: none;
 }
 
@@ -227,7 +227,10 @@ hr {
 	color: #FFFFFF;
 }
 
-
+#menu li a.active {
+    color: white;
+    background-color: #ff8040;
+}
 
 #menu2 ul {
 	float: center;
@@ -847,3 +850,32 @@ form {
 	}
 		
 
+/********** New UL-based navbar ***************/
+.navbar2 ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #111000;
+}
+
+.navbar2 li {
+    float: left;
+}
+
+.navbar2 li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.navbar2 li a:hover:not(.active) {
+    background-color: #ff8040;
+}
+
+navbar2 li a.active {
+    color: white;
+    background-color: #ff8040;
+}

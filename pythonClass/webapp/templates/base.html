@@ -48,34 +48,51 @@ Released   : 20130412
     <div class="container">
 
       <!-- Static navbar -->
-      <nav   class="navbar navbar-default">
+      <div   class="navbar navbar-default">
         <div id="header-wrapper" class="container-fluid"  id="header">
           <div id="logo" class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
               <span class="sr-only">Toggle navigation</span>
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
             </button>
             <h1><a href="/" >Citigroup Corp.</a></h1>
           </div>
           <div id="navbar" class="navbar-collapse collapse">
-          	<div id="menu" >
+          	<!-- div id="menu" >
 				<ul class="nav navbar-nav navbar-right" >
 					<li ><a href="/" accesskey="1" title="">Home</a></li>
-
-						<li><a href="/visitorLog/add" accesskey="2" title="">Visitor Log </a></li>
-						<!--li><a href="/visitorType" accesskey="2" title="">Visitor Types </a></li-->
-						<li><a href="/aboutUs/" accesskey="3" title="">About Us</a></li>
-						<li><a href="/contactUs/" accesskey="4" title="">Contact Us</a></li>
-						<li><a href="/adminView/" accesskey="5" title="">Admin Login</a></li>
+					<li><a href="/visitorLog/add" accesskey="2" title="">Visitor Log </a></li>
+					<li><a href="/aboutUs/" accesskey="3" title="">About Us</a></li>
+					<li><a href="/contactUs/" accesskey="4" title="">Contact Us</a></li>
+					<li><a href="/adminView/" accesskey="5" title="">Admin Login</a></li>
 				</ul>
-			</div>
+			</div-->
           </div><!--/.nav-collapse -->
+		<div id="navbar" class="navbar-collapse " >
+		{% block menuitems %}
+	      	<ul class="navbar2 nav navbar-left" id="menu" >
+				<li ><a class="{% if menu == 'home' %}active{% endif %}"
+						href="/" accesskey="1" title="">Home </a></li>
+				<li><a class="{% if menu == 'visitorLog' %}active{% endif %}"
+						href="/visitorLog/add" accesskey="2" title="">Visitor Log </a></li>
+				<!--li><a href="/visitorType" accesskey="2" title="">Visitor Types </a></li-->
+				<li><a class="{% if menu == 'aboutUs' %}active{% endif %}"
+						href="/aboutUs/" accesskey="3" title="">About Us</a></li>
+				<li><a class="{% if menu == 'contactUs' %}active{% endif %}"
+						href="/contactUs/" accesskey="4" title="">Contact Us</a></li>
+				<li><a class="{% if menu == 'adminView' %}active{% endif %}"
+						href="/adminView/" accesskey="5" title="">Admin Login</a></li>
+			</ul>
+		{% endblock %}
+		</div>
+
         </div><!--/.container-fluid -->
-      </nav>
+
+      </div>
       <!-- Page specific content goes here -->
-	    <div>
+      
+	    <div style="margin-left: 100px;">
 	        {% block body_block %}{% endblock %}
 	    </div>
 
