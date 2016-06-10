@@ -14,7 +14,6 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-print "BASE_DIR=[", BASE_DIR
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
@@ -72,7 +71,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'pythonClass.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 #############################MongoDB settings
@@ -107,9 +105,6 @@ STATIC_ROOT= os.path.join(BASE_DIR, 'webapp/static')
 
 STATICFILES_DIRS = [
     #os.path.join(STATIC_ROOT, 'static'),
-    #'C:/github/trunk/pyMySQL/myapp/static',
-    #'/var/www/pyMySQL/myapp/static',
-    #'/home/ec2-user/downloads/pyMySQL/myapp/static',
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.

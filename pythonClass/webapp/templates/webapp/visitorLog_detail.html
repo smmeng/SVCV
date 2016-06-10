@@ -10,11 +10,48 @@
 {% block body_block %}
 	<div >
 		<H2>Visitor Logging System</H2>
-		<form action="" method="post" name="form" class="form">
+		<form action="" method="post" name="form" class="form-container" role="form" style="max-width: 100%;">
 			{% csrf_token %}
-			<table class="" id="inputTable">
+			
+			<table>
+				<tr>
+				    <td width="25%" class="form-title">{{ form.Type.help_text }}</td>
+				    <td width="75%" class="form-field">{{ form.Type }}{{ form.Type.errors }}</td>
+		    	</tr>
+		    	<tr>
+				    <td width="25%" class="form-title">{{ form.fname.help_text }}</td>
+				    <td width="75%" class="form-field">{{ form.fname }} {{ form.fname.errors }}</td>
+		    	</tr>
+		    	<tr>
+				    <td width="25%" class="form-title">{{ form.lname.help_text }}</td>
+				    <td width="75%" class="form-field">{{ form.lname }} {{ form.lname.errors }}</td>
+		    	</tr>
+		  		<tr>
+				    <td width="25%" class="form-title">{{ form.email.help_text }}</td>
+				    <td width="75%" class="form-field">{{ form.email }} {{ form.email.errors }}</td>
+		    	</tr>
+		    	<tr>
+				    <td width="25%" class="form-title">{{ form.phone.help_text }}</td>
+				    <td width="75%" class="form-field">{{ form.phone }} {{ form.phone.errors }}</td>
+		    	</tr>
+		  		<tr>
+				    <td width="25%" class="form-title">{{ form.employeeId.help_text }}</td>
+				    <td width="75%" class="form-field">{{ form.employeeId }} {{ form.employeeId.errors }}</td>
+		    	</tr>
+		    	<tr>
+				    <td width="25%" class="form-title">{{ form.Comments.help_text }}</td>
+				    <td width="75%" class="form-field">{{ form.Comments }} {{ form.Comments.errors }}</td>
+		    	</tr>
+		  		<tr>
+				    <td width="25%" class="form-title">{{ form.CreatedOn.help_text }}</td>
+				    <td width="75%" class="form-field">{{ form.CreatedOn }} {{ form.CreatedOn.errors }}</td>
+		    	</tr>
+		    </table>
+
+
+			<!-- table class="" id="inputTable">
 			{{ form.as_table }}
-			</table>
+			</table-->
 		    
 		    <!-- input type="submit" value="Save" /-->
 		    <a onclick="$(this).parent('form').submit();"> <img src="/static/images/check1.png" > </a>

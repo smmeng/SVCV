@@ -8,7 +8,7 @@ Released for free under the Creative Commons Attribution License
 Name       : S. Meng, Citigroup Corporation  
 Description: A two-column, fixed-width design with dark color scheme.
 Version    : 1.0
-Released   : 20130412
+Released   : 2016-06-12
 
 -->
 <html xmlns="http://www.w3.org/1999/xhtml" >
@@ -18,33 +18,25 @@ Released   : 20130412
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="Citigroup Corporation">
-    <meta name="author" content="S. Meng">
+    <meta name="author" content="Siming Meng">
 
 	<meta name="keywords" content="Citigroup Corporation" />
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
 	<title>Citigroup Corporation</title>
-	<link href='https://fonts.googleapis.com/css?family=Oswald:400,300' rel='stylesheet' type='text/css' />
-	<link href='https://fonts.googleapis.com/css?family=Abel|Satisfy' rel='stylesheet' type='text/css' />
-
-    <!-- Bootstrap core CSS -->
     <!-- Custom styles for this template -->
 	<link href="{% static "css/navbar.css" %}" rel="stylesheet">
 	<link href="{% static "css/default.css" %}" rel="stylesheet" type="text/css" media="all" />
 	
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<!-- Bootstrap core CSS -->
+    <!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 
 	<!-- JQuery -->
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-touch.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-animate.js"></script>
-	
   </head>
 
   <body  >
-
     <div class="container">
 
       <!-- Static navbar -->
@@ -68,7 +60,8 @@ Released   : 20130412
 					<li><a href="/adminView/" accesskey="5" title="">Admin Login</a></li>
 				</ul>
 			</div-->
-          </div><!--/.nav-collapse -->
+          </div>
+          <!--/.nav-collapse -->
 		<div id="navbar" class="navbar-collapse " >
 		{% block menuitems %}
 	      	<ul class="navbar2 nav navbar-left" id="menu" >
@@ -88,11 +81,10 @@ Released   : 20130412
 						href="/adminView/" accesskey="5" title="">Admin Login</a></li>
 	        </ul>
 			
-			
 		{% endblock %}
 		</div>
 
-        </div><!--/.container-fluid -->
+        </div>
 
       </div>
       <!-- Page specific content goes here -->
@@ -103,7 +95,7 @@ Released   : 20130412
 
 		<hr/>
 		
-		<div id="footer_CopyRight" class="container">
+		<div id="footer " class="container">
 			<p>&copy; 2013~2016 Citigroup Corporation. All Rights Reserved. </p>
 		</div>
     </div> <!-- /container -->

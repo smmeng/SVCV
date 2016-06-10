@@ -741,7 +741,7 @@ form {
    -webkit-border-radius: 4px;
    -moz-border-radius: 4px;
    border-radius: 4px;
-   color: #c9b7a2;
+   color: #000000;
    -webkit-box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(000,000,000,0.7) 0 0px 0px;
    -moz-box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(000,000,000,0.7) 0 0px 0px;
    box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(000,000,000,0.7) 0 0px 0px;
@@ -765,7 +765,7 @@ form {
    padding-right:10px;
    color: #7f0000;
    text-shadow: #784404 0 1px 0;
-   text-align: left;
+   text-align: right;
    }
 .submit-container {
    margin:8px 0;

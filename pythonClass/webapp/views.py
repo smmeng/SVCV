@@ -2,7 +2,9 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import render_to_response
 from django.core.urlresolvers import reverse
 
-from models  import vistorType, visitorLog, employee
+from webapp.models import vistorType, visitorLog, employee
+from webapp.forms  import visitorLogForm
+
 # Create your views here.    
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
@@ -48,6 +50,7 @@ class visitorTypeDeleteView(DeleteView):
     success_url = '/visitorType/'
 
 ##################################### visitorLog
+    
 class visitorLogListView(ListView):
     print 'entering visitorLog ListView'
     model = visitorLog
@@ -60,7 +63,8 @@ class visitorLogUpdateView(UpdateView):
     print 'entering visitorLog update'
     model = visitorLog
     template_name = "webapp/visitorLog_detail.html"
-    fields = ['id','Type', 'fname', 'lname', 'email', 'phone', 'employeeId', 'Comments','CreatedOn']
+    form_class = visitorLogForm
+    #fields = ['id','Type', 'fname', 'lname', 'email', 'phone', 'employeeId', 'Comments','CreatedOn']
     print 'visitorLog update'
     success_url = '/visitorLog/'
 
@@ -68,7 +72,8 @@ class visitorLogCreateView(CreateView):
     print 'entering visitorLog create'
     model = visitorLog
     template_name = "webapp/visitorLog_detail.html"
-    fields = ['id','Type', 'fname', 'lname', 'email', 'phone', 'employeeId', 'Comments','CreatedOn']
+    form_class = visitorLogForm
+    #fields = ['id','Type', 'fname', 'lname', 'email', 'phone', 'employeeId', 'Comments','CreatedOn']
     print 'visitorLog create'
     success_url = '/visitorLog/add/'
 
