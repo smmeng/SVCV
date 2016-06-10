@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 
 {% block title %}Employee Form{% endblock %}
+{% block menuitems %}
+    {% with 'adminIndex' as menu %}
+        {{ block.super }}
+    {% endwith %}
+{% endblock %}
 
 {% block body_block %}
 	<div >
@@ -14,6 +19,7 @@
 		    <!-- input type="submit" value="Save" /-->
 		    <a onclick="$(this).parent('form').submit();"> <img src="/static/images/check1.png" > </a>
 		</form>
+		<a href="{% url "employee_list" %}">back to list</a>
 	</div>
 
 {% endblock %}

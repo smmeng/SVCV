@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 
-{% block title %}Visitor Types{% endblock %}
+{% block title %}Visitor Logs{% endblock %}
+
+{% block menuitems %}
+    {% with 'adminIndex' as menu %}
+        {{ block.super }}
+    {% endwith %}
+{% endblock %}
 
 {% block body_block %}
 

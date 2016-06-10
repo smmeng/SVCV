@@ -75,22 +75,6 @@ WSGI_APPLICATION = 'pythonClass.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-'''
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'visitors',
-#        'HOST': 'www.parkwhileaway.com',                                                 
-        'HOST': 'dev.svcvllc.com',
-        #'HOST': 'SNCSMENG03',                                                 
-        'PORT': '3306',
-        'USER': 'python',
-        'PASSWORD': 'ucscext'    
-
-#                    }
-    }
-}
-'''
 #############################MongoDB settings
 DATABASES = {
     'default': {
@@ -110,23 +94,16 @@ DATABASES = {
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
-
 STATIC_URL = '/static/'
 STATIC_ROOT= os.path.join(BASE_DIR, 'webapp/static')
-print 'STATIC_ROOT=[', STATIC_ROOT
 
 STATICFILES_DIRS = [
     #os.path.join(STATIC_ROOT, 'static'),

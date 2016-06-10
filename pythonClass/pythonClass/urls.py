@@ -26,7 +26,8 @@ urlpatterns = [
     url(r'^visitorType/add/$', views.visitorTypeCreateView.as_view(), name='vistorType_create' ),
     url(r'^visitorType/(?P<pk>[0-9a-zA-Z\d]+)/$', views.visitorTypeUpdateView.as_view())
     ,
-    url(r'^visitorLog/$', visitorLog_list, name='visitorLog_list' ),
+    url(r'^visitorLog0/$', visitorLog_list, name='visitorLog_list' ),
+    url(r'^visitorLog/$', views.visitorLogListView.as_view(), name='visitorLog_list' ),
     url(r'^visitorLog/add/$', views.visitorLogCreateView.as_view(), name='visitorLog_create' ),
     url(r'^visitorLog/(?P<pk>[0-9a-zA-Z\d]+)/$', views.visitorLogUpdateView.as_view())
     ,

@@ -1,5 +1,7 @@
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render_to_response
+from django.core.urlresolvers import reverse
+
 from models  import vistorType, visitorLog, employee
 # Create your views here.    
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -19,16 +21,6 @@ def contactUs(request):
 def aboutUs(request):
     return render_to_response('about.html')    
 ######
-class visitorTypeListView(ListView):
-    print 'entering visitorTypeListView'
-    #model = vistorType
-    queryset = vistorType.objects
-    #context_object_name = "vistorType_list"
-    #document = vistorType.objects
-    template_name = "visitorList.html"
-    #paginate_by = 10
-    print 'CallingvisitorTypeListView()  ['
-
     #def get_queryset(self):
     #    return vistorType.objects
 class visitorTypeUpdateView(UpdateView):
@@ -56,6 +48,14 @@ class visitorTypeDeleteView(DeleteView):
     success_url = '/visitorType/'
 
 ##################################### visitorLog
+class visitorLogListView(ListView):
+    print 'entering visitorLog ListView'
+    model = visitorLog
+    
+    template_name = "webapp/visitorLog_list.html"
+    paginate_by = 10
+    print 'Calling visitorLog ListView()  ['
+
 class visitorLogUpdateView(UpdateView):
     print 'entering visitorLog update'
     model = visitorLog
@@ -80,7 +80,10 @@ class employeeUpdateView(UpdateView):
     template_name = "webapp/employee_detail.html"
     fields = ['employeeName']
     print 'employee update2'
-    success_url = '/employee/'
+    #success_url = '/employee/'
+    
+    def get_success_url(self):
+        return '/employee/'
 
 class employeeCreateView(CreateView):
     print 'entering employee create'

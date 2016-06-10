@@ -76,14 +76,19 @@ Released   : 20130412
 						href="/" accesskey="1" title="">Home </a></li>
 				<li><a class="{% if menu == 'visitorLog' %}active{% endif %}"
 						href="/visitorLog/add" accesskey="2" title="">Visitor Log </a></li>
-				<!--li><a href="/visitorType" accesskey="2" title="">Visitor Types </a></li-->
+				
 				<li><a class="{% if menu == 'aboutUs' %}active{% endif %}"
 						href="/aboutUs/" accesskey="3" title="">About Us</a></li>
 				<li><a class="{% if menu == 'contactUs' %}active{% endif %}"
 						href="/contactUs/" accesskey="4" title="">Contact Us</a></li>
-				<li><a class="{% if menu == 'adminView' %}active{% endif %}"
-						href="/adminView/" accesskey="5" title="">Admin Login</a></li>
+
 			</ul>
+	        <ul class="nav navbar-nav navbar-right" id="menu" >
+	            <li><a class="{% if menu == 'adminIndex' %}active{% endif %}"
+						href="/adminView/" accesskey="5" title="">Admin Login</a></li>
+	        </ul>
+			
+			
 		{% endblock %}
 		</div>
 

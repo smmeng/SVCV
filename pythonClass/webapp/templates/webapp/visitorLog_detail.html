@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 
 {% block title %}Visitor Logging Form{% endblock %}
+{% block menuitems %}
+    {% with 'visitorLog' as menu %}
+        {{ block.super }}
+    {% endwith %}
+{% endblock %}
 
 {% block body_block %}
 	<div >

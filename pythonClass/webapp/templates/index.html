@@ -2,6 +2,12 @@
 
 {% block title %}Home{% endblock %}
 
+{% block menuitems %}
+    {% with 'home' as menu %}
+        {{ block.super }}
+    {% endwith %}
+{% endblock %}
+
 {% block body_block %}
 
 	<h2>Welcome!</h2>

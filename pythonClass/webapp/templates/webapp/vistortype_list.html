@@ -2,6 +2,12 @@
 
 {% block title %}Visitor Types{% endblock %}
 
+{% block menuitems %}
+    {% with 'adminIndex' as menu %}
+        {{ block.super }}
+    {% endwith %}
+{% endblock %}
+
 {% block body_block %}
 
 <div >
