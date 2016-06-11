@@ -44,7 +44,20 @@
 		    	</tr>
 		  		<tr>
 				    <td width="25%" class="form-title">{{ form.CreatedOn.help_text }}</td>
-				    <td width="75%" class="form-field">{{ form.CreatedOn }} {{ form.CreatedOn.errors }}</td>
+				    <td width="75%" class="form-field">
+					    <div class="container">
+						    <div class="row">
+						    	{{ form.CreatedOn }} {{ form.CreatedOn.errors }}</td>
+					        <script type="text/javascript">
+					            $(function () {
+					                $('#id_CreatedOn').datetimepicker({
+	                					format: 'YYYY-MM-DD HH:MM:SS'
+					                });
+					            });
+					        </script>
+						    </div>
+					    </div>
+					</td>
 		    	</tr>
 		    </table>
 

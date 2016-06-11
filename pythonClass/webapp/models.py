@@ -49,7 +49,7 @@ class visitorLog(models.Model):
     phone=models.CharField(max_length=128)
     employeeId=models.ForeignKey(employee)
     Comments = models.CharField(max_length=1024)
-    CreatedOn = models.DateTimeField(default=datetime.now)
+    CreatedOn = models.DateTimeField()
     
     def __unicode__(self):  #For Python 2, use __str__ on Python 3
         return u'%s' % (self.fname+' '+self.lname)

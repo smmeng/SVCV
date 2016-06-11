@@ -13,15 +13,64 @@
 <div>
 	<h2>Visitor Log Details (ADMIN VIEW)</h2>
 	<!-- a href="/visitorType/add/"><img src="/static/images/add.png" width="24px"> Add New</a-->
+
+	<form action="/visitorLogFiltered/" method="post" name="form" class="form-container" role="form" style="max-width: 100%;">
+		{% csrf_token %}
+		<h3>Filter By Start and End Dates:</h3>
+		<div class="container">
+		    <div class='col-md-4'>
+		        <div class="form-group">
+		            <div class='input-group date row' id='firstDate'>
+		                
+		                <input type='text' class="form-control" name="firstDate"/>
+		                <span class="input-group-addon">
+		                    <span class="glyphicon glyphicon-calendar"></span>
+		                </span>
+		            </div>
+		        </div>
+		    </div>
+		    <div class='col-md-4'>
+		        <div class="form-group">
+		            <div class='input-group date row' id='lastDate'>
+		            	<input type='text' class="form-control" name="lastDate"/>
+		                <span class="input-group-addon">
+		                    <span class="glyphicon glyphicon-calendar"></span>
+		                </span>
+		            </div>
+		        </div>
+		    </div>
+		    
+		</div>
+		<input type="submit" value="GO"> <a href="/visitorLog/download/">Export to MS-Excel</a>
+		<script type="text/javascript">
+		    $(function () {
+		        $('#firstDate').datetimepicker({
+					format: 'YYYY-MM-DD HH:MM:SS'
+                });
+		        $('#lastDate').datetimepicker({
+		        	format: 'YYYY-MM-DD HH:MM:SS',
+		            useCurrent: false //Important! See issue #1075
+		        });
+		        $("#firstDate").on("dp.change", function (e) {
+		            $('#lastDate').data("DateTimePicker").minDate(e.date);
+		        });
+		        $("#lastDate").on("dp.change", function (e) {
+		            $('#firstDate').data("DateTimePicker").maxDate(e.date);
+		        });
+		    });
+		</script>
+	</form>
+
 	<div style="max-width: 80%;">
 		<table id="log" class="table table-hover " >
 		  <thead >
-			<th>Visitor Type</th>
+			<th>Visitor Type <a href="?orderBy=Type"><img src="/static/images/up.png" width="12px"></a><a href="?orderBy=-Type"><img src="/static/images/down.png" width="12px"></a></th>
 			<th>First Name </th>
 			<th>Last Name </th>
 			<th>Destinations</th>
 			<th>Comments </th>
-			<th>Date </th>
+			<th>Date<a href="?orderBy=CreatedOn"><img src="/static/images/up.png" width="12px"></a>
+				<a href="?orderBy=-CreatedOn"><img src="/static/images/down.png" width="12px"></a> </th>
 		  </thead>
 		  {% for log in object_list %}
 		  <tr>

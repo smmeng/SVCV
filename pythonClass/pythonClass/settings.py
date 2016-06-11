@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'djangotoolbox',
+    'bootstrap3_datetime',
     'webapp',
 )
 

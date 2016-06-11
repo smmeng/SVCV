@@ -28,7 +28,10 @@ urlpatterns = [
     ,
     url(r'^visitorLog0/$', visitorLog_list, name='visitorLog_list' ),
     url(r'^visitorLog/$', views.visitorLogListView.as_view(), name='visitorLog_list' ),
+    url(r'^visitorLogFiltered/$', views.visitorLogFilteredListView.as_view(), name='visitorLogFiltered_list' ),
     url(r'^visitorLog/add/$', views.visitorLogCreateView.as_view(), name='visitorLog_create' ),
+    url(r'^visitorLog/download/$', views.create_excel, name='visitorLog_create_excel' ),
+#    url(r'^visitorLogFiltered/download/$', views.create_excel, name='visitorLogFiltered_create_excel' ),
     url(r'^visitorLog/(?P<pk>[0-9a-zA-Z\d]+)/$', views.visitorLogUpdateView.as_view())
     ,
     url(r'^employee/$', employee_list, name='employee_list' ),
