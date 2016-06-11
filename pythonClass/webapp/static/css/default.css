@@ -174,7 +174,8 @@ hr {
 #logo h1 {
 	padding: 20px 0px 0px 0px;
 	letter-spacing: -2px;
-	font-size: 3.0em;
+	font-size: 33px;
+	font-weight: 550;
 }
 
 #logo h1 a {
@@ -354,6 +355,7 @@ hr {
 #footer #footer_CopyRight{
 	margin: 0 auto;
 	padding: 50px 0px 50px 0px;
+	text-align: center;
 }
 
 #footer p {
@@ -368,8 +370,7 @@ hr {
  #footer_CopyRight p {
 	font-size: 14px;
 	font-weight: bold;
-	color: #555454;
-	text-align: center;
+	color: #555454;	
  }
 /* Three Column Footer Content */
 

@@ -248,3 +248,39 @@ def create_excel(request):
     response['Content-Disposition'] = 'attachment; filename=example.xls'
     book.save(response)
     return response
+
+def generate_excel(request):
+        #books = Book.objects.all()
+        visitorLogs = visitorLog.objects.all().values_list('Type', 'fname', 'lname', 'email', 'phone', 'employeeId','Comments', 'CreatedOn')
+        print 'visitorLogs=', visitorLogs
+        # Create the HttpResponse object with Excel header.This tells browsers that 
+        # the document is a Excel file.
+        response = HttpResponse(content_type='application/ms-excel')
+
+        # The response also has additional Content-Disposition header, which contains 
+        # the name of the Excel file.
+        response['Content-Disposition'] = 'attachment; filename=visitos.xls'
+
+        # Create object for the Workbook which is under xlwt library.
+        workbook = xlwt.Workbook()
+
+        # By using Workbook object, add the sheet with the name of your choice.
+        worksheet = workbook.add_sheet("visitors")
+     
+        row_num = 0
+        columns = ['Type', 'First Name', 'Last Name', 'Email', 'Phone', 'Destinations','Comments', 'Created On']
+        for col_num in range(len(columns)):
+            # For each cell in your Excel Sheet, call write function by passing row number, 
+            # column number and cell data.
+            worksheet.write(row_num, col_num, columns[col_num])     
+       
+        for row in visitorLogs:
+            row_num += 1
+            #print "log=", log
+            #row = [log.Type, log.fname, log.lname, log.email, log.phone, log.Comments, log.CreatedOn]
+            print 'row=', row
+            for col_num in range(len(row)):
+                worksheet.write(row_num, col_num, row[col_num])
+       
+        workbook.save(response)
+        return response
