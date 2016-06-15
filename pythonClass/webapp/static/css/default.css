@@ -876,7 +876,32 @@ form {
     background-color: #ff8040;
 }
 
-navbar2 li a.active {
+.navbar2 li a.active {
     color: white;
     background-color: #ff8040;
+}
+
+.adminNavbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 200px;
+    background-color: #f1f1f1;
+}
+
+.adminNavbar li a {
+    display: block;
+    color: #000;
+    padding: 8px 0 8px 16px;
+    text-decoration: none;
+}
+
+.adminNavbar li a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.adminNavbar li a:hover:no(.active) {
+    background-color: #555;
+    color: white;
 }

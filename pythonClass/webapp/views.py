@@ -57,12 +57,13 @@ class visitorLogListView(ListView):
     model = visitorLog
     oldOrderBy=""
     template_name = "webapp/visitorLog_list.html"
-    paginate_by = 10
+    #paginate_by = 10
     print 'Calling visitorLog ListView()  '
   
     def get(self, request, *args, **kwargs):
         self.object_list = self.get_queryset()
         print 'Calling ListView().get() self.object_list=[%s]'%( self.object_list.count())
+        #storing the log query set in a session variable
         request.session["visitorLog"] = self.object_list.values_list('Type', 'fname', 'lname', 'email', 'phone', 'employeeId','Comments', 'CreatedOn')
         print "ListView().get()  request.session['visitorLog']=", request.session, ' type=', type(request.session["visitorLog"])
         context = self.get_context_data(object_list=self.object_list)
@@ -101,6 +102,7 @@ class visitorLogFilteredListView(ListView):
         
         self.object_list = self.get_queryset()
         print 'Calling Filtered ListView().get() self.object_list=[%s]'%( self.object_list.count())
+        #storing the log query set in the same session variable
         request.session["visitorLog"] = self.get_queryset().values_list('Type', 'fname', 'lname', 'email', 'phone', 'employeeId','Comments', 'CreatedOn')
         print " Filtered ListView().get()  request.session['visitorLog'] type=", type(request.session["visitorLog"])
         
@@ -221,8 +223,6 @@ class employeeCreateView(CreateView):
 ############################# Export the queryset to excel   
 import xlwt
 def create_excel(request):
-    visitorLog = request.session["visitorLog"]
-    print "In create_excel() ", type(visitorLog)
     book = xlwt.Workbook(encoding='utf8')
     sheet = book.add_sheet('visitorLog')
 
@@ -231,8 +231,13 @@ def create_excel(request):
     date_style = xlwt.easyxf(num_format_str='dd/mm/yyyy')
 
     headers = ['Type', 'First Name', 'Last Name', 'Email', 'Phone', 'Destinations','Comments', 'Created On']
-    
-    values_list = [headers] + list(visitorLog)
+    values_list = headers
+    visitorLog = None#request.session["visitorLog"]
+    print "In create_excel() ", type(visitorLog)
+    try:
+        values_list = [headers] + list(visitorLog)
+    except TypeError: 
+        print 'empty or missing visitor log'
 
     for row, rowdata in enumerate(values_list):
         for col, val in enumerate(rowdata):
