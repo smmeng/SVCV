@@ -65,7 +65,7 @@ class visitorLogListView(ListView):
         print 'Calling ListView().get() self.object_list=[%s]'%( self.object_list.count())
         #storing the log query set in a session variable
         request.session["visitorLog"] = self.object_list.values_list('Type', 'fname', 'lname', 'email', 'phone', 'employeeId','Comments', 'CreatedOn')
-        print "ListView().get()  request.session['visitorLog']=", request.session, ' type=', type(request.session["visitorLog"])
+        print "ListView().get()  request.session['visitorLog']=", request.session, ' type=', type(request.session["visitorLog"]), " len=", len(request.session["visitorLog"])
         context = self.get_context_data(object_list=self.object_list)
         return self.render_to_response(context)
         
@@ -104,7 +104,7 @@ class visitorLogFilteredListView(ListView):
         print 'Calling Filtered ListView().get() self.object_list=[%s]'%( self.object_list.count())
         #storing the log query set in the same session variable
         request.session["visitorLog"] = self.get_queryset().values_list('Type', 'fname', 'lname', 'email', 'phone', 'employeeId','Comments', 'CreatedOn')
-        print " Filtered ListView().get()  request.session['visitorLog'] type=", type(request.session["visitorLog"])
+        print " Filtered ListView().get()  request.session['visitorLog'] type=", type(request.session["visitorLog"]), " len=", len(request.session["visitorLog"])
         
         allow_empty = self.get_allow_empty()
         #if not allow_empty and len(self.object_list) == 0:
@@ -232,14 +232,56 @@ def create_excel(request):
 
     headers = ['Type', 'First Name', 'Last Name', 'Email', 'Phone', 'Destinations','Comments', 'Created On']
     values_list = headers
-    visitorLog = None#request.session["visitorLog"]
-    print "In create_excel() ", type(visitorLog)
+    visitorLog = request.session["visitorLog"]
+    print  'visitorLog size=', len(visitorLog)
+    iterVLog = iter(list(visitorLog))
+    print "In create_excel() ", type(visitorLog), iterVLog, type(iterVLog)
     try:
-        values_list = [headers] + list(visitorLog)
+        values_list = [headers]
+        values_list.append(iterVLog)
+        print 'create_excel() values_list=', values_list
     except TypeError: 
         print 'empty or missing visitor log'
-
+        
+    #create the header
+    column=0
+    for col in headers:
+        sheet.write(0, column, col, style=default_style)
+        column +=1
+    
+    #create the contents
+    rowCount=1
+    while True:
+        try:
+            row= next(iterVLog) 
+            print 'row=', row
+            colCount=0
+            for val in row:
+                #print 'val=', val
+                #'''
+                if isinstance(val, datetime):
+                    style = datetime_style
+                elif isinstance(val, date):
+                    style = date_style
+                else:
+                    style = default_style
+                
+                sheet.write(rowCount, colCount, val, style=style)
+                colCount +=1
+                #'''
+                
+            #next(iterVLog)
+            rowCount +=1
+        except StopIteration:
+            break;
+    #output the excel
+    response = HttpResponse(mimetype='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename=visitor_logs.xls'
+    book.save(response)
+    return response
+'''
     for row, rowdata in enumerate(values_list):
+        print 'row=', row, ' rowdata=', rowdata,type(rowdata)
         for col, val in enumerate(rowdata):
             if isinstance(val, datetime):
                 style = datetime_style
@@ -248,8 +290,7 @@ def create_excel(request):
             else:
                 style = default_style
             sheet.write(row, col, val, style=style)
-
-    response = HttpResponse(mimetype='application/vnd.ms-excel')
-    response['Content-Disposition'] = 'attachment; filename=visitor_logs.xls'
-    book.save(response)
-    return response
+            if type(rowdata) == 'listiterator':
+                next(rowdata)
+'''''
+        
