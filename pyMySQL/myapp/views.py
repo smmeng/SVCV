@@ -1,6 +1,5 @@
-#from django.shortcuts import render
-
 # Create your views here.
+from datetime import datetime
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, RequestContext
 from django.contrib.auth import authenticate, login, logout
@@ -36,6 +35,8 @@ from rest_framework import filters
 ###############Log in
 def user_login(request):
     agree2disclaimerCookieName = 'agree2disclaimer'
+    agree2disclaimer=None
+    print "In user_login(), method=[", request.method, '] COOKIES=', request.COOKIES
     # If the request is a HTTP POST, try to pull out the relevant information.
     if request.method == 'POST':
         # Gather the username and password provided by the user.
@@ -46,12 +47,7 @@ def user_login(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         #HttpResponse.set_cookie(this, "agree2disclaimer", value='true', max_age=365 * 24 * 60 * 60, expires=None, path='/', domain=None, secure=None, httponly=False)
-        response = HttpResponse()
-        content = 'Testing cookie serialization.'
-        response.content = content
-        response.set_cookie(agree2disclaimerCookieName, 'true')
-        print 'login set cookie agree2disclaimer=true'
-         
+
         # Use Django's machinery to attempt to see if the username/password
         # combination is valid - a User object is returned if it is.
         user = authenticate(username=username, password=password)
@@ -65,7 +61,17 @@ def user_login(request):
                 # If the account is valid and active, we can log the user in.
                 # We'll send the user back to the homepage.
                 login(request, user)
-                return HttpResponseRedirect('/')
+
+                #response = HttpResponse()
+                response = HttpResponseRedirect('/') #upon successful authentication, redirecting to home page
+                #content = 'Testing cookie serialization.'
+                #response.content = content
+                response.set_cookie(agree2disclaimerCookieName, 'true', httponly=True)
+                print 'login set cookie agree2disclaimer=true'
+                return response;
+
+                #return HttpResponseRedirect('/')
+                
             else:
                 # An inactive account was used - no logging in!
                 return HttpResponse("Your SVCV account is disabled.")
@@ -79,7 +85,11 @@ def user_login(request):
     else: #get to load the login page
         # No context variables to pass to the template system, hence the
         # blank dictionary object...
-        agree2disclaimer = request.COOKIES.get(agree2disclaimerCookieName) 
+        if agree2disclaimerCookieName in request.COOKIES:
+            agree2disclaimer = request.COOKIES[agree2disclaimerCookieName] 
+            if agree2disclaimer == 'true':
+                return HttpResponseRedirect('/')
+            
         print 'login cookie agree2disclaimer=', agree2disclaimer
         return render(request, 'login.html', {agree2disclaimerCookieName:agree2disclaimer})
     
@@ -106,7 +116,7 @@ class LoginView(FormView):
         # Sets a test cookie to make sure the user has cookies enabled
         request.session.set_test_cookie()
 
-        return super(LoginView, self).dispatch(request, *args, **kwargs)
+        return LoginView.dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         auth_login(self.request, form.get_user())
@@ -492,14 +502,21 @@ def  save_password(request):
         
         print oldPassword, newPassword1, newPassword2
         
-        saveuser = User.objects.get(id=myUserId)
+        '''
+        saveuser = User.objects.filter(id=myUserId)
         if user.check_password(oldPassword):
             saveuser.set_password(newPassword1);
             saveuser.save()
         else:
             error_msg ='The old password doesn\'t match. Try again!'
             print error_msg
-
+        '''
+        if user.check_password(oldPassword):
+            user.set_password(newPassword1)
+            user.save()
+        else:
+            error_msg ='The new password doesn\'t match. Try again!'
+            print error_msg
     return render(request, 'passwordUpdate.html', {"error_msg": error_msg})
 
 @login_required
@@ -513,7 +530,45 @@ def get_announcement(request):
 ########################################################################
 # index.html
 def index(request):
-    return render(request, 'index.html')
+    #reset_last_visit_time = False
+    response = render(request, 'index.html')
+    return response
+''''
+    visits = int(request.COOKIES.get('visits', '1'))
+    print 'index() visits=', visits
+    
+    if 'last_visit' in request.COOKIES:
+        # Yes it does! Get the cookie's value.
+        last_visit = request.COOKIES['last_visit']
+        print 'index() last_visit=', last_visit
+        # Cast the value to a Python date/time object.
+        last_visit_time = datetime.strptime(last_visit[:-7], "%Y-%m-%d %H:%M:%S")
+
+        # If it's been more than a day since the last visit...
+        print "datetime.now()=", datetime.now()
+        print "last_visit_time=", last_visit_time
+        duration = datetime.now() -last_visit_time
+        print 'days=', duration.total_seconds()
+        if (datetime.now() - last_visit_time).total_seconds() > 0:
+            visits = visits + 1
+            # ...and flag that the cookie last visit needs to be updated
+            reset_last_visit_time = True
+            print 'index() visits2=', visits
+    else:
+        # Cookie last_visit doesn't exist, so flag that it should be set.
+        reset_last_visit_time = True
+
+        #context_dict['visits'] = visits
+
+        #Obtain our Response object early so we can add cookie information.
+        #response = render(request, 'rango/index.html', context_dict)
+
+    if reset_last_visit_time:
+        response.set_cookie('last_visit', datetime.now())
+        response.set_cookie('visits', visits)
+'''   
+
+
 # about-us.html
 def aboutUs(request):
     return render(request, 'about-us.html')
