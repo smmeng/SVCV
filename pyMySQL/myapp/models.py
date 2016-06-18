@@ -70,7 +70,7 @@ class InvestmentActivity(models.Model):
     def related_user(self):
         print 'self.user_id=[', self.UserId
         try:
-            return User.objects.get(pk=self.UserId)
+            return User.objects.filter(pk=self.UserId)
         except User.DoesNotExist:
             return None
             
@@ -136,10 +136,10 @@ class UserProfile(models.Model):
     
 class Announcement(models.Model):
     AnnouncementId = models.AutoField(primary_key=True)
-    OutputText = models.CharField(max_length=8192, null=False)
+    OutputText = models.TextField(max_length=8192, null=False)
     Comments = models.CharField(max_length=1024, null=True)
-    CreatedOn = models.DateField('Creaetd On', default=datetime.now)
-    ExpireOn = models.DateField('Expire On', null=False)
+    CreatedOn = models.DateTimeField('Created On', default=datetime.now)
+    ExpireOn = models.DateField('Expire On', default=datetime.now)
     
     def __unicode__(self):  #For Python 2, use __str__ on Python 3
         return u'%s' % ( self.OutputText)

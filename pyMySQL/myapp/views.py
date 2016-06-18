@@ -523,7 +523,7 @@ def  save_password(request):
 def get_announcement(request):
     msgs=None
     #only query latest 3 messages
-    queryset = Announcement.objects.filter(ExpireOn__gte= date.today()).order_by('-ExpireOn')[:3]
+    queryset = Announcement.objects.filter(ExpireOn__gte= date.today()).order_by('CreatedOn')
     print "announcement[", queryset
     
     return render(request, "announcement.html", {"messages":queryset})
