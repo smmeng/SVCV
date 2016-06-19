@@ -65,17 +65,18 @@ class InvestmentActivity(models.Model):
     ProjectId = models.ForeignKey(PROJECT, default="999", related_name='InvestmentActivity')
     Memo = models.CharField(max_length=1024, unique=False)
     Amount = models.FloatField(default=0.0)
-    CreatedOn = models.DateField('Creaetd On', default=datetime.now)
-
+    CreatedOn = models.DateField('Created On', default=datetime.now)
+    
+    def __unicode__(self):  #For Python 2, use __str__ on Python 3
+        return u'%s-%s-%s-%10.2f' % (self.UserId, self.Memo, self.ProjectId, self.Amount)
+'''
     def related_user(self):
         print 'self.user_id=[', self.UserId
         try:
             return User.objects.filter(pk=self.UserId)
         except User.DoesNotExist:
             return None
-            
-    def __unicode__(self):  #For Python 2, use __str__ on Python 3
-        return u'%s-%s-%s-%10.2f' % (self.UserId, self.Memo, self.ProjectId, self.Amount)
+'''            
 
 class InvestmentActivityCopy(models.Model):
     ActivityId = models.AutoField(primary_key=True)
@@ -85,7 +86,7 @@ class InvestmentActivityCopy(models.Model):
     ProjectId = models.ForeignKey(PROJECT, default="999")
     Memo = models.CharField(max_length=1024, unique=False)
     Amount = models.FloatField(default=0.0)
-    CreatedOn = models.DateField('Creaetd On', default=datetime.now)
+    CreatedOn = models.DateField('Created On', default=datetime.now)
     
     def __unicode__(self):  #For Python 2, use __str__ on Python 3
         return u'%s' % (self.UserId)
