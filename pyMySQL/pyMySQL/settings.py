@@ -157,3 +157,13 @@ STATICFILES_DIRS = (
 
 LOGIN_URL = '/login/'
 AUTO_LOGOUT_DELAY = 30 #equivalent to 5 minutes
+
+### Email server settings
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'sbcapitals@gmail.com'
+EMAIL_HOST_PASSWORD = 'shanghai408'
+ 
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER

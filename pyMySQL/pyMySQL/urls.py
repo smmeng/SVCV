@@ -70,6 +70,9 @@ urlpatterns = patterns('',
         url(r'^company/$', adminViews.CompanyListView.as_view(), name='list'),
         url(r'^company/add/$', adminViews.CompanyCreateView.as_view(), name='create'),
         url(r'^company/(?P<pk>\d+)/$', adminViews.CompanyUpdateView.as_view(), name='update'),
+        url(r'^reset/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
+            views.reset_confirm, name='password_reset_confirm'),
+        url(r'^reset/$', views.reset, name='reset'),
 )
 
 

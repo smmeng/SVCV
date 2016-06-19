@@ -29,6 +29,8 @@ from django.views.generic import FormView, RedirectView
 from rest_framework import viewsets
 from rest_framework import filters
 
+from django.core.mail import EmailMessage
+
 #from myapp import RegisterTableColumns
 #import MySQLdb
 
@@ -87,7 +89,9 @@ def user_login(request):
         # blank dictionary object...
         if agree2disclaimerCookieName in request.COOKIES:
             agree2disclaimer = request.COOKIES[agree2disclaimerCookieName] 
-            if agree2disclaimer == 'true':
+            user = request.user
+            print 'user=', user.is_authenticated(), ' active=',user.is_active
+            if user and (user.is_authenticated() or user.is_active) and agree2disclaimer == 'true':
                 return HttpResponseRedirect('/')
             
         print 'login cookie agree2disclaimer=', agree2disclaimer
@@ -589,3 +593,19 @@ class OverallProjectsListView(ListView):
     paginate_by = 10
     print 'OverallProjectsListView'
 
+### Password reset
+from django.core.urlresolvers import reverse
+from django.contrib.auth.views import password_reset, password_reset_confirm
+
+def reset_confirm(request, uidb64=None, token=None):
+    print "in reset_confirm()", uidb64, "-", token
+    return password_reset_confirm(request, template_name='registration/password_reset_confirm.html',
+        uidb64=uidb64, token=token, post_reset_redirect=reverse('login'))
+
+
+def reset(request):
+    print "in reset()"
+    return password_reset(request, template_name='registration/password_reset_form.html',
+        email_template_name='registration/password_reset_email.html',
+        subject_template_name='registration/password_reset_subject.txt',
+        post_reset_redirect=reverse('login'))
