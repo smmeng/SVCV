@@ -241,7 +241,7 @@ def add_project(request, id=None):
 
 ################## for investment activity history
 @login_required
-def get_activity(request, orderBy=None):
+def calculate_activity(request, orderBy=None):
     # Create a context dictionary which we can pass to the template rendering engine.
     activity_dict = {}
     user = request.user
@@ -331,7 +331,7 @@ def get_activity(request, orderBy=None):
         
         total =  total_principal + total_distribution
         
-        activity_dict= {'activities': activity_list, 'total_amount': total, 'total_distribution':total_distribution, 'total_principal':total_principal,
+        activity_dict = {'activities': activity_list, 'total_amount': total, 'total_distribution':total_distribution, 'total_principal':total_principal,
                         'total_interest':total_interest, 'total_dividend':total_dividend, 'allUser_list':allUser_list, 'investorId':uid, 'investorName':userName}
         print 'get_activity() activity_dict[', activity_dict
         # We also add the project object from the database to the context dictionary.
@@ -341,6 +341,10 @@ def get_activity(request, orderBy=None):
         # We get here if we didn't find the specified project.
         # Don't do anything - the template displays the "no project" message for us.
         pass
+    return activity_dict 
+
+def get_activity(request, orderBy=None):
+    activity_dict = calculate_activity(request, orderBy)
 
     # Go render the response and return it to the client.
     return render(request, 'activity.html', activity_dict)
@@ -348,6 +352,16 @@ def get_activity(request, orderBy=None):
 @login_required
 def get_activity2(request, orderBy=None):
     return render(request, 'activity2.html')
+
+from django.http import JsonResponse
+from django.core import serializers
+
+@login_required
+def get_activityJSON(request, orderBy=None):
+    activity_dict = calculate_activity(request, orderBy)    
+    actList = list(activity_dict['activities'])
+    #list_of_outcome = outcome['investorsProfits'][0:]
+    return  JsonResponse(serializers.serialize("json", actList),safe=False  )
 
 class activityViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -364,7 +378,8 @@ class activityViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         #return InvestmentActivity.objects.filter(UserId = self.request.user)
         user_id = self.request.user.id
-        print '-ActivitySerializer  get_queryset(),userId=', user_id
+        isStaff = self.request.user.is_staff
+        print 'activityViewSet  get_queryset(),userId=', user_id,  " isStaff=",isStaff
         
         if user_id:
             return InvestmentActivity.objects.filter(UserId=user_id)

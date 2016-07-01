@@ -84,20 +84,22 @@ app.controller('appInvestorProfitCtrl', ['$scope', 'uiGridConstants','$http', fu
  
 }]);
 
-app = angular.module('appInvestmentActivity', ['ngAnimate', 'ngTouch', 'ui.grid', 'ui.grid.selection', 'ui.grid.exporter']);
+app = angular.module('appInvestmentActivity', ['ngAnimate', 'ngTouch', 'ui.grid',  'ui.grid.grouping', 'ui.grid.selection', 'ui.grid.exporter']);
 
 app.controller('appInvestmentActivityCtrl', ['$scope', 'uiGridConstants','$http', function ($scope, uiGridConstants, $http) {
 	console.log("InvestmentActivity()	");
 	
   $scope.gridOptions = {
+    enableFiltering: true,
+    treeRowHeaderAlwaysVisible: false,
     showGridFooter: true,
     showColumnFooter: true,
-    //enableFiltering: true,
     columnDefs: [
 		{ field: 'Type', displayName: 'Type', visible: false},
 		{ field: 'Date', displayName: 'Date',  visible: true},
 		{ field: 'ProjectStatus', displayName: 'Status', visible: true},
-		{ field: 'ProjectId_id', displayName: 'Project',  visible: true},
+		{ field: 'ProjectId_id', displayName: 'Project',  visible: true,  grouping: { groupPriority: 0 }, sort: { priority: 0, direction: 'desc' },
+			cellTemplate: '<div><div ng-if="!col.grouping || col.grouping.groupPriority === undefined || col.grouping.groupPriority === null || ( row.groupHeader && col.grouping.groupPriority === row.treeLevel )" class="ui-grid-cell-contents" title="TOOLTIP">{{COL_FIELD CUSTOM_FILTERS}}</div></div>'},
 		{ field: 'Memo', displayName: 'Description',  visible: true},
 		{ field: 'Principal', displayName: 'Principal', aggregationType: uiGridConstants.aggregationTypes.sum },
 		{ field: 'Distribution', displayName: 'Distribution', aggregationType: uiGridConstants.aggregationTypes.sum},
@@ -129,7 +131,7 @@ app.controller('appInvestmentActivityCtrl', ['$scope', 'uiGridConstants','$http'
     }
   };
  
-  $http.get('/restapi/investmentActivity2/').success(function(data) {  	
+  $http.get('/restapi/investmentActivity/').success(function(data) {  	
 	// Final Display
     
     $scope.summary = data;
@@ -138,6 +140,9 @@ app.controller('appInvestmentActivityCtrl', ['$scope', 'uiGridConstants','$http'
     for(var i = 0; i < $scope.summary.length; i++)
 	{
 		row = $scope.summary[i];
+		if (row['ProjectStatus']=="Completed")
+			row['ProjectId_id'] ='<strike>' + row['ProjectId_id'] + '</strike>';
+			
 		if (row['Type'] =='Deposit')
 			row['Principal'] = row['Amount'];
 		else if (row['Type'] =='Check')
@@ -153,5 +158,45 @@ app.controller('appInvestmentActivityCtrl', ['$scope', 'uiGridConstants','$http'
     $scope.gridOptions.data = $scope.summary;
 
   });
- 
+  $scope.expandAll = function(){
+	    $scope.gridApi.treeBase.expandAllRows();
+	  };
+	 
+	  $scope.toggleRow = function( rowNum ){
+	    $scope.gridApi.treeBase.toggleRowTreeState($scope.gridApi.grid.renderContainers.body.visibleRowCache[rowNum]);
+	  };
+	 
+	  $scope.changeGrouping = function() {
+	    $scope.gridApi.grouping.clearGrouping();
+	    $scope.gridApi.grouping.groupColumn('Amount');
+	    $scope.gridApi.grouping.aggregateColumn('ProjectId_id', uiGridGroupingConstants.aggregation.COUNT);
+	  };
+	 
+	  $scope.getAggregates = function() {
+	    var aggregatesTree = [];
+	    var gender
+	 
+	    var recursiveExtract = function( treeChildren ) {
+	      return treeChildren.map( function( node ) {
+	        var newNode = {};
+	        angular.forEach(node.row.entity, function( attributeCol ) {
+	          if( typeof(attributeCol.groupVal) !== 'undefined' ) {
+	            newNode.groupVal = attributeCol.groupVal;
+	            newNode.aggVal = attributeCol.value;
+	          }
+	        });
+	        newNode.otherAggregations = node.aggregations.map( function( aggregation ) {
+	          return { colName: aggregation.col.name, value: aggregation.value, type: aggregation.type };
+	        });
+	        if( node.children ) {
+	          newNode.children = recursiveExtract( node.children );
+	        }
+	        return newNode;
+	      });
+	    }
+	 
+	    aggregatesTree = recursiveExtract( $scope.gridApi.grid.treeBase.tree );
+	 
+	    console.log(aggregatesTree);
+	  };
 }]);

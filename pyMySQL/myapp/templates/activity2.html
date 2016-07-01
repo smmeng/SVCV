@@ -11,7 +11,7 @@
 	<div  ng-app="appInvestmentActivity" ng-controller="appInvestmentActivityCtrl" class="table-responsive">
       <!-- button id="footerButton" class="btn btn-success" ng-click="toggleFooter()">Toggle Grid Footer</button>
       <button class="btn btn-success" ng-click="toggleColumnFooter()">Toggle Column Footer</button-->
-      <div ui-grid="gridOptions" ui-grid-selection ui-grid-exporter class="grid"></div>
+      <div ui-grid="gridOptions"  ui-grid-grouping ui-grid-selection ui-grid-exporter class="grid"></div>
     </div>
 {% else %}
 	<div class="form-title"><h2>Please authenticate as staff first!</h2></div>

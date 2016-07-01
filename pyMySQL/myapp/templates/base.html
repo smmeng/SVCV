@@ -72,14 +72,15 @@ Released   : 20130412
     
     <!--  AngularJS lib for fixed header table -->
     <script type="text/javascript" src="{% static "js/angu-fixed-header-table.js" %}"> </script>
-	<script type="text/javascript" src="{% static "js/app.js" %}"> </script>
 	
 	<!--  Utility scripts for export table to Excel format  -->
 	<script src="{% static "js/grunt-scripts/csv.js" %}"></script>
 	<script src="{% static "js/grunt-scripts/pdfmake.js" %}"></script>
 	<script src="{% static "js/grunt-scripts/vfs_fonts.js" %}"></script>
-	<script src="{% static "js/grunt-scripts/ui-grid.js" %}"></script>
-	<link rel="stylesheet" href="{% static "css/ui-grid/ui-grid.css" %}" type="text/css">
+	<script src="{% static 'js/grunt-scripts/ui-grid.js' %}"></script>
+	<link rel="stylesheet" href="{% static 'css/ui-grid/ui-grid.css' %}" type="text/css">
+
+	<script type="text/javascript" src="{% static 'js/app.js' %}"> </script>
 	
 	<!--  Utility scripts for showing slideshow via ngFader  -->
 	<script src="{% static "js/slideshow/jquery.slides.min.js" %}"></script>
