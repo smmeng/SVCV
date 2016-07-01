@@ -102,10 +102,10 @@ app.controller('appInvestmentActivityCtrl', ['$scope', 'uiGridConstants','$http'
 			grouping: { groupPriority: 0 }, sort: { priority: 0, direction: 'desc' },
 			cellTemplate: '<div ng-bind-html="COL_FIELD | trusted"><div ng-if="!col.grouping || col.grouping.groupPriority === undefined || col.grouping.groupPriority === null || ( row.groupHeader && col.grouping.groupPriority === row.treeLevel )" class="ui-grid-cell-contents" title="TOOLTIP">{{COL_FIELD CUSTOM_FILTERS}}</div></div>'},
 		{ field: 'Memo', displayName: 'Description',  visible: true, cellTemplate: '<div ng-bind-html="COL_FIELD | trusted"></div>'},
-		{ field: 'Principal', displayName: 'Principal', aggregationType: uiGridConstants.aggregationTypes.sum, cellTemplate: '<div ng-bind-html="COL_FIELD | trusted"></div>' },
-		{ field: 'Distribution', displayName: 'Distribution', aggregationType: uiGridConstants.aggregationTypes.sum, cellTemplate: '<div ng-bind-html="COL_FIELD | trusted"></div>'},
-		{ field: 'Interest', displayName: 'Interest', aggregationType: uiGridConstants.aggregationTypes.sum, cellTemplate: '<div ng-bind-html="COL_FIELD | trusted"></div>' },
-		{ field: 'Dividend', displayName: 'Dividend', aggregationType: uiGridConstants.aggregationTypes.sum, cellTemplate: '<div ng-bind-html="COL_FIELD | trusted"></div>' },
+		{ field: 'Principal', displayName: 'Principal', aggregationType: uiGridConstants.aggregationTypes.sum },
+		{ field: 'Distribution', displayName: 'Distribution', aggregationType: uiGridConstants.aggregationTypes.sum},
+		{ field: 'Interest', displayName: 'Interest', aggregationType: uiGridConstants.aggregationTypes.sum},
+		{ field: 'Dividend', displayName: 'Dividend', aggregationType: uiGridConstants.aggregationTypes.sum},
 
     ],
     enableGridMenu: true,
@@ -144,34 +144,24 @@ app.controller('appInvestmentActivityCtrl', ['$scope', 'uiGridConstants','$http'
 		if (row['ProjectStatus']=="Completed")
 		{
 			row['ProjectId_id'] ='<strike><bold><color="green">' + row['ProjectId_id'] + '</color></bold></strike>';
-			row['Type'] ='<strike>' + row['Type'] + '</strike>';
+			//row['Type'] ='<strike>' + row['Type'] + '</strike>';
 			row['Date'] ='<strike>' + row['Date'] + '</strike>';
 			row['ProjectStatus'] ='<strike>' + row['ProjectStatus'] + '</strike>';
 			row['Memo'] ='<strike>' + row['Memo'] + '</strike>';
-			
-			if (row['Type'] =='Deposit')
-				row['Principal'] = '<strike>' + row['Amount'] + '</strike>' ;
-			else if (row['Type'] =='Check')
-				row['Distribution'] = '<strike>' + row['Amount']+'</strike>';
-			else if (row['Type'] =='Interest')
-				row['Interest'] = '<strike>' + row['Amount'] + '</strike>';
-			if (row['Type'] =='Dividend')
-				row['Dividend'] = '<strike>' + row['Amount'] +'</strike>' ;
-		}
-		else
-		{
-			if (row['Type'] =='Deposit')
-				row['Principal'] = row['Amount'];
-			else if (row['Type'] =='Check')
-				row['Distribution'] = row['Amount'];
-			else if (row['Type'] =='Interest')
-				row['Interest'] = row['Amount'];
-			if (row['Type'] =='Dividend')
-				row['Dividend'] = row['Amount'];		
 		};
+
+		if (row['Type'] =='Deposit')
+			row['Principal'] = row['Amount'];
+		else if (row['Type'] =='Check')
+			row['Distribution'] = row['Amount'];
+		else if (row['Type'] =='Interest')
+			row['Interest'] = row['Amount'];
+		else if (row['Type'] =='Dividend')
+			row['Dividend'] = row['Amount'];		
+	};
 		
 		//console.log(i + " type="+ row['Type']);
-	}
+	
     
     $scope.gridOptions.data = $scope.summary;
 
