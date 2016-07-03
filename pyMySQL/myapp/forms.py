@@ -1,7 +1,7 @@
 from django import forms
 from decimal import Decimal
 from django.utils import timezone
-from myapp.models import PROJECT, Vendor, Company, Status, UserProfile, TransactionType, InvestmentActivity
+from myapp.models import PROJECT, Vendor, Company, Status, UserProfile, TransactionType, InvestmentActivity, Announcement
             
 class ProjectForm(forms.ModelForm):
     ProjectId = forms.IntegerField(widget=forms.HiddenInput)
@@ -74,3 +74,15 @@ class UserProfileForm(forms.ModelForm):
         # Provide an association between the ModelForm and a model
         model = UserProfile
         fields = ('UserId', 'Telephone', 'Cell', 'Address1', 'Address2', 'City', 'State', 'ZipCode', 'W9Ready', 'website', 'minCommitment', 'maxCommitment', 'lastCommitmentDate',)
+        
+
+class AnnouncementForm(forms.ModelForm):
+    AnnouncementId = forms.IntegerField(widget=forms.HiddenInput)
+    OutputText = forms.CharField(widget=forms.Textarea, help_text='Output Text',required=True)
+    Comments = forms.CharField(widget=forms.TextInput, help_text='Comments',required=False)
+    CreatedOn = forms.DateField(widget=forms.DateInput, initial=timezone.now(), help_text="Created on", required=True)
+    ExpireOn = forms.DateField(widget=forms.DateInput, initial=timezone.now(), help_text="Expiration Date:", required=True)
+    
+    class Meta:
+        model = Announcement
+        fields = ('AnnouncementId','OutputText', 'Comments', 'CreatedOn', 'ExpireOn')

@@ -87,15 +87,15 @@ app.controller('appInvestorProfitCtrl', ['$scope', 'uiGridConstants','$http', fu
 app = angular.module('appInvestmentActivity', ['ngAnimate', 'ngTouch', 'ui.grid',  'ui.grid.grouping', 'ui.grid.selection', 'ui.grid.exporter']);
 
 app.controller('appInvestmentActivityCtrl', ['$scope', 'uiGridConstants','$http', function ($scope, uiGridConstants, $http) {
-	console.log("InvestmentActivity()	");
+	console.log("inside InvestmentActivity()	");
 	
   $scope.gridOptions = {
-    enableFiltering: true,
-    treeRowHeaderAlwaysVisible: false,
+    enableFiltering: false,
+    treeRowHeaderAlwaysVisible: true,
     showGridFooter: true,
     showColumnFooter: true,
     columnDefs: [
-		{ field: 'Type', displayName: 'Type', visible: false, cellTemplate: '<div ng-bind-html="COL_FIELD | trusted"></div>'},
+		{ field: 'Type', displayName: 'Type', visible: false, },
 		{ field: 'Date', displayName: 'Date',  visible: true, cellTemplate: '<div ng-bind-html="COL_FIELD | trusted"></div>'},
 		{ field: 'ProjectStatus', displayName: 'Status', visible: true, cellTemplate: '<div ng-bind-html="COL_FIELD | trusted"></div>'},
 		{ field: 'ProjectId_id', displayName: 'Project',  visible: true,  
@@ -108,6 +108,7 @@ app.controller('appInvestmentActivityCtrl', ['$scope', 'uiGridConstants','$http'
 		{ field: 'Dividend', displayName: 'Dividend', aggregationType: uiGridConstants.aggregationTypes.sum},
 
     ],
+/**    
     enableGridMenu: true,
     enableSelectAll: true,
     exporterCsvFilename: 'InvestmentActivity.csv',
@@ -130,14 +131,26 @@ app.controller('appInvestmentActivityCtrl', ['$scope', 'uiGridConstants','$http'
     onRegisterApi: function(gridApi){
       $scope.gridApi = gridApi;
     }
+    **/
   };
  
+  /**
+  $scope.selectInvestorId = function(investorId)
+  {
+	  alert("id");
+	  console.log("id="+investorId);
+  };**/
+  
   $http.get('/restapi/investmentActivity/').success(function(data) {  	
 	// Final Display
     
     $scope.summary = data;
     console.log("Total rows: " + $scope.summary.length);
     //console.log("First rows: " + $scope.summary[0]['Type']);
+    $scope.principal=0;
+    $scope.distribution=0;
+    $scope.interest=0;
+    $scope.dividend=0;
     for(var i = 0; i < $scope.summary.length; i++)
 	{
 		row = $scope.summary[i];
@@ -151,17 +164,31 @@ app.controller('appInvestmentActivityCtrl', ['$scope', 'uiGridConstants','$http'
 		};
 
 		if (row['Type'] =='Deposit')
+		{
+		    $scope.principal+=row['Amount'];
 			row['Principal'] = row['Amount'];
+		}
 		else if (row['Type'] =='Check')
+		{
+			$scope.distribution+=row['Amount'];
 			row['Distribution'] = row['Amount'];
-		else if (row['Type'] =='Interest')
-			row['Interest'] = row['Amount'];
-		else if (row['Type'] =='Dividend')
-			row['Dividend'] = row['Amount'];		
+		}
+    	else if (row['Type'] =='Interest')
+		{
+    		$scope.interest+=row['Amount'];
+    		row['Interest'] = row['Amount'];
+  		}
+  		else if (row['Type'] =='Dividend')
+		{
+  			$scope.dividend +=row['Amount'];
+  			row['Dividend'] = row['Amount'];
+		};
 	};
 		
-		//console.log(i + " type="+ row['Type']);
+	//console.log(i + " type="+ row['Type']);
 	
+	$scope.final_principal = $scope.principal + $scope.distribution;
+	console.log("final amount="+ $scope.final_principal +" "+ $scope.principal +" "+ $scope.distribution);
     
     $scope.gridOptions.data = $scope.summary;
 

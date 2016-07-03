@@ -2,6 +2,7 @@ from django.db.models import Q
 from myapp.utility import Utility
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, RequestContext
+from django.http import HttpResponse
 from django.contrib.auth.models import   User
 from pip._vendor import requests
 
@@ -10,6 +11,8 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.core.urlresolvers import reverse_lazy
 
 from myapp.models import Vendor, Company, Announcement
+from myapp.forms import AnnouncementForm
+from myapp.app_permissions import *
 
 ################## To generate all user list based on the current role
 @login_required
@@ -54,13 +57,6 @@ class InvestorList(APIView):
         investors = InvestmentActivity.objects.filter(ProjectId=Pid)
         serializer = InvestorSerializer(investors, many=True)
         return Response(serializer.data)
-
-class UserViewSet(viewsets.ReadOnlyModelViewSet):
-    """
-    This viewset automatically provides `list` and `detail` actions.
-    """
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
     
 class InvestorViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -77,7 +73,7 @@ class InvestorViewSet(viewsets.ReadOnlyModelViewSet):
     filter_fields = ('ProjectId', 'UserId', 'Type')
     #print queryset
     
-    ##permission_classes = (permissions.IsAuthenticatedOrReadOnly)
+    permission_classes = [permissions.IsAdminUser, ]
 
 class ProjectViewSet(viewsets.ModelViewSet):
     """
@@ -91,6 +87,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
     queryset = PROJECT.objects.all()
     filter_backends = (filters.DjangoFilterBackend,)
     filter_fields = ('Status',)
+    permission_classes = [permissions.IsAdminUser, ]
     
     
 class UserProfileViewSet(viewsets.ModelViewSet):
@@ -102,6 +99,8 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     """
     serializer_class =UserProfileSerializer
     queryset = UserProfile.objects.all()
+    permission_classes = [permissions.IsAdminUser, ]
+
     
 ####
 @login_required
@@ -109,8 +108,6 @@ def get_projectInvestors(request):
     return render(request, "admin/projectInvestors.html")
 
 import json
-from django.http import HttpResponse
-
 @login_required
 def get_projectInvestorSummary(request):
     return render(request, "admin/projectInvestorSummary.html")
@@ -235,8 +232,8 @@ def encryptIt(request):
         if request.method == 'POST':
             info2Encrypt = request.POST.get('info2Encrypt')
             EncryptPassword = request.POST.get('EncryptPassword')
-            print 'info2Encrypt=', info2Encrypt, '  EncryptPassword=',EncryptPassword
-            print 'info2Encrypt=[', len(info2Encrypt), '] EncryptPasswords[', len(EncryptPassword)
+            #print 'info2Encrypt=', info2Encrypt, '  EncryptPassword=',EncryptPassword
+            #print 'info2Encrypt=[', len(info2Encrypt), '] EncryptPasswords[', len(EncryptPassword)
             #32 bytes = 256 bits
             #16 = 128 bits
             # the block size for cipher obj, can be 16 24 or 32. 16 matches 128 bit.
@@ -262,7 +259,7 @@ def encryptIt(request):
                 EncryptPassword = EncryptPassword[0:BLOCK_SIZE]
             else:
                 EncryptPassword = EncryptPassword.ljust(BLOCK_SIZE, '!')
-            print 'DecryptPassword=', EncryptPassword
+            #print 'EncryptPassword=', EncryptPassword
             
             secret = secret + str(EncryptPassword)
             print 'encryption secret22:', secret
@@ -299,9 +296,9 @@ def decryptIt(request):
                 DecryptPassword = DecryptPassword[0:BLOCK_SIZE]
             else:
                 DecryptPassword = DecryptPassword.ljust(BLOCK_SIZE, '!')
-            print 'DecryptPassword=', DecryptPassword
+            #print 'DecryptPassword=', DecryptPassword
             
-            print 'info2Decrypt=', info2Decrypt, '  DecryptPassword=',DecryptPassword, ' seed2=',seed2
+            #print 'info2Decrypt=', info2Decrypt, '  DecryptPassword=',DecryptPassword, ' seed2=',seed2
     
             PADDING = '{'
             DecodeAES = lambda c, e: c.decrypt(base64.b64decode(e)).rstrip(PADDING)
@@ -419,12 +416,14 @@ class VendorsListView(ListView):
     #paginate_by = 10
     print 'Vendors'
     
+#@login_required
 class CompanyListView(ListView):
     model = Company
     template_name = "admin/Company.html"
     #paginate_by = 10
     print 'Company'
     
+#@login_required
 class CompanyCreateView(CreateView):
     model = Company
     template_name = "admin/CompanyForm.html"
@@ -432,9 +431,38 @@ class CompanyCreateView(CreateView):
     success_url = '/company/'
     print 'Company create'
 
+#@login_required
 class CompanyUpdateView(UpdateView):
     model = Company
     template_name = "admin/CompanyForm.html"
     fields = ['CompanyName', 'BankInstruction']
     print 'Company update'
     success_url = '/company/'
+    
+##################################### announcement
+#@login_required
+class announcementListView(ListView):
+    print 'entering Announcement ListView'
+    model = Announcement
+    #OrderBy=""
+    template_name = "admin/announcement_list.html"
+    
+#@login_required
+class announcementUpdateView(UpdateView):
+    print 'entering announcement update'
+    model = Announcement
+    form_class = AnnouncementForm
+    template_name = "admin/announcement_detail.html"
+    #fields = ['AnnouncementId','OutputText', 'Comments', 'CreatedOn', 'ExpireOn']
+    print 'announcement update2'
+    success_url = '/announcements/'
+
+#@login_required
+class announcementCreateView(CreateView):
+    print 'entering announcement create'
+    model = Announcement
+    form_class = AnnouncementForm
+    template_name = "admin/announcement_detail.html"
+    #fields = ['AnnouncementId','OutputText', 'Comments', 'CreatedOn', 'ExpireOn']
+    print 'announcement CreateView2'
+    success_url = '/announcements/'

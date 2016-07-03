@@ -79,7 +79,7 @@
 			<td>{% if activity.ProjectId.Status.Status == 'Completed' %}
 					<strike>{{ activity.ProjectId }}</strike> 
 				{% else %}
-					{{ activity.ProjectId }}
+					{{ activity.ProjectId }}-[{{ activity.ProjectId.CompanyId  }}]
 				{% endif %}
 			</td>
 			<td>

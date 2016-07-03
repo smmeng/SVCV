@@ -5,16 +5,42 @@
 {% block body_block %}
 {% load humanize %}
 
-<h2>Activity v. 2.0</h2>
-{% if user.is_authenticated and user.is_staff  %}
-
+<h2>Activity v. 2.0 (Beta)</h2>
+{% if user.is_authenticated  %}
+	{% if user.is_staff or user.is_superuser%}
+	<div class="table-responsive">
+		<h3>Select An Investor to View: </h3>
+		
+		<form  method="post" action="/activity2/" role="form"><span>
+			{% csrf_token %}
+			{% include "admin/investorIds.html" %}
+			<noscript><input type="submit" name="submit" value="View" ></noscript>
+		</span></form>
+		<hr />
+		<h3>Requested Investment Activities for <font color=blue>{{ investorName }}</font>*</h3>
+	{% else %}
+		<h3>Your Investment Activities*</h3>
+	{% endif %}
+	
 	<div  ng-app="appInvestmentActivity" ng-controller="appInvestmentActivityCtrl" class="table-responsive">
       <!-- button id="footerButton" class="btn btn-success" ng-click="toggleFooter()">Toggle Grid Footer</button>
       <button class="btn btn-success" ng-click="toggleColumnFooter()">Toggle Column Footer</button-->
-      <div ui-grid="gridOptions"  ui-grid-grouping ui-grid-selection ui-grid-exporter class="grid"></div>
+      <table style="width:100%; margin:2px;" class="CSSTableGenerator table-hover">
+      	<tr>
+      		<td style="align:right;">Total</td>
+			{% verbatim %}
+      		<td>Outstanding Principal: {{ final_principal| currency}}</td>
+      		<td>Principal: {{ principal | currency}}</td>
+      		<td>Distribution: {{ distribution | currency}}</td>
+      		<td>Interest: {{ interest | currency}}</td>
+      		<td>Dividend: {{ dividend | currency}}</td>
+			{% endverbatim %}      		
+      	</tr>
+      </table>
+      <div ui-grid="gridOptions"  ui-grid-grouping ui-grid-selection ui-grid-exporter class="grid" ui-grid-auto-resize></div>
     </div>
 {% else %}
-	<div class="form-title"><h2>Please authenticate as staff first!</h2></div>
+	<div class="form-title"><h2>Please authenticate first!</h2></div>
 {% endif %}
 	
 {% endblock %}

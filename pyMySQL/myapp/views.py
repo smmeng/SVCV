@@ -13,6 +13,9 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from myapp.forms import ProjectForm,  UserProfileForm
 from myapp.models import PROJECT, InvestmentActivity, UserProfile,Announcement, Vendor
 from myapp.serializers import ActivitySerializer
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticatedOrReadOnly
+from myapp import app_permissions
+from rest_framework.decorators import detail_route
 
 from myapp.utility import Utility, FieldSet
 
@@ -30,6 +33,7 @@ from rest_framework import viewsets
 from rest_framework import filters
 
 from django.core.mail import EmailMessage
+from myapp.app_permissions import *
 
 #from myapp import RegisterTableColumns
 #import MySQLdb
@@ -351,7 +355,14 @@ def get_activity(request, orderBy=None):
 
 @login_required
 def get_activity2(request, orderBy=None):
-    return render(request, 'activity2.html')
+    util = Utility()
+    user_list = util.viewable_user_list(request)
+    
+    allUserId_list = user_list['allUserId_list']
+    allUser_list = user_list['allUser_list']
+    activity_dict = {'allUser_list':allUser_list}
+        
+    return render(request, 'activity2.html', activity_dict)
 
 from django.http import JsonResponse
 from django.core import serializers
@@ -374,6 +385,7 @@ class activityViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ActivitySerializer
     
     queryset = InvestmentActivity.objects.all()
+    #permission_classes = [IsAdminOrIsSelf, IsAuthenticatedOrReadOnly]
     
     def get_queryset(self):
         #return InvestmentActivity.objects.filter(UserId = self.request.user)

@@ -43,7 +43,7 @@ class PROJECT(models.Model):
     website = models.URLField(max_length=1024, default="")
     
     def __unicode__(self):  #For Python 2, use __str__ on Python 3
-        return u'%d: [%s] - %s' % (self.ProjectId, self.ProjectName, self.Status)
+        return u'#%d: [%s]' % (self.ProjectId, self.ProjectName)
 
 class ProjectType(models.Model):
     ProjectType = models.CharField(primary_key=True, max_length=100) #pnote or equity

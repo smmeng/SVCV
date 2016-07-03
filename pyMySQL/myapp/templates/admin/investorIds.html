@@ -1,0 +1,12 @@
+			<h3>Select An Investor to View2: </h3>
+			<select ng-model="investorId" ng-change="selectInvestorId(investorId)">
+			  	<option >---</option>
+			  	<option value="ALL">ALL</option>
+				{% for userId in allUser_list %}
+					{% if   userId.id|add:0 == investorId|add:0 %}
+						<option value="{{ userId.id }}" selected="selected">{{ userId.first_name }} {{ userId.last_name }}</option>
+					{% else %}
+						<option value="{{ userId.id }}">{{ userId.first_name }} {{ userId.last_name }}</option>
+					{% endif %}
+				{% endfor %}
+			</select> 

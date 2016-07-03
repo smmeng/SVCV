@@ -81,11 +81,15 @@ Released   : 20130412
 	<link rel="stylesheet" href="{% static 'css/ui-grid/ui-grid.css' %}" type="text/css">
 
 	<script type="text/javascript" src="{% static 'js/app.js' %}"> </script>
-	
+	{% if user.is_authenticated and user.is_staff %}
+		<!--script src="//cdn.ckeditor.com/4.5.9/basic/ckeditor.js"></script>
+		<script src="//cdn.ckeditor.com/4.5.9/full/ckeditor.js"></script>
+		
+			-->
+		<script src="//cdn.ckeditor.com/4.5.9/standard/ckeditor.js"></script>
+	{% endif %}
 	<!--  Utility scripts for showing slideshow via ngFader  -->
 	<script src="{% static "js/slideshow/jquery.slides.min.js" %}"></script>
-	
-
 	<script>
     $(function(){
       $("#slides").slidesjs({
@@ -188,6 +192,7 @@ Released   : 20130412
 		                <ul class="dropdown-menu">
 	                	  <li><a href="/projects/">Projects</a></li>
 	                	  <li><a href="/activity/">Activities</a></li>
+	                	  <li><a href="/activity2/">Activities v2</a></li>
 
 		                  <li id="menu_profile" role="separator" class="divider " ></li>
 		                  <li id="menu_profile" class="dropdown-header">Profile Options</li>

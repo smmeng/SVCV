@@ -28,12 +28,18 @@
 				{% endif %}
 			</thead>
             {% for project in projects %}
-                <tr>
-                	<td><a href='/edit_project/{{ project.ProjectId }}'>{{ project.ProjectId }}. {{ project.ProjectName }}</a> - 
-                		{% if   user.is_staff or user.is_superuser %}
-                			<a href='/projectInvestors?projectId={{ project.ProjectId }}'>Investors</a>
-                		{% endif %}
-                	</td>
+              <tr>
+               	<td>
+               		{% if project.Status_id == 'Completed' %}
+                		<strike><a href='/edit_project/{{ project.ProjectId }}'>{{ project.ProjectId }}. {{ project.ProjectName }}</a></strike>
+                	{% else  %}
+                		<a href='/edit_project/{{ project.ProjectId }}'>{{ project.ProjectId }}. {{ project.ProjectName }}</a>
+                	{% endif %} 
+               		- 
+               		{% if   user.is_staff or user.is_superuser %}
+               			<a href='/projectInvestors?projectId={{ project.ProjectId }}'>Investors</a>
+               		{% endif %}
+               	</td>
                 <td>{% if project.Status_id == 'Completed' %}
                 		<strike>{{ project.DESCRIPTION }} </strike>
                 	{% else  %}
@@ -41,7 +47,7 @@
                 	{% endif %}
                 	</td>
                 <td>{% if project.Status_id == 'Completed' %}
-                		<font color="green" > <strong>{{ project.Status_id }}</strong>
+                		<font color="green" ><strike> <strong>{{ project.Status_id }}</strong></strike>
                 	{% elif project.Status_id == 'In Progress' %}
                 		<font color="blue" > {{ project.Status_id }}
                 	{% elif project.Status_id == 'Open' %}
@@ -49,14 +55,46 @@
                 	{% else  %}
                 		<font color="navy">{{ project.Status_id }}
                 	{% endif %}
-                	 	</font></td>
-                <td>{{ project.CompanyId }}</td>
-                <td>{{ project.VendorId }}</td>
-                <td>{{ project.StartDate }}</td>
+                	 	</font>
+                </td>
+                <td>
+                	{% if project.Status_id == 'Completed' %}
+                		<strike>{{ project.CompanyId }} </strike>
+                	{% else  %}
+                		{{ project.CompanyId }} 
+                	{% endif %}
+                </td>
+                <td>{% if project.Status_id == 'Completed' %}
+                		<strike>{{ project.VendorId }} </strike>
+                	{% else  %}
+                		{{ project.VendorId }}
+                	{% endif %}
+                </td>
+                <td>{% if project.Status_id == 'Completed' %}
+                		<strike>{{ project.StartDate }} </strike>
+                	{% else  %}
+                		{{ project.StartDate }}
+                	{% endif %}
+                </td>
 		        {% if user.is_staff or user.is_superuser %}
-                <td>{{ project.EndDate }}</td>
-                <td>${{ project.Allocation |intcomma}}</td>
-                <td><strong><font color=green>${{ project.Committed|intcomma }}</font></strong></td>
+	                <td>{% if project.Status_id == 'Completed' %}
+	                		<strike>{{ project.EndDate }} </strike>
+                	{% else  %}
+                		{{ project.EndDate }}
+                	{% endif %}
+	                </td>
+	                <td>{% if project.Status_id == 'Completed' %}
+	                		<strike>${{ project.Allocation |intcomma}} </strike>
+                	{% else  %}
+                		${{ project.Allocation |intcomma}} 
+                	{% endif %}
+	                </td>
+	                <td>{% if project.Status_id == 'Completed' %}
+	                	<strike><strong><font color=green>${{ project.Committed|intcomma }}</font></strong> </strike>
+                	{% else  %}
+                		${{ project.Committed|intcomma }}
+                	{% endif %}
+	                </td>
                 {% endif %}
                 </tr>
               {% endfor %}

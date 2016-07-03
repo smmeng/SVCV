@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Announcements{% endblock %}
+{% block menuitems %}
+    {% with 'adminIndex' as menu %}
+        {{ block.super }}
+    {% endwith %}
+{% endblock %}
+
+{% block body_block %}
+
+<div >
+	<h2>Announcements (ADMIN VIEW)</h2>
+	{% if user.is_authenticated and user.is_staff %}
+		<a href="/announcements/add/"><img src="/static/images/add.png" width="24px"> Add New</a>
+		<div style="max-width: 100%;">
+			<table id="annc" class="CSSTableGenerator table-hover " >
+			  <thead >
+				<th>ID</th>
+				<th>Output </th>
+				<th>Comments </th>
+				<th>Created On</th>
+				<th>Expire On</th>
+			  </thead>
+			  {% for annc in object_list %}
+			  <tr>
+				<td> <a href="/announcements/{{annc.AnnouncementId}}/">{{ annc.AnnouncementId }}<img src="/static/images/edit.png" width="24 px;"> </a></td>
+				<td>{{ annc.OutputText }} </td>
+				<td>{{ annc.Comments }}</td>
+				<td>{{ annc.CreatedOn }}</td>
+				<td>{{ annc.ExpireOn}}</td>
+			  </tr>
+			  {% endfor %}
+			</table>
+			
+		</div>
+	{% else %}
+		<H3>Please authenticate as super user first.</H3>
+	{% endif %}
+</div>
+{% endblock %}

@@ -7,6 +7,7 @@ encoding//myapp/migrations/0013_userprofile.py=utf-8
 encoding//myapp/migrations/0025_auto_20151101_1601.py=utf-8
 encoding//myapp/migrations/0026_userprofile.py=utf-8
 encoding//myapp/migrations/0027_auto_20151101_1609.py=utf-8
+encoding//myapp/static/css/ui-grid/ui-grid.css=UTF-8
 encoding//myapp/templates/about-us.html=UTF-8
 encoding//myapp/templates/admin/encryption.html=UTF-8
 encoding//myapp/templates/index.html=UTF-8
