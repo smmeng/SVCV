@@ -14,7 +14,7 @@ from rest_framework import renderers
 from rest_framework.routers import DefaultRouter
 
 from myapp import views, adminViews
-from django.contrib.auth.forms import AdminPasswordChangeForm 
+#from django.contrib.auth.forms import AdminPasswordChangeForm 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
@@ -75,7 +75,7 @@ urlpatterns = patterns('',
         url(r'^company/(?P<pk>\d+)/$', adminViews.CompanyUpdateView.as_view(), name='Company-update'),
         url(r'^reset/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
             views.reset_confirm, name='password_reset_confirm'),
-        url(r'^reset/$', views.reset, name='password-reset'),
+        url(r'^reset/$', views.reset, name='reset'),
 )
 
 
