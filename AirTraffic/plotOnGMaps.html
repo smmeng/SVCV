@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Draw a polyline given many coordinates</title>
+
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+#map_canvas { height: 100% }
+</style>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js"></script>
+
+<script>
+    function initialize() {
+        var homeLatlng = new google.maps.LatLng(37.3522374, -122.052706);
+        var myOptions = {
+            zoom: 12,
+            center: homeLatlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+        // create an array of coordinates AC81CC
+        var arrCoords = [
+            new google.maps.LatLng(37.34281, -122.095304),
+            new google.maps.LatLng(37.33592, -122.060076),
+            new google.maps.LatLng(37.327307, -122.022878),
+        ];
+
+        // draw the route on the map            
+        var route = new google.maps.Polyline({
+            path: arrCoords,
+            strokeColor: "red",
+            strokeOpacity: 1.0,
+            strokeWeight: 4,
+            geodesic: false,
+            map: map
+        }); 
+        arrCoords = [
+            new google.maps.LatLng(37.34281, -122.095304),
+            new google.maps.LatLng(37.34592, -122.060076),
+            new google.maps.LatLng(37.347307, -122.022878),
+        ];
+
+        // draw the route on the map            
+        route = new google.maps.Polyline({
+            path: arrCoords,
+            strokeColor: "blue",
+            strokeOpacity: 1.0,
+            strokeWeight: 4,
+            geodesic: false,
+            map: map
+        }); 
+    }
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+</head>
+<body>
+  <div id="map_canvas"></div>
+</body>
+</html>
+
