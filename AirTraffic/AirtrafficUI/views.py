@@ -15,11 +15,18 @@ from django.core import serializers
 #from django.views.generic.edit import CreateView, UpdateView, DeleteView
 #from django.core.mail import EmailMessage
 from models import *
+from django.db.models import Q
+
+flightDetailURL="https://flightaware.com/live/flight/"
 
 #@login_required
-def showRoutes(request):
-    print "showRoutes for ",  str(date.today()) + " 00:00:00"
-    flight_list = positionJSONHistory.objects.all().filter(date__gte = (str(date.today()) + "T00:00:00Z")).order_by('ICAO', '-id')
+def showRouteData(request):
+    print "showRoutes at ", date.today()
+    
+    qname = Q() 
+    qname &= Q(date__gte = (str(date.today()) + "T00:00:00Z"))
+    qname &=  Q(altitude__gte =50)
+    flight_list = positionJSONHistory.objects.all().filter(qname).order_by('ICAO','id')
     print len(flight_list)
     
     flightDictionary ={}
@@ -34,16 +41,20 @@ def showRoutes(request):
             print counter
             singleFlightDataList=[]
 
+        if counter > 20:
+            break;
+
         singleFlightDataList.append({"id":flight.id, "ICAO":flight.ICAO, "Flight":flight.Flight, "Date":flight.date, "alt":flight.altitude, "lat":flight.latitude, "lon":flight.longititude} )
         flightDictionary[flight.ICAO] = singleFlightDataList
 
-        if counter > 20:
-            break;
-    #return render(request, 'showGMaps.html', {})
+
     #print 'flightDictionary=[', flightDictionary
-    return JsonResponse(flightDictionary)
+    return JsonResponse(flightDictionary.items(), safe=False)
     #return JsonResponse(serializers.serialize("json",flightDictionary),safe=False  )
 
+def showRoutes(request):
+    return render(request, 'showGMaps.html',{})
+    
 # BLUE, 7000-8000
 # cyan, 6000-6999
 # yellow, 5000-5999
