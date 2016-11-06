@@ -1,0 +1,55 @@
+# Create your views here.
+from datetime import datetime, timedelta
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, RequestContext
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import   User
+from django.db.models import Q
+from datetime import date
+import json
+from django.http import JsonResponse
+from django.core import serializers
+
+#from django.views.generic import   ListView
+#from django.views.generic.edit import CreateView, UpdateView, DeleteView
+#from django.core.mail import EmailMessage
+from models import *
+
+#@login_required
+def showRoutes(request):
+    print "showRoutes for ",  str(date.today()) + " 00:00:00"
+    flight_list = positionJSONHistory.objects.all().filter(date__gte = (str(date.today()) + "T00:00:00Z")).order_by('ICAO', '-id')
+    print len(flight_list)
+    
+    flightDictionary ={}
+    singleFlightDataList=[]
+    counter = 0
+    icao = ""
+    for flight in flight_list:
+        print flight.ICAO, flight.Flight, flight.date, flight.altitude, flight.latitude, flight.longititude
+        if icao != flight.ICAO:
+            icao = flight.ICAO
+            counter+=1
+            print counter
+            singleFlightDataList=[]
+
+        singleFlightDataList.append({"id":flight.id, "ICAO":flight.ICAO, "Flight":flight.Flight, "Date":flight.date, "alt":flight.altitude, "lat":flight.latitude, "lon":flight.longititude} )
+        flightDictionary[flight.ICAO] = singleFlightDataList
+
+        if counter > 20:
+            break;
+    #return render(request, 'showGMaps.html', {})
+    #print 'flightDictionary=[', flightDictionary
+    return JsonResponse(flightDictionary)
+    #return JsonResponse(serializers.serialize("json",flightDictionary),safe=False  )
+
+# BLUE, 7000-8000
+# cyan, 6000-6999
+# yellow, 5000-5999
+# orange, 4000-4999
+# chocolate, 3000-3999
+# red/crimson/magenta,2000-2999
+# brown, 1000-1999
+# black, 50 - 999
+
