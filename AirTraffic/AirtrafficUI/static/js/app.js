@@ -2,8 +2,9 @@ var app = angular.module('appGMaps', []);
 
 app.controller('appGMapsCtrl', function($scope, $filter, $http) {
 	var jsonURL = "/showRouteData/";
-	 $scope.mapProp = {
-			    center:new google.maps.LatLng(37.3522374, -122.052706),
+	var homeLatlng = new google.maps.LatLng(37.3522374, -122.052706);
+	$scope.mapProp = {
+			    center:homeLatlng,
 			    zoom:12,
 			    mapTypeId:google.maps.MapTypeId.ROADMAP
 			   };
@@ -16,20 +17,20 @@ app.controller('appGMapsCtrl', function($scope, $filter, $http) {
     	for(var i = 0; i < $scope.summary.length; i++)
     	{
     		row = $scope.summary[i];
-    		console.log("row " + i  + "-" + row[0] + "-" + row[1][0]['Flight'] );
+    		console.log("row " + i  + "-" + row[0] + "-" + row[1][0]['lat'] + "-" + row[1][0]['lon'] );
     		var arrayCoords = [];
     		for (var alt = 0; alt < row[1].length; alt++)
 			{
-    			var latlong=  new google.maps.LatLng(row[1]['lat'] , row[1][alt]['lon'] );
+    			var latlong=  new google.maps.LatLng(row[1][alt]['lat'] , row[1][alt]['lon'] );
     			arrayCoords.push(latlong);
 			}
     		
     		// draw the route on the map            
             var route = new google.maps.Polyline({
                 path: arrayCoords,
-                strokeColor: "red",
-                strokeOpacity: 2.0,
-                strokeWeight: 4,
+                strokeColor: "blue",
+                strokeOpacity: 1.0,
+                strokeWeight: 1,
                 geodesic: false,
                 map: $scope.map
             }); 
@@ -37,7 +38,6 @@ app.controller('appGMapsCtrl', function($scope, $filter, $http) {
     	}
     	
     	console.log("Total: " + $scope.summary.length);
-
     });
 });
 
