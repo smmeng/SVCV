@@ -41,8 +41,8 @@ def showRouteData(request):
             print counter
             singleFlightDataList=[]
 
-        if counter > 25:
-            break;
+        #if counter > 250:
+            #break;
 
         singleFlightDataList.append({"id":flight.id, "ICAO":flight.ICAO, "Flight":flight.Flight, "Date":flight.date, "alt":flight.altitude, "lat":flight.latitude, "lon":flight.longititude} )
         flightDictionary[flight.ICAO] = singleFlightDataList
