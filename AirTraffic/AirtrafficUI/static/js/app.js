@@ -5,7 +5,7 @@ app.controller('appGMapsCtrl', function($scope, $filter, $http) {
 	var homeLatlng = new google.maps.LatLng(37.3522374, -122.052706);
 	$scope.mapProp = {
 			    center:homeLatlng,
-			    zoom:12,
+			    zoom:11,
 			    mapTypeId:google.maps.MapTypeId.ROADMAP
 			   };
 
@@ -13,7 +13,10 @@ app.controller('appGMapsCtrl', function($scope, $filter, $http) {
 	
     $http.get(jsonURL).success(function (data) {
     	$scope.summary = data;
+    	var lineWeight = 2;
     	
+    	if ($scope.summary.length > 700)
+    		lineWeight = 1;
     	for(var i = 0; i < $scope.summary.length; i++)
     	{
     		row = $scope.summary[i];
@@ -35,7 +38,7 @@ app.controller('appGMapsCtrl', function($scope, $filter, $http) {
     					color = "blue";
 	    				var route = new google.maps.Polyline({
 	    	                path: arrayCoords, strokeColor: color,strokeOpacity: 0.5, 
-	    	                strokeWeight: 2, geodesic: false, map: $scope.map
+	    	                strokeWeight: lineWeight, geodesic: false, map: $scope.map
 	    				}); 
 	    				oldAlt=newAlt;
 	    				arrayCoords = [];
@@ -45,7 +48,7 @@ app.controller('appGMapsCtrl', function($scope, $filter, $http) {
     					color = "cyan";
 	    				var route = new google.maps.Polyline({
 	    	                path: arrayCoords, strokeColor: color,strokeOpacity: 0.5, 
-	    	                strokeWeight: 2, geodesic: false, map: $scope.map
+	    	                strokeWeight: lineWeight, geodesic: false, map: $scope.map
 	    				}); 
 	    				oldAlt=newAlt;
 	    				arrayCoords = [];
@@ -55,7 +58,7 @@ app.controller('appGMapsCtrl', function($scope, $filter, $http) {
 	    				color = "green";
 	    				var route = new google.maps.Polyline({
 	    	                path: arrayCoords, strokeColor: color,strokeOpacity: 0.5, 
-	    	                strokeWeight: 2, geodesic: false, map: $scope.map
+	    	                strokeWeight: lineWeight, geodesic: false, map: $scope.map
 	    				}); 
 	    				oldAlt=newAlt;
 	    				arrayCoords = [];
@@ -65,7 +68,7 @@ app.controller('appGMapsCtrl', function($scope, $filter, $http) {
 	    				color = "yellow";
 	    				var route = new google.maps.Polyline({
 	    	                path: arrayCoords, strokeColor: color,strokeOpacity: 0.5, 
-	    	                strokeWeight: 2, geodesic: false, map: $scope.map
+	    	                strokeWeight: lineWeight, geodesic: false, map: $scope.map
 	    				}); 
 	    				oldAlt=newAlt;
 	    				arrayCoords = [];
@@ -75,7 +78,7 @@ app.controller('appGMapsCtrl', function($scope, $filter, $http) {
 	    				color = "orange";
 	    				var route = new google.maps.Polyline({
 	    					path: arrayCoords, strokeColor: color,strokeOpacity: 0.5, 
-	    	                strokeWeight: 2, geodesic: false, map: $scope.map
+	    	                strokeWeight: lineWeight, geodesic: false, map: $scope.map
 	    				}); 
 	    				oldAlt=newAlt;
 	    				arrayCoords = [];
@@ -85,7 +88,7 @@ app.controller('appGMapsCtrl', function($scope, $filter, $http) {
 	    				color = "chocolate";
 	    				var route = new google.maps.Polyline({
 	    					path: arrayCoords, strokeColor: color,strokeOpacity: 0.5, 
-	    	                strokeWeight: 2, geodesic: false, map: $scope.map
+	    	                strokeWeight: lineWeight, geodesic: false, map: $scope.map
 	    				}); 
 	    				oldAlt=newAlt;
 	    				arrayCoords = [];
@@ -95,7 +98,7 @@ app.controller('appGMapsCtrl', function($scope, $filter, $http) {
 	    				color = "red";
 	    				var route = new google.maps.Polyline({
 	    					path: arrayCoords, strokeColor: color,strokeOpacity: 0.5, 
-	    	                strokeWeight: 2, geodesic: false, map: $scope.map
+	    	                strokeWeight: lineWeight, geodesic: false, map: $scope.map
 	    				}); 
 	    				oldAlt=newAlt;
 	    				arrayCoords = [];
@@ -105,7 +108,7 @@ app.controller('appGMapsCtrl', function($scope, $filter, $http) {
 	    				color = "crimson";
 	    				var route = new google.maps.Polyline({
 	    					path: arrayCoords, strokeColor: color,strokeOpacity: 0.5, 
-	    	                strokeWeight: 2, geodesic: false, map: $scope.map
+	    	                strokeWeight: lineWeight, geodesic: false, map: $scope.map
 	    				}); 
 	    				oldAlt=newAlt;
 	    				arrayCoords = [];
@@ -115,7 +118,7 @@ app.controller('appGMapsCtrl', function($scope, $filter, $http) {
 	    				color = "magenta";
 	    				var route = new google.maps.Polyline({
 	    					path: arrayCoords, strokeColor: color,strokeOpacity: 0.5, 
-	    	                strokeWeight: 2, geodesic: false, map: $scope.map
+	    	                strokeWeight: lineWeight, geodesic: false, map: $scope.map
 	    				}); 
 	    				oldAlt=newAlt;
 	    				arrayCoords = [];
@@ -125,7 +128,7 @@ app.controller('appGMapsCtrl', function($scope, $filter, $http) {
 	    				color = "brown";
 	    				var route = new google.maps.Polyline({
 	    					path: arrayCoords, strokeColor: color,strokeOpacity: 0.5, 
-	    	                strokeWeight: 2, geodesic: false, map: $scope.map
+	    	                strokeWeight: lineWeight, geodesic: false, map: $scope.map
 	    				}); 
 	    				oldAlt=newAlt;
 	    				arrayCoords = [];
@@ -138,7 +141,7 @@ app.controller('appGMapsCtrl', function($scope, $filter, $http) {
                 path: arrayCoords,
                 strokeColor: color,
                 strokeOpacity: 0.5,
-                strokeWeight: 2,
+                strokeWeight: lineWeight,
                 geodesic: false,
                 map: $scope.map
             }); 
