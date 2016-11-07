@@ -34,14 +34,14 @@ def showRouteData(request):
     counter = 0
     icao = ""
     for flight in flight_list:
-        print flight.ICAO, flight.Flight, flight.date, flight.altitude, flight.latitude, flight.longititude
         if icao != flight.ICAO:
+            print flight.ICAO, flight.Flight, flight.date, flight.altitude, flight.latitude, flight.longititude
             icao = flight.ICAO
             counter+=1
             print counter
             singleFlightDataList=[]
 
-        if counter > 20:
+        if counter > 25:
             break;
 
         singleFlightDataList.append({"id":flight.id, "ICAO":flight.ICAO, "Flight":flight.Flight, "Date":flight.date, "alt":flight.altitude, "lat":flight.latitude, "lon":flight.longititude} )
