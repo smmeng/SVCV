@@ -9,14 +9,32 @@ html { height: 100% }
 body { height: 100%; margin: 0; padding: 0 }
 #map_canvas { height: 90% }
 </style>
-<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js"></script>
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js"></script>
+	<link href="/static/css/default.css"  rel="stylesheet" type="text/css" media="all" />
 
 </head>
 <body>
   <div id="map_canvas"></div>
   <div  ng-app="appGMaps" ng-controller="appGMapsCtrl">
-  	<H1>GMapp App</H1>
-  	<div id="map_canvas2"></div>
+  	<H2>Bay Area Air Traffic</H2>
+  	<table style="max-width: 50% !important;" class="CSSTableGenerator">
+  		<tr colspan="4">
+  			<td style="background-color: blue;">Above 7,500 ft</td>
+  			<td style="background-color: cyan;">7,000 ~ 7,500 ft</td>
+  			<td style="background-color: green;">6,000 ~ 7,000 ft</td>
+  			<td style="background-color: yellow;">5,000 ~ 6,000 ft</td>
+  		</tr>
+  		<tr colspan="4">
+  			<td style="background-color: orange;">4,000 ~ 5,000 ft</td>
+  			<td style="background-color: chocolate;">3,000 ~ 4,000 ft</td>
+  			<td style="background-color: red;">2,000 ~ 3,000 ft</td>
+  			<td style="background-color: crimson;">1,000 ~ 2,000 ft</td>
+  		</tr>
+  		<tr colspan="4">
+  			<td style="background-color: magenta;">500 ~ 1,000 ft</td>
+  			<td style="background-color: brown;">Under 500 ft</td>
+  		</tr>
+  	</table>
   	
   </div>
 </body>

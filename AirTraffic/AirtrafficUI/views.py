@@ -17,7 +17,8 @@ from django.core import serializers
 from models import *
 from django.db.models import Q
 
-flightDetailURL="https://flightaware.com/live/flight/"
+flightDetailURL="https://flightaware.com/live/flight/" 
+weatherRESTws= "https://home.openweathermap.org/api_keys" #key=649dad5b960b03ef0403da84b1a2c9a8
 
 #@login_required
 def showRouteData(request):
