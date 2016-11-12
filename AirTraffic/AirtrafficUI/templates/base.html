@@ -19,9 +19,9 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="Save My Sunny Sky">
     <meta name="author" content="S. Meng">
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-    
-    <link rel="icon" href="{% static "images/favicon.ico" %}" type="image/x-icon">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=yes, width=device-width">
+
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
 
 	<meta name="keywords" content="Save My Sunny Sunnyvale Cupertino Sky" />
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -49,15 +49,15 @@
 	
 	<!-- script type="text/javascript" src="http://codeorigin.jquery.com/jquery-1.10.2.min.js"></script-->
 	<!-- AngularJS inclusion >
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>    
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
     <script type="text/javascript" src="http://code.angularjs.org/1.3.9/angular.js"></script-->
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-touch.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-animate.js"></script>
 	
-	<script type="text/javascript" src="{% static 'js/app.js' %}"> </script>
 	
-	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js"></script>
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDEh9lkQ1wyrIVBU551v1yrVPkxOKWV3gQ&callback=initialize" ></script> 
+	<script type="text/javascript" src="{% static 'js/app.js' %}"> </script>
   </head>
 
   <body  >

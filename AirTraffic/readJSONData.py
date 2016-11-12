@@ -32,24 +32,29 @@ while True:
 		hex = flit.get("hex", "")
 		speed = flit.get("speed", "0")
 		altitude = flit.get("altitude", "0")
+		if str(altitude).lower() == "ground":
+			altitude = "0";
 		lat = flit.get("lat", "0.0")
 		lon = flit.get("lon", "0.0")
-		flight = flit.get("flight", "")
-		squawk = flit.get("squawk", "")
-		nucp = flit.get("nucp", "")
-		seen_pos = flit.get("seen_pos", "")
-		vert_rate = flit.get("vert_rate", "")
-		track = flit.get("track", "")
+		flight = flit.get("flight", "null")
+		squawk = flit.get("squawk", "null")
+		nucp = flit.get("nucp", "0")
+		seen_pos = flit.get("seen_pos", "0.00")
+		vert_rate = flit.get("vert_rate", "0")
+		track = flit.get("track", "0")
 		category = flit.get("category", "")
-		messages = flit.get("messages", "")
-		seen = flit.get("seen", "")
-		rssi = flit.get("rssi", "")
+		messages = flit.get("messages", "0")
+		seen = flit.get("seen", "0.0.")
+		rssi = flit.get("rssi", "0.0")
 		#mlat = flit.get("mlat", "")
 		#tisb = flit.get("tisb", "")
 		sql = ""
+		if (altitude < 50 and int(speed) < 20):
+			continue;
+ 
 		if (float(lat) > 0 and float(lon)!=0 and int(altitude) < minimumHeight):
-			print hex, flight, altitude, lat, lon, speed, squawk, seen_pos, vert_rate, track
-			sql += "INSERT INTO postionJSONHistory VALUES(null,'" + hex +"','" +flight + "', '"
+		#	print hex, flight, altitude, lat, lon, speed, squawk, seen_pos, vert_rate, track
+			sql += "INSERT INTO AirtrafficUI_positionjsonhistory VALUES(null,'" + hex +"','" +flight + "', '"
 			sql += now[0:19] + "', " + str(altitude) + ", " + str(lat) + ", "+ str(lon) + ", '" + squawk + "', " + str(nucp) + ", "
 			sql += str(seen_pos) + ", " + str(vert_rate) + ", "+ str(track) + ", " + str(speed)+ ", '" + category + "', " 
 			sql += str(messages) + ", " + str(seen) + ", " + str(rssi) + ")"
@@ -64,5 +69,5 @@ while True:
 				print "MySQL Insert errort time=[", time, "], SQL=", sql
 				db.rollback()
 
-	time.sleep(10)
+	time.sleep(interval*1)
 

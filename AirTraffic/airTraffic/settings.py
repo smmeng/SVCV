@@ -81,8 +81,8 @@ DATABASES = {
         'NAME': 'AirTraffic',
         'HOST': 'lab2.svcvllc.com',
         'PORT': '3306',
-        'USER': 'datafeed',
-        'PASSWORD': 'Sunnyva1e'    
+        'USER': 'httpuser',
+ 	'PASSWORD': 'Save3ySky'    
 #        , 'OPTIONS':  {
 #                        'ssl': {'ca': '<PATH TO CA CERT>',
 #                                'cert': '<PATH TO CLIENT CERT>',
@@ -118,15 +118,25 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT= os.path.join(BASE_DIR, 'AirtrafficUI/static')
+STATICFILES_DIRS = (
+    #os.path.join(STATIC_ROOT, 'static'),
+    # Put strings here, like "/home/html/static" or "C:/www/django/static".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+    ("js", os.path.join(STATIC_ROOT,'js')),
+    ("css", os.path.join(STATIC_ROOT,'css')),
+    ("images", os.path.join(STATIC_ROOT,'images')),
+    ("bootstrap-3.3.6", os.path.join(STATIC_ROOT,'bootstrap-3.3.6')),
+)
+
+AUTO_LOGOUT_DELAY = 10 #equivalent to 5 minutes

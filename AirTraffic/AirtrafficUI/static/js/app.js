@@ -20,10 +20,10 @@ app.controller('appGMapsCtrl', function($scope, $filter, $http) {
     	for(var i = 0; i < $scope.summary.length; i++)
     	{
     		row = $scope.summary[i];
-    		console.log("row " + i  + "-" + row[0] + "-" + row[1][0]['lat'] + "-" + row[1][0]['lon'] );
     		var arrayCoords = [];
     		var oldAlt =  row[1][0]['alt'];
     		var color = "blue";
+    		//console.log("row " + i  + "-" + "-" + row[1][0]['alt'] + row[0] + "-" + row[1][0]['lat'] + "-" + row[1][0]['lon'] );
     		for (var alt = 0; alt < row[1].length; alt++)
 			{
     			var latlong=  new google.maps.LatLng(row[1][alt]['lat'] , row[1][alt]['lon'] );
@@ -35,6 +35,7 @@ app.controller('appGMapsCtrl', function($scope, $filter, $http) {
 
     			if (newAlt < oldAlt && oldAlt >=7500 && newAlt <7500)
     				{
+    					console.log("row " + i  + "-" +alt + "-altitude=[" + newAlt   );
     					color = "blue";
 	    				var route = new google.maps.Polyline({
 	    	                path: arrayCoords, strokeColor: color,strokeOpacity: 0.5, 
@@ -45,6 +46,7 @@ app.controller('appGMapsCtrl', function($scope, $filter, $http) {
     				}
     			else if (newAlt < oldAlt &&  oldAlt >=7000 && newAlt <=7000)
     				{
+    					console.log("row " + i  + "-" +alt + "-altitude=[" + newAlt   );
     					color = "cyan";
 	    				var route = new google.maps.Polyline({
 	    	                path: arrayCoords, strokeColor: color,strokeOpacity: 0.5, 
@@ -55,6 +57,7 @@ app.controller('appGMapsCtrl', function($scope, $filter, $http) {
     				}
     			else if (newAlt < oldAlt &&  oldAlt >=6000 && newAlt <=6000)
 				{
+    					console.log("row " + i  + "-" +alt + "-altitude=[" + newAlt   );
 	    				color = "green";
 	    				var route = new google.maps.Polyline({
 	    	                path: arrayCoords, strokeColor: color,strokeOpacity: 0.5, 
@@ -133,6 +136,14 @@ app.controller('appGMapsCtrl', function($scope, $filter, $http) {
 	    				oldAlt=newAlt;
 	    				arrayCoords = [];
 					}	
+    			else 
+					{
+	    				color = "brown";
+	    				var route = new google.maps.Polyline({
+	    					path: arrayCoords, strokeColor: color,strokeOpacity: 0.5, 
+	    	                strokeWeight: lineWeight, geodesic: false, map: $scope.map
+	    				}); 
+					}
 
 			}
     		

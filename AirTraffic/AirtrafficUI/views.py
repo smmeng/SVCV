@@ -6,7 +6,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import   User
 from django.db.models import Q
-from datetime import date
+from datetime import date, datetime
+import pytz
 import json
 from django.http import JsonResponse
 from django.core import serializers
@@ -22,13 +23,20 @@ weatherRESTws= "https://home.openweathermap.org/api_keys" #key=649dad5b960b03ef0
 
 #@login_required
 def showRouteData(request):
-    print "showRoutes at ", date.today()
-    
+    #today =  str(datetime.now(pytz.timezone('US/Pacific')))[0:10] 
+    tday =  datetime.now(pytz.timezone('US/Pacific'))
+    print "showRouteData at ",pytz.timezone('US/Pacific'), ",today[", tday, "]"
+ 
     qname = Q() 
-    qname &= Q(date__gte = (str(date.today()) + "T00:00:00Z"))
+    #qname &= Q(date__gte = (str(date.today()) + "T00:00:00Z"))
+    qname &= Q(date__year =  tday.year)
+    qname &= Q(date__month=  tday.month)
+    qname &= Q(date__day=  tday.day)
+    #qname &= Q(date__date= datetime.now(pytz.timezone('US/Pacific')).date())
     qname &=  Q(altitude__gte =50)
-    flight_list = positionJSONHistory.objects.all().filter(qname).order_by('ICAO','id')
-    print len(flight_list)
+    #qname &=  Q(altitude__lte =5000)
+    flight_list = positionJSONHistory.objects.filter(qname).order_by('ICAO','id')
+    print len(flight_list), datetime.now(pytz.timezone('US/Pacific')).date()
     
     flightDictionary ={}
     singleFlightDataList=[]
@@ -36,13 +44,16 @@ def showRouteData(request):
     icao = ""
     for flight in flight_list:
         if icao != flight.ICAO:
-            print flight.ICAO, flight.Flight, flight.date, flight.altitude, flight.latitude, flight.longititude
             icao = flight.ICAO
             counter+=1
-            print counter
+            #print counter,flight.ICAO, flight.Flight, flight.date, flight.altitude, flight.latitude, flight.longititude
             singleFlightDataList=[]
 
-        #if counter > 250:
+        if (counter %100==0):
+            print flight.ICAO, flight.Flight, flight.date, flight.altitude, flight.latitude, flight.longititude
+
+	if  flight.altitude > 5000:
+            print flight.ICAO, flight.Flight, flight.date, flight.altitude, flight.latitude, flight.longititude
             #break;
 
         singleFlightDataList.append({"id":flight.id, "ICAO":flight.ICAO, "Flight":flight.Flight, "Date":flight.date, "alt":flight.altitude, "lat":flight.latitude, "lon":flight.longititude} )
@@ -55,6 +66,9 @@ def showRouteData(request):
 
 def showRoutes(request):
     return render(request, 'showGMaps.html',{})
+    
+def showRoutes0(request):
+    return render(request, 'showGMaps0.html',{})
     
 # BLUE, 7000-8000
 # cyan, 6000-6999
