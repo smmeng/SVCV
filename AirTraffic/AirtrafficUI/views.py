@@ -35,29 +35,40 @@ def showRouteData(request):
     #qname &= Q(date__date= datetime.now(pytz.timezone('US/Pacific')).date())
     qname &=  Q(altitude__gte =50)
     #qname &=  Q(altitude__lte =5000)
-    flight_list = positionJSONHistory.objects.filter(qname).order_by('ICAO','id')
+    flight_list = positionJSONHistory.objects.filter(qname).values_list('ICAO', 'Flight', 'date', 'altitude', 'latitude', 'longititude', 'speed').order_by('ICAO','id')
     print len(flight_list), datetime.now(pytz.timezone('US/Pacific')).date()
     
     flightDictionary ={}
     singleFlightDataList=[]
     counter = 0
     icao = ""
-    for flight in flight_list:
-        if icao != flight.ICAO:
-            icao = flight.ICAO
+    for flightTuple in flight_list:
+        flight = {}
+        flight['ICAO']=flightTuple[0]
+        flight['Flight']=flightTuple[1]
+        flight['date']=flightTuple[2]
+        flight['altitude']=flightTuple[3]
+        flight['latitude']=flightTuple[4]
+        flight['longititude']=flightTuple[5]
+        flight['speed']=flightTuple[6]
+        #flight['']=flightTuple[]
+        print flight
+                
+        if icao != flight['ICAO']:
+            icao = flight['ICAO']
             counter+=1
-            #print counter,flight.ICAO, flight.Flight, flight.date, flight.altitude, flight.latitude, flight.longititude
+            #print flight['ICAO'], flight['Flight'], flight['date'], flight['altitude'], flight['latitude'], flight['longititude']
             singleFlightDataList=[]
 
         if (counter %100==0):
-            print flight.ICAO, flight.Flight, flight.date, flight.altitude, flight.latitude, flight.longititude
+            print flight['ICAO'], flight['Flight'], flight['date'], flight['altitude'], flight['latitude'], flight['longititude']
 
-	if  flight.altitude > 5000:
-            print flight.ICAO, flight.Flight, flight.date, flight.altitude, flight.latitude, flight.longititude
+        if  flight['altitude'] > 5000:
+            print flight['ICAO'], flight['Flight'], flight['date'], flight['altitude'], flight['latitude'], flight['longititude']
             #break;
 
-        singleFlightDataList.append({"id":flight.id, "ICAO":flight.ICAO, "Flight":flight.Flight, "Date":flight.date, "alt":flight.altitude, "lat":flight.latitude, "lon":flight.longititude} )
-        flightDictionary[flight.ICAO] = singleFlightDataList
+        singleFlightDataList.append({ "ICAO":flight['ICAO'], "Flight":flight['Flight'], "Date":flight['date'], "alt":flight['altitude'], "lat":flight['latitude'], "lon":flight['longititude']} )
+        flightDictionary[flight['ICAO']] = singleFlightDataList
 
 
     #print 'flightDictionary=[', flightDictionary
