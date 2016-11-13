@@ -63,6 +63,9 @@ def showRouteData(request):
         if (counter %100==0):
             print flight['ICAO'], flight['Flight'], flight['date'], flight['altitude'], flight['latitude'], flight['longititude']
 
+        if (counter >5):
+            break;
+        
         if  flight['altitude'] > 5000:
             print flight['ICAO'], flight['Flight'], flight['date'], flight['altitude'], flight['latitude'], flight['longititude']
             #break;
