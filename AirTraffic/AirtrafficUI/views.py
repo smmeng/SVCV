@@ -34,7 +34,7 @@ def showRouteData(request):
     qname &= Q(date__day=  tday.day)
     #qname &= Q(date__date= datetime.now(pytz.timezone('US/Pacific')).date())
     qname &=  Q(altitude__gte =50)
-    #qname &=  Q(altitude__lte =5000)
+    qname &=  Q(altitude__lte =2000)
     flight_list = positionJSONHistory.objects.filter(qname).values_list('ICAO', 'Flight', 'date', 'altitude', 'latitude', 'longititude', 'speed').order_by('ICAO','id')
     print len(flight_list), datetime.now(pytz.timezone('US/Pacific')).date()
     
@@ -52,7 +52,7 @@ def showRouteData(request):
         flight['longititude']=flightTuple[5]
         flight['speed']=flightTuple[6]
         #flight['']=flightTuple[]
-        print flight
+        #print flight
                 
         if icao != flight['ICAO']:
             icao = flight['ICAO']
