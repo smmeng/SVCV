@@ -32,9 +32,9 @@ def showRouteData(request):
     qname &= Q(date__year =  tday.year)
     qname &= Q(date__month=  tday.month)
     qname &= Q(date__day=  tday.day)
-    #qname &= Q(date__date= datetime.now(pytz.timezone('US/Pacific')).date())
-    qname &=  Q(altitude__gte =50)
-    qname &=  Q(altitude__lte =2000)
+    #qname &= Q(ICAO = 'c01c02')
+    #qname &=  Q(altitude__gte =50)
+    qname &=  Q(altitude__lte =4000)
     flight_list = positionJSONHistory.objects.filter(qname).values_list('ICAO', 'Flight', 'date', 'altitude', 'latitude', 'longititude', 'speed').order_by('ICAO','id')
     print len(flight_list), datetime.now(pytz.timezone('US/Pacific')).date()
     
@@ -42,6 +42,8 @@ def showRouteData(request):
     singleFlightDataList=[]
     counter = 0
     icao = ""
+    skipICAO=""     # skip ICAO if it's taking off
+    oldAlt=99999    # initial starts at high altitude
     for flightTuple in flight_list:
         flight = {}
         flight['ICAO']=flightTuple[0]
@@ -52,25 +54,34 @@ def showRouteData(request):
         flight['longititude']=flightTuple[5]
         flight['speed']=flightTuple[6]
         #flight['']=flightTuple[]
-        #print flight
                 
-        if icao != flight['ICAO']:
+        if icao != flight['ICAO']: # new ICAO found??
             icao = flight['ICAO']
             counter+=1
             #print flight['ICAO'], flight['Flight'], flight['date'], flight['altitude'], flight['latitude'], flight['longititude']
             singleFlightDataList=[]
+            skipICAO=flight['ICAO']
+            oldAlt = flight['altitude']
+            
+        if (flight['ICAO'] == skipICAO and flight['altitude'] > oldAlt):
+            flightDictionary.pop(skipICAO, None)
+            oldAlt = flight['altitude']
+            #print 'Skipping ascending flight [', flight
+            continue;
+        #else:
+            #print flight
 
         if (counter %100==0):
             print flight['ICAO'], flight['Flight'], flight['date'], flight['altitude'], flight['latitude'], flight['longititude']
 
-        if (counter >5):
-            break;
-        
-        if  flight['altitude'] > 5000:
-            print flight['ICAO'], flight['Flight'], flight['date'], flight['altitude'], flight['latitude'], flight['longititude']
+        #if (counter >50):
             #break;
+        
+        #if  flight['altitude'] > 5000:
+            #print flight['ICAO'], flight['Flight'], flight['date'], flight['altitude'], flight['latitude'], flight['longititude']
+           
 
-        singleFlightDataList.append({ "ICAO":flight['ICAO'], "Flight":flight['Flight'], "Date":flight['date'], "alt":flight['altitude'], "lat":flight['latitude'], "lon":flight['longititude']} )
+        singleFlightDataList.append({ "Flight":flight['Flight'], "Date":flight['date'], "alt":flight['altitude'], "lat":flight['latitude'], "lon":flight['longititude']} )
         flightDictionary[flight['ICAO']] = singleFlightDataList
 
 

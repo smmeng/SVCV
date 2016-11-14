@@ -21,7 +21,7 @@ app.controller('appGMapsCtrl', function($scope, $filter, $http) {
     	{
     		row = $scope.summary[i];
     		var arrayCoords = [];
-    		var oldAlt =  row[1][0]['alt'];
+    		var oldAlt = 99999;// row[1][0]['alt'];
     		var color = "blue";
     		//console.log("row " + i  + "-" + "-" + row[1][0]['alt'] + row[0] + "-" + row[1][0]['lat'] + "-" + row[1][0]['lon'] );
     		for (var alt = 0; alt < row[1].length; alt++)
@@ -30,145 +30,148 @@ app.controller('appGMapsCtrl', function($scope, $filter, $http) {
     			var newAlt =  row[1][alt]['alt'];
     			arrayCoords.push(latlong);
     			
-    			if (newAlt > oldAlt)
-    				continue; // skip ascending flights
-
-    			if (newAlt < oldAlt && oldAlt >=7500 && newAlt <7500)
-    				{
-    					console.log("row " + i  + "-" +alt + "-altitude=[" + newAlt   );
-    					color = "blue";
-	    				var route = new google.maps.Polyline({
-	    	                path: arrayCoords, strokeColor: color,strokeOpacity: 0.5, 
-	    	                strokeWeight: lineWeight, geodesic: false, map: $scope.map
-	    				}); 
-	    				oldAlt=newAlt;
-	    				route.setMap($scope.map);
-	    				arrayCoords = [];
-	    				arrayCoords.push(latlong);
-    				}
-    			else if (newAlt < oldAlt &&  oldAlt >=7000 && newAlt <=7000)
-    				{
-    					console.log("row " + i  + "-" +alt + "-altitude=[" + newAlt   );
-    					color = "cyan";
-	    				var route = new google.maps.Polyline({
-	    	                path: arrayCoords, strokeColor: color,strokeOpacity: 0.5, 
-	    	                strokeWeight: lineWeight, geodesic: false, map: $scope.map
-	    				}); 
-	    				oldAlt=newAlt;
-	    				route.setMap($scope.map);
-	    				arrayCoords = [];
-	    				arrayCoords.push(latlong);
-    				}
-    			else if (newAlt < oldAlt &&  oldAlt >=6000 && newAlt <=6000)
+    			//if (newAlt >= oldAlt)
+    				//continue; // skip ascending flights
+    			
+    			if (newAlt < oldAlt &&  oldAlt >=500 && newAlt <100)
 				{
-    					console.log("row " + i  + "-" +alt + "-altitude=[" + newAlt   );
-	    				color = "green";
+    				color = "brown";
+    				var route = new google.maps.Polyline({
+    					path: arrayCoords, strokeColor: color,strokeOpacity: 0.5, 
+    	                strokeWeight: lineWeight, geodesic: false, map: $scope.map
+    				}); 
+    				route.setMap($scope.map);
+    				oldAlt=100;
+    				arrayCoords = [];
+    				arrayCoords.push(latlong);
+				}	
+    			else if (newAlt < oldAlt &&  oldAlt >=1000 && newAlt < 500)
+				{
+    				color = "magenta";
+    				var route = new google.maps.Polyline({
+    					path: arrayCoords, strokeColor: color,strokeOpacity: 0.5, 
+    	                strokeWeight: lineWeight, geodesic: false, map: $scope.map
+    				}); 
+    				route.setMap($scope.map);
+    				oldAlt=500;
+    				arrayCoords = [];
+    				arrayCoords.push(latlong);
+				}		
+    			else if (newAlt < oldAlt &&  oldAlt >= 1000 && newAlt <1000)
+				{
+    				color = "crimson";
+    				var route = new google.maps.Polyline({
+    					path: arrayCoords, strokeColor: color,strokeOpacity: 0.5, 
+    	                strokeWeight: lineWeight, geodesic: false, map: $scope.map
+    				}); 
+    				route.setMap($scope.map);
+    				oldAlt=1000;
+    				arrayCoords = [];
+    				arrayCoords.push(latlong);
+				}
+    			else if (newAlt < oldAlt &&  oldAlt >= 2000 && newAlt <2000)
+				{
+    				color = "red";
+    				var route = new google.maps.Polyline({
+    					path: arrayCoords, strokeColor: color,strokeOpacity: 0.5, 
+    	                strokeWeight: lineWeight, geodesic: false, map: $scope.map
+    				}); 
+    				route.setMap($scope.map);
+    				oldAlt=2000;
+    				arrayCoords = [];
+    				arrayCoords.push(latlong);
+				}	
+    			else if (newAlt < oldAlt &&  oldAlt >=3000 && newAlt <3000)
+				{
+    				color = "IndianRed";
+    				var route = new google.maps.Polyline({
+    					path: arrayCoords, strokeColor: color,strokeOpacity: 0.5, 
+    	                strokeWeight: lineWeight, geodesic: false, map: $scope.map
+    				}); 
+    				route.setMap($scope.map);
+    				oldAlt=3000;
+    				arrayCoords = [];
+    				arrayCoords.push(latlong);
+				}	
+    			else if (newAlt < oldAlt &&  oldAlt >=4000 && newAlt <4000)
+				{
+    				color = "OrangeRed";
+    				var route = new google.maps.Polyline({
+    					path: arrayCoords, strokeColor: color,strokeOpacity: 0.5, 
+    	                strokeWeight: lineWeight, geodesic: false, map: $scope.map
+    				}); 
+    				route.setMap($scope.map);
+    				oldAlt=4000;
+    				arrayCoords = [];
+    				arrayCoords.push(latlong);
+				}		
+    			else if (newAlt < oldAlt &&  oldAlt >= 5000 && newAlt < 5000)
+				{
+    				color = "DarkSalmon";
+    				var route = new google.maps.Polyline({
+    	                path: arrayCoords, strokeColor: color,strokeOpacity: 0.5, 
+    	                strokeWeight: lineWeight, geodesic: false, map: $scope.map
+    				}); 
+    				route.setMap($scope.map);
+    				oldAlt=5000;
+    				arrayCoords = [];
+    				arrayCoords.push(latlong);
+				}	
+    			else if (newAlt < oldAlt &&  oldAlt >=6000 && newAlt <6000)
+				{
+	    				color = "cyan";
+	    				//console.log("row " + i  + "-" +alt + "-altitude=[" + newAlt +"] " + color  );
 	    				var route = new google.maps.Polyline({
 	    	                path: arrayCoords, strokeColor: color,strokeOpacity: 0.5, 
 	    	                strokeWeight: lineWeight, geodesic: false, map: $scope.map
 	    				}); 
-	    				oldAlt=newAlt;
 	    				route.setMap($scope.map);
-	    				arrayCoords = [];
-	    				arrayCoords.push(latlong);
-					}			
-    			else if (newAlt < oldAlt &&  oldAlt >= 5000 && newAlt <= 5000)
-					{
-	    				color = "yellow";
-	    				var route = new google.maps.Polyline({
-	    	                path: arrayCoords, strokeColor: color,strokeOpacity: 0.5, 
-	    	                strokeWeight: lineWeight, geodesic: false, map: $scope.map
-	    				}); 
-	    				oldAlt=newAlt;
-	    				route.setMap($scope.map);
-	    				arrayCoords = [];
-	    				arrayCoords.push(latlong);
-					}			
-    			else if (newAlt < oldAlt &&  oldAlt >=4000 && newAlt <=4000)
-					{
-	    				color = "orange";
-	    				var route = new google.maps.Polyline({
-	    					path: arrayCoords, strokeColor: color,strokeOpacity: 0.5, 
-	    	                strokeWeight: lineWeight, geodesic: false, map: $scope.map
-	    				}); 
-	    				oldAlt=newAlt;
-	    				route.setMap($scope.map);
-	    				arrayCoords = [];
-	    				arrayCoords.push(latlong);
-					}		
-    			else if (newAlt < oldAlt &&  oldAlt >=3000 && newAlt <=3000)
-					{
-	    				color = "chocolate";
-	    				var route = new google.maps.Polyline({
-	    					path: arrayCoords, strokeColor: color,strokeOpacity: 0.5, 
-	    	                strokeWeight: lineWeight, geodesic: false, map: $scope.map
-	    				}); 
-	    				oldAlt=newAlt;
-	    				route.setMap($scope.map);
-	    				arrayCoords = [];
-	    				arrayCoords.push(latlong);
-					}			
-    			else if (newAlt < oldAlt &&  oldAlt >=2000 && newAlt <=2000)
-					{
-	    				color = "red";
-	    				var route = new google.maps.Polyline({
-	    					path: arrayCoords, strokeColor: color,strokeOpacity: 0.5, 
-	    	                strokeWeight: lineWeight, geodesic: false, map: $scope.map
-	    				}); 
-	    				oldAlt=newAlt;
-	    				route.setMap($scope.map);
-	    				arrayCoords = [];
-	    				arrayCoords.push(latlong);
-					}			
-    			else if (newAlt < oldAlt &&  oldAlt >=1500 && newAlt <=1500)
-					{
-	    				color = "crimson";
-	    				var route = new google.maps.Polyline({
-	    					path: arrayCoords, strokeColor: color,strokeOpacity: 0.5, 
-	    	                strokeWeight: lineWeight, geodesic: false, map: $scope.map
-	    				}); 
-	    				oldAlt=newAlt;
-	    				route.setMap($scope.map);
-	    				arrayCoords = [];
-	    				arrayCoords.push(latlong);
-					}			
-    			else if (newAlt < oldAlt &&  oldAlt >=1000 && newAlt <=1000)
-					{
-	    				color = "magenta";
-	    				var route = new google.maps.Polyline({
-	    					path: arrayCoords, strokeColor: color,strokeOpacity: 0.5, 
-	    	                strokeWeight: lineWeight, geodesic: false, map: $scope.map
-	    				}); 
-	    				oldAlt=newAlt;
-	    				route.setMap($scope.map);
+	    				oldAlt=6000;
 	    				arrayCoords = [];
 	    				arrayCoords.push(latlong);
 					}	
-    			else if (newAlt < oldAlt &&  oldAlt >=500 && newAlt <500)
-					{
-	    				color = "brown";
-	    				var route = new google.maps.Polyline({
-	    					path: arrayCoords, strokeColor: color,strokeOpacity: 0.5, 
-	    	                strokeWeight: lineWeight, geodesic: false, map: $scope.map
-	    				}); 
-	    				oldAlt=newAlt;
-	    				route.setMap($scope.map);
-	    				arrayCoords = [];
-	    				arrayCoords.push(latlong);
-					}	
-
+    			else if (newAlt < oldAlt &&  oldAlt >=7000 && newAlt <7000)
+				{
+					color = "CornflowerBlue ";
+					//console.log("row " + i  + "-" +alt + "-altitude=[" + newAlt +"] " + color  );
+    				var route = new google.maps.Polyline({
+    	                path: arrayCoords, strokeColor: color,strokeOpacity: 0.5, 
+    	                strokeWeight: lineWeight, geodesic: false, map: $scope.map
+    				}); 
+    				route.setMap($scope.map);
+    				oldAlt=7000;
+    				arrayCoords = [];
+    				arrayCoords.push(latlong);
+				}
+    			else if (newAlt < oldAlt && oldAlt >=7500 && newAlt <7500)
+				{
+					color = "blue";
+					//console.log("row " + i  + "-" +alt + "-altitude=[" + newAlt +"] " + color  );
+    				var route = new google.maps.Polyline({
+    	                path: arrayCoords, strokeColor: color,strokeOpacity: 0.5, 
+    	                strokeWeight: lineWeight, geodesic: false, map: $scope.map
+    				}); 
+    				route.setMap($scope.map);
+    				oldAlt=7500;
+    				arrayCoords = [];
+    				arrayCoords.push(latlong);
+				}
 			}
     		
-    		// draw the route on the map            
-            var route = new google.maps.Polyline({
-                path: arrayCoords,
-                strokeColor: color,
-                strokeOpacity: 0.5,
-                strokeWeight: lineWeight,
-                geodesic: false,
-                map: $scope.map
-            }); 
-            route.setMap($scope.map);
+    		// draw the route on the map     
+    		if (arrayCoords.length > 1)
+    			{
+    			$scope.map=new google.maps.Map(document.getElementById("map_canvas"),$scope.mapProp);    
+    			var route = new google.maps.Polyline({
+	                    path: arrayCoords,
+	                    strokeColor: color,
+	                    strokeOpacity: 0.5,
+	                    strokeWeight: lineWeight,
+	                    geodesic: false,
+	                    map: $scope.map
+	                }); 
+	                route.setMap($scope.map);
+    			}
     	}
     	
     	console.log("Total: " + $scope.summary.length);
