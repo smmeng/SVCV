@@ -28,7 +28,7 @@ body { height: 100%; margin: 0; padding: 0 }
   			<td style="background-color: brown;">Under 500 ft</td>
   		</tr>
   	</table>  	
-  </div>
+
 </body>
 </html>
 
@@ -37,6 +37,31 @@ body { height: 100%; margin: 0; padding: 0 }
 {% block title %}Flight Routes{% endblock %}
 
 {% block body_block %}
-
-
+	<div>
+	  	<input type="text" name="datefilter" value="" />
+ 
+		<script type="text/javascript">
+		$(function() {
+		
+		  $('input[name="datefilter"]').daterangepicker({
+		      autoUpdateInput: true,
+		      timePicker: true,
+		      timePickerIncrement: 30,
+		      locale: {
+		          cancelLabel: 'Clear',
+		          format: 'MM/DD/YYYY h:mm A'
+		      }
+		  });
+		
+		  $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
+		      $(this).val(picker.startDate.format('MM/DD/YYYY h:mm A') + ' - ' + picker.endDate.format('MM/DD/YYYY h:mm A'));
+		  });
+		
+		  $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
+		      $(this).val('');
+		  });
+		
+		});
+		</script>
+	  </div>
 {% endblock %}
