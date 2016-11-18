@@ -742,7 +742,8 @@ form {
    box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(000,000,000,0.7) 0 0px 0px;
    padding:8px;
    margin-bottom:20px;
-   max-width:240px;
+   max-width:300px;
+   min-width:120px;
    }
 .form-field:focus {
    background: #fff;

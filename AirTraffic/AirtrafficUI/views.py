@@ -31,12 +31,19 @@ def showRouteData(request):
     print "showRouteData() at ",pytz.timezone('US/Pacific'), ",today[", tday, "] request.method=", request.method
     print "datefilter=[", request.session.get('datefilter'), "] minAlt=", request.session.get('minAlt', minAlt), " maxAlt=", request.session.get('maxAlt', maxAlt)
  
+    if (request.session.get('datefilter') != None):
+        firstDate = convert2DateTime(request.session.get('datefilter')[0:20])
+        nextDate = convert2DateTime(request.session.get('datefilter')[25:45])
+        
     qname = Q() 
-    #qname &= Q(date__gte = (str(date.today()) + "T00:00:00Z"))
-    qname &= Q(date__year =  tday.year)
-    qname &= Q(date__month=  tday.month)
-    qname &= Q(date__day=  tday.day)
-    #qname &= Q(ICAO = 'c01c02')
+    if (firstDate != None):
+        qname &= Q(date__gte = firstDate)
+        qname &= Q(date__lte = nextDate)
+        
+    #qname &= Q(date__year =  tday.year)
+    #qname &= Q(date__month=  tday.month)
+    #qname &= Q(date__day=  tday.day)
+    ####qname &= Q(ICAO = 'c01c02')
     qname &=  Q(altitude__gte = request.session.get('minAlt', minAlt) )
     qname &=  Q(altitude__lte = request.session.get('maxAlt', maxAlt) )
     flight_list = positionJSONHistory.objects.filter(qname).values_list('ICAO', 'Flight', 'date', 'altitude', 'latitude', 'longititude', 'speed').order_by('ICAO','id')
@@ -92,6 +99,21 @@ def showRouteData(request):
     #print 'flightDictionary=[', flightDictionary
     return JsonResponse(flightDictionary.items(), safe=False)
     #return JsonResponse(serializers.serialize("json",flightDictionary),safe=False  )
+def convert2DateTime(str):
+    dateStr = str.split("/")
+    monthStr =dateStr[0]
+    dtStr =dateStr[1]
+    year=dateStr[2]
+    print 'Date =[', dtStr, "]-[",monthStr, "]-[",year, "]"
+    
+    timeStr=year[4:].split(":")
+    yearStr=year[0:4]
+    print 'year =[', yearStr, "]-time=[", timeStr
+
+    #print 'Date str=[', str, "]-[", (str[0:1]+ str[3:4]+ str[5:8]+ "T"+ str[9:10]+ str[11:12]+"00") +"]"
+    finalDate= datetime(int(yearStr), int(monthStr), int(dtStr), int(timeStr[0]), int(timeStr[1][0:1]), 0)
+    print 'finalDate=[', finalDate
+    return finalDate
 
 def showRoutes(request):
     if request.method == 'POST':

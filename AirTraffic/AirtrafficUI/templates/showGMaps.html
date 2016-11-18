@@ -24,10 +24,10 @@ body { height: 100%; margin: 0; padding: 0 }
 {% block body_block %}
 
 	<div  style="float: center;">
-		<form action="/showRoutes/" method="post" >
+		<form action="/showRoutes/" method="post"  class="form-container">
 			{% csrf_token %}
 			Date Range:
-		  	<input type="text" name="datefilter" value="" size="50"/>
+		  	<input type="text" name="datefilter" value="" size="60"  class="form-field"/>
 	 
 			<script type="text/javascript">
 			$(function() {
@@ -38,12 +38,12 @@ body { height: 100%; margin: 0; padding: 0 }
 			      timePickerIncrement: 15,
 			      locale: {
 			          cancelLabel: 'Clear',
-			          format: 'MM/DD/YYYY h:mm A'
+			          format: 'MM/DD/YYYY hh:mm A'
 			      }
 			  });
 			
 			  $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
-			      $(this).val(picker.startDate.format('MM/DD/YYYY h:mm A') + ' --- ' + picker.endDate.format('MM/DD/YYYY h:mm A'));
+			      $(this).val(picker.startDate.format('MM/DD/YYYY hh:mm A') + ' --- ' + picker.endDate.format('MM/DD/YYYY hh:mm A'));
 			  });
 			
 			  $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
@@ -54,8 +54,8 @@ body { height: 100%; margin: 0; padding: 0 }
 			</script>
 			<br><br>
 			Altitude Range: 
- 			<input type="number" name="minAlt" min="100" max="2000" step="100" value="100">
- 			<input type="number" name="maxAlt" min="2000" max="8000" step="100" value="2000">
+ 			<input type="number" name="minAlt" min="100" max="2000" step="100" value="100"  class="form-field">
+ 			<input type="number" name="maxAlt" min="2000" max="8000" step="100" value="2000"  class="form-field">
  			<br>
  			
 			<input type="submit" value="Filter">
