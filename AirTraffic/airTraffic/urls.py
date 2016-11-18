@@ -26,7 +26,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
         url(r'^$', views.showRoutes, name='index'),     
         url(r'^admin/', include(admin.site.urls)),
-        url(r'^showRoutes/', views.showRoutes),
+        url(r'^showRoutes/$', views.showRoutes),
         url(r'^showRouteData/$', views.showRouteData),
         url(r'^showRoutes0/', views.showRoutes0),
 

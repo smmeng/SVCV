@@ -21,11 +21,15 @@ from django.db.models import Q
 flightDetailURL="https://flightaware.com/live/flight/" 
 weatherRESTws= "https://home.openweathermap.org/api_keys" #key=649dad5b960b03ef0403da84b1a2c9a8
 
+minAlt = 100
+maxAlt = 4000
+datefilter=None
 #@login_required
 def showRouteData(request):
     #today =  str(datetime.now(pytz.timezone('US/Pacific')))[0:10] 
     tday =  datetime.now(pytz.timezone('US/Pacific'))
-    print "showRouteData at ",pytz.timezone('US/Pacific'), ",today[", tday, "]"
+    print "showRouteData() at ",pytz.timezone('US/Pacific'), ",today[", tday, "] request.method=", request.method
+    print "datefilter=[", request.session.get('datefilter'), "] minAlt=", request.session.get('minAlt', minAlt), " maxAlt=", request.session.get('maxAlt', maxAlt)
  
     qname = Q() 
     #qname &= Q(date__gte = (str(date.today()) + "T00:00:00Z"))
@@ -33,8 +37,8 @@ def showRouteData(request):
     qname &= Q(date__month=  tday.month)
     qname &= Q(date__day=  tday.day)
     #qname &= Q(ICAO = 'c01c02')
-    #qname &=  Q(altitude__gte =50)
-    qname &=  Q(altitude__lte =4000)
+    qname &=  Q(altitude__gte = request.session.get('minAlt', minAlt) )
+    qname &=  Q(altitude__lte = request.session.get('maxAlt', maxAlt) )
     flight_list = positionJSONHistory.objects.filter(qname).values_list('ICAO', 'Flight', 'date', 'altitude', 'latitude', 'longititude', 'speed').order_by('ICAO','id')
     print len(flight_list), datetime.now(pytz.timezone('US/Pacific')).date()
     
@@ -90,6 +94,15 @@ def showRouteData(request):
     #return JsonResponse(serializers.serialize("json",flightDictionary),safe=False  )
 
 def showRoutes(request):
+    if request.method == 'POST':
+        datefilter = request.POST.get('datefilter')
+        request.session['datefilter'] = datefilter
+        minAlt = request.POST.get('minAlt')
+        maxAlt = request.POST.get('maxAlt')
+        request.session['minAlt'] = minAlt
+        request.session['maxAlt'] = maxAlt
+        
+        print "in showRoutes() POST recvd with datefilter=[", datefilter, "] minAlt=", minAlt, " maxAlt=", maxAlt
     return render(request, 'showGMaps.html',{})
     
 def showRoutes0(request):

@@ -12,22 +12,7 @@ body { height: 100%; margin: 0; padding: 0 }
   <div id="map_canvas"></div>
   <div  ng-app="appGMaps" ng-controller="appGMapsCtrl">
   	<!--H2>Bay Area Air Traffic</H2-->
-  	<table style="max-width: 50% !important;" class="CSSTableGenerator">
-  		<tr colspan="5">
-  			<td style="background-color: blue;">Above 7,500 ft</td>
-  			<td style="background-color: CornflowerBlue;">7,000 ~ 7,500 ft</td>
-  			<td style="background-color: cyan;">6,000 ~ 7,000 ft</td>
-  			<td style="background-color: DarkSalmon;">5,000 ~ 6,000 ft</td>
-  			<td style="background-color: orangeRed;">4,000 ~ 5,000 ft</td>
-  		</tr>
-  		<tr colspan="5">
-  			<td style="background-color: IndianRed;">3,000 ~ 4,000 ft</td>
-  			<td style="background-color: red;">2,000 ~ 3,000 ft</td>
-  			<td style="background-color: crimson;">1,000 ~ 2,000 ft</td>
-  			<td style="background-color: magenta;">500 ~ 1,000 ft</td>
-  			<td style="background-color: brown;">Under 500 ft</td>
-  		</tr>
-  	</table>  	
+	
 
 </body>
 </html>
@@ -37,31 +22,63 @@ body { height: 100%; margin: 0; padding: 0 }
 {% block title %}Flight Routes{% endblock %}
 
 {% block body_block %}
-	<div>
-	  	<input type="text" name="datefilter" value="" />
- 
-		<script type="text/javascript">
-		$(function() {
-		
-		  $('input[name="datefilter"]').daterangepicker({
-		      autoUpdateInput: true,
-		      timePicker: true,
-		      timePickerIncrement: 30,
-		      locale: {
-		          cancelLabel: 'Clear',
-		          format: 'MM/DD/YYYY h:mm A'
-		      }
-		  });
-		
-		  $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
-		      $(this).val(picker.startDate.format('MM/DD/YYYY h:mm A') + ' - ' + picker.endDate.format('MM/DD/YYYY h:mm A'));
-		  });
-		
-		  $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
-		      $(this).val('');
-		  });
-		
-		});
-		</script>
+
+	<div  style="float: center;">
+		<form action="/showRoutes/" method="post" >
+			{% csrf_token %}
+			Date Range:
+		  	<input type="text" name="datefilter" value="" size="50"/>
+	 
+			<script type="text/javascript">
+			$(function() {
+			
+			  $('input[name="datefilter"]').daterangepicker({
+			      autoUpdateInput: true,
+			      timePicker: true,
+			      timePickerIncrement: 15,
+			      locale: {
+			          cancelLabel: 'Clear',
+			          format: 'MM/DD/YYYY h:mm A'
+			      }
+			  });
+			
+			  $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
+			      $(this).val(picker.startDate.format('MM/DD/YYYY h:mm A') + ' --- ' + picker.endDate.format('MM/DD/YYYY h:mm A'));
+			  });
+			
+			  $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
+			      $(this).val('');
+			  });
+			
+			});
+			</script>
+			<br><br>
+			Altitude Range: 
+ 			<input type="number" name="minAlt" min="100" max="2000" step="100" value="100">
+ 			<input type="number" name="maxAlt" min="2000" max="8000" step="100" value="2000">
+ 			<br>
+ 			
+			<input type="submit" value="Filter">
+			<input type="reset">
+			<br>
+		</form>
+	  </div>
+	  <div>
+	    	<table style="max-width: 50% !important;" class="CSSTableGenerator">
+		  		<tr colspan="5">
+		  			<td style="background-color: blue;">Above 7,500 ft</td>
+		  			<td style="background-color: CornflowerBlue;">7,000 ~ 7,500 ft</td>
+		  			<td style="background-color: cyan;">6,000 ~ 7,000 ft</td>
+		  			<td style="background-color: DarkSalmon;">5,000 ~ 6,000 ft</td>
+		  			<td style="background-color: orangeRed;">4,000 ~ 5,000 ft</td>
+		  		</tr>
+		  		<tr colspan="5">
+		  			<td style="background-color: IndianRed;">3,000 ~ 4,000 ft</td>
+		  			<td style="background-color: red;">2,000 ~ 3,000 ft</td>
+		  			<td style="background-color: crimson;">1,000 ~ 2,000 ft</td>
+		  			<td style="background-color: magenta;">500 ~ 1,000 ft</td>
+		  			<td style="background-color: brown;">Under 500 ft</td>
+		  		</tr>
+		  	</table>  
 	  </div>
 {% endblock %}
