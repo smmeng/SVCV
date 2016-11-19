@@ -20,25 +20,25 @@ from django.db.models import Q
 
 flightDetailURL="https://flightaware.com/live/flight/" 
 weatherRESTws= "https://home.openweathermap.org/api_keys" #key=649dad5b960b03ef0403da84b1a2c9a8
-
+timeZone = 'US/Pacific'
 minAlt = 100
 maxAlt = 4000
 datefilter=None
 #@login_required
 def showRouteData(request):
-    #today =  str(datetime.now(pytz.timezone('US/Pacific')))[0:10] 
-    tday =  datetime.now(pytz.timezone('US/Pacific'))
-    print "showRouteData() at ",pytz.timezone('US/Pacific'), ",today[", tday, "] request.method=", request.method
+    #today =  str(datetime.now(pytz.timezone(timeZone)))[0:10] 
+    tday =  datetime.now(pytz.timezone(timeZone))
+    print "showRouteData() at ",pytz.timezone(timeZone), ",today[", tday, "] request.method=", request.method
     print "datefilter=[", request.session.get('datefilter'), "] minAlt=", request.session.get('minAlt', minAlt), " maxAlt=", request.session.get('maxAlt', maxAlt)
  
     if (request.session.get('datefilter') != None):
         firstDate = convert2DateTime(request.session.get('datefilter')[0:20])
-        nextDate = convert2DateTime(request.session.get('datefilter')[25:45])
+        nextDate = convert2DateTime(request.session.get('datefilter')[22:42])
         
     qname = Q() 
     if (firstDate != None):
-        qname &= Q(date__gte = firstDate)
-        qname &= Q(date__lte = nextDate)
+        qname &= Q(date__range = (firstDate, nextDate))
+        #qname &= Q(date__lte = nextDate)
         
     #qname &= Q(date__year =  tday.year)
     #qname &= Q(date__month=  tday.month)
@@ -47,7 +47,7 @@ def showRouteData(request):
     qname &=  Q(altitude__gte = request.session.get('minAlt', minAlt) )
     qname &=  Q(altitude__lte = request.session.get('maxAlt', maxAlt) )
     flight_list = positionJSONHistory.objects.filter(qname).values_list('ICAO', 'Flight', 'date', 'altitude', 'latitude', 'longititude', 'speed').order_by('ICAO','id')
-    print len(flight_list), datetime.now(pytz.timezone('US/Pacific')).date()
+    print len(flight_list), datetime.now(pytz.timezone(timeZone)).date()
     
     flightDictionary ={}
     singleFlightDataList=[]
@@ -82,7 +82,7 @@ def showRouteData(request):
         #else:
             #print flight
 
-        if (counter %100==0):
+        if (counter %10==0):
             print flight['ICAO'], flight['Flight'], flight['date'], flight['altitude'], flight['latitude'], flight['longititude']
 
         #if (counter >50):
@@ -100,19 +100,29 @@ def showRouteData(request):
     return JsonResponse(flightDictionary.items(), safe=False)
     #return JsonResponse(serializers.serialize("json",flightDictionary),safe=False  )
 def convert2DateTime(str):
+    local_tz = pytz.timezone(timeZone)
     dateStr = str.split("/")
     monthStr =dateStr[0]
     dtStr =dateStr[1]
     year=dateStr[2]
     print 'Date =[', dtStr, "]-[",monthStr, "]-[",year, "]"
     
-    timeStr=year[4:].split(":")
+    timeStr=year[5:].split(":")
     yearStr=year[0:4]
     print 'year =[', yearStr, "]-time=[", timeStr
+    
+    hourStr= timeStr[0]
+    if (timeStr[1].count("PM")>0):
+        hr = int(timeStr[0])+12
+        print hr
+        hourStr = '%2d'%hr
+    
 
     #print 'Date str=[', str, "]-[", (str[0:1]+ str[3:4]+ str[5:8]+ "T"+ str[9:10]+ str[11:12]+"00") +"]"
-    finalDate= datetime(int(yearStr), int(monthStr), int(dtStr), int(timeStr[0]), int(timeStr[1][0:1]), 0)
-    print 'finalDate=[', finalDate
+    #finalDate= datetime(int(yearStr), int(monthStr), int(dtStr), int(timeStr[0]), int(timeStr[1][0:1]), 0)
+    finalDate=datetime.strptime(yearStr + "-" + monthStr + "-" + dtStr +" " + hourStr + ":" + timeStr[1][0:2]+ ":00", "%Y-%m-%d %H:%M:%S")
+    datetime_with_tz = local_tz.localize(finalDate, is_dst=None) # No daylight saving time
+    print 'finalDate=[', finalDate, "] Add TZ=[", datetime_with_tz, "] for TZ[", local_tz
     return finalDate
 
 def showRoutes(request):

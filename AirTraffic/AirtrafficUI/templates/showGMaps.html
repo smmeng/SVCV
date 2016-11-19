@@ -27,7 +27,7 @@ body { height: 100%; margin: 0; padding: 0 }
 		<form action="/showRoutes/" method="post"  class="form-container">
 			{% csrf_token %}
 			Date Range:
-		  	<input type="text" name="datefilter" value="" size="60"  class="form-field"/>
+		  	<input type="text" name="datefilter" value="{{ request.session.datefilter }} " size="60"  class="form-field"/>
 	 
 			<script type="text/javascript">
 			$(function() {
@@ -43,7 +43,7 @@ body { height: 100%; margin: 0; padding: 0 }
 			  });
 			
 			  $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
-			      $(this).val(picker.startDate.format('MM/DD/YYYY hh:mm A') + ' --- ' + picker.endDate.format('MM/DD/YYYY hh:mm A'));
+			      $(this).val(picker.startDate.format('MM/DD/YYYY hh:mm A') + ' - ' + picker.endDate.format('MM/DD/YYYY hh:mm A'));
 			  });
 			
 			  $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
@@ -54,31 +54,33 @@ body { height: 100%; margin: 0; padding: 0 }
 			</script>
 			<br><br>
 			Altitude Range: 
- 			<input type="number" name="minAlt" min="100" max="2000" step="100" value="100"  class="form-field">
- 			<input type="number" name="maxAlt" min="2000" max="8000" step="100" value="2000"  class="form-field">
+ 			<input type="number" name="minAlt" min="100" max="2000" step="50" value="{{ request.session.minAlt }}"  class="form-field">
+ 			<input type="number" name="maxAlt" min="2000" max="8000" step="50" value="{{ request.session.maxAlt }}"  class="form-field">
  			<br>
  			
 			<input type="submit" value="Filter">
 			<input type="reset">
 			<br>
+
+			<div>
+		    	<table style="max-width: 50% !important;" class="CSSTableGenerator">
+			  		<tr colspan="5">
+			  			<td style="background-color: blue;">Above 7,500 ft</td>
+			  			<td style="background-color: CornflowerBlue;">7,000 ~ 7,500 ft</td>
+			  			<td style="background-color: cyan;">6,000 ~ 7,000 ft</td>
+			  			<td style="background-color: DarkSalmon;">5,000 ~ 6,000 ft</td>
+			  			<td style="background-color: orangeRed;">4,000 ~ 5,000 ft</td>
+			  		</tr>
+			  		<tr colspan="5">
+			  			<td style="background-color: IndianRed;">3,000 ~ 4,000 ft</td>
+			  			<td style="background-color: red;">2,000 ~ 3,000 ft</td>
+			  			<td style="background-color: crimson;">1,000 ~ 2,000 ft</td>
+			  			<td style="background-color: magenta;">500 ~ 1,000 ft</td>
+			  			<td style="background-color: brown;">Under 500 ft</td>
+			  		</tr>
+			  	</table>  
+		  </div>
 		</form>
 	  </div>
-	  <div>
-	    	<table style="max-width: 50% !important;" class="CSSTableGenerator">
-		  		<tr colspan="5">
-		  			<td style="background-color: blue;">Above 7,500 ft</td>
-		  			<td style="background-color: CornflowerBlue;">7,000 ~ 7,500 ft</td>
-		  			<td style="background-color: cyan;">6,000 ~ 7,000 ft</td>
-		  			<td style="background-color: DarkSalmon;">5,000 ~ 6,000 ft</td>
-		  			<td style="background-color: orangeRed;">4,000 ~ 5,000 ft</td>
-		  		</tr>
-		  		<tr colspan="5">
-		  			<td style="background-color: IndianRed;">3,000 ~ 4,000 ft</td>
-		  			<td style="background-color: red;">2,000 ~ 3,000 ft</td>
-		  			<td style="background-color: crimson;">1,000 ~ 2,000 ft</td>
-		  			<td style="background-color: magenta;">500 ~ 1,000 ft</td>
-		  			<td style="background-color: brown;">Under 500 ft</td>
-		  		</tr>
-		  	</table>  
-	  </div>
+	  
 {% endblock %}
