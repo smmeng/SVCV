@@ -105,11 +105,11 @@ def convert2DateTime(str):
     monthStr =dateStr[0]
     dtStr =dateStr[1]
     year=dateStr[2]
-    print 'Date =[', dtStr, "]-[",monthStr, "]-[",year, "]"
+    #print 'Date =[', dtStr, "]-[",monthStr, "]-[",year, "]"
     
     timeStr=year[5:].split(":")
     yearStr=year[0:4]
-    print 'year =[', yearStr, "]-time=[", timeStr
+    #print 'year =[', yearStr, "]-time=[", timeStr
     
     hourStr= timeStr[0]
     if (timeStr[1].count("PM")>0):
@@ -121,9 +121,11 @@ def convert2DateTime(str):
     #print 'Date str=[', str, "]-[", (str[0:1]+ str[3:4]+ str[5:8]+ "T"+ str[9:10]+ str[11:12]+"00") +"]"
     #finalDate= datetime(int(yearStr), int(monthStr), int(dtStr), int(timeStr[0]), int(timeStr[1][0:1]), 0)
     finalDate=datetime.strptime(yearStr + "-" + monthStr + "-" + dtStr +" " + hourStr + ":" + timeStr[1][0:2]+ ":00", "%Y-%m-%d %H:%M:%S")
+    finalDateStr=yearStr + "-" + monthStr + "-" + dtStr +"T" + hourStr + ":" + timeStr[1][0:2]+ ":00Z"
     datetime_with_tz = local_tz.localize(finalDate, is_dst=None) # No daylight saving time
-    print 'finalDate=[', finalDate, "] Add TZ=[", datetime_with_tz, "] for TZ[", local_tz
-    return finalDate
+    print 'finalDate=[', finalDateStr, "] Add TZ=[", datetime_with_tz, "] for TZ[", local_tz
+    return finalDateStr
+    #return datetime_with_tz
 
 def showRoutes(request):
     if request.method == 'POST':
