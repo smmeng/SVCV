@@ -40,3 +40,18 @@ class Announcement(models.Model):
     def __unicode__(self):  #For Python 2, use __str__ on Python 3
         return u'%s' % ( self.OutputText)
     
+class flights(models.Model):
+    id = models.AutoField(primary_key=True )
+    ICAO = models.CharField(max_length=8, null=True)
+    Flight = models.CharField(max_length=10, null=True)
+    date = models.DateTimeField('Created On', default=datetime.now, null=True)
+    altitude = models.IntegerField(default=0, null=True)
+    latitude = models.FloatField(default=0, null=True)
+    longitude = models.FloatField(max_length=8, null=True)
+    aircraft = models.CharField(max_length=6, null=True)
+    orig = models.CharField(max_length=6, null=True)
+    dest = models.CharField(max_length=6, null=True)
+    speed = models.IntegerField(default=0, null=True)
+    
+    def __unicode__(self):  #For Python 2, use __str__ on Python 3
+        return u'%s' % ( self.ICAO + "-" + self.Flight)
