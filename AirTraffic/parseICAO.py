@@ -13,7 +13,9 @@ import calculateDistance
 
 timeZone = 'US/Pacific'
 minAlt = 100
-maxAlt = 4000
+maxAlt = 4500
+
+maxTolerantDistance = 5 # miles
 
 def removeHTMLTag(inputStr):
     if (inputStr is None):
@@ -124,13 +126,13 @@ def lookupICAO(icao):
         
         flightDict['flightNo']=flightNo
         flightDict['flightName']=flightName
-        flightDict['origAirport']=origAirport
-        flightDict['destAirport']=destAirport
+        flightDict['origAirport']=origAirport.split()[-1]
+        flightDict['destAirport']=destAirport.split()[-1]
         flightDict['status']=status
         flightDict['aircraft']=aircraft
         flightDict['aircraftName']=aircraftName
         
-        flightDict['speed']=speed
+        flightDict['speed']=speed.split()[0]
         flightDict['altitude']=altitude
         flightDict['distance']=distance
         flightDict['route']=route
@@ -139,6 +141,36 @@ def lookupICAO(icao):
         print "Something is wrong in parsing ICAO!"
         return None
     return flightDict
+
+def isInsideMaxTolerantDistance(cursor, icao, dateStr):
+    
+    sql="SELECT icao,  date, altitude, latitude, longititude, speed "\
+            "FROM AirTraffic.AirtrafficUI_positionjsonhistory "\
+            "WHERE icao='" + icao + "' AND date LIKE '" + dateStr + "%' AND altitude > " + str(minAlt) + " and altitude < " + str(maxAlt) + " "\
+            "ORDER BY  date  DESC; "
+            
+    try:
+        cursor.execute(sql)
+        rows = cursor.fetchall()
+ 
+        print('isInsideMaxTolerantDistance() Total Row(s):', cursor.rowcount)
+        noneCounter = 0
+        for row in rows:
+            distance = calculateDistance.distance((origLat, origLong), (row[3], row[4]))
+            #print  'point1=[', (origLat, origLong), "] pt2=[" ,(row[3], row[4]), "] distance=", distance
+            
+            if (distance <=maxTolerantDistance):
+                print  'point1<=', maxTolerantDistance
+                coordinate = {}
+                coordinate['date'] = row[1]
+                coordinate['alt'] = row[2]
+                coordinate['lat'] = row[3]
+                coordinate['long'] = row[4]
+                coordinate['speed'] = row[5]
+                return coordinate
+    except :
+        print "isInsideMaxTolerantDistance() Something is wrong sql=[", sql
+    return None
 
 def findNewICAOs4Today():
     tday =  datetime.now(pytz.timezone(timeZone))
@@ -176,16 +208,25 @@ def findNewICAOs4Today():
         for row in rows:
             newIcao=row[0]
             datetm=row[1]
-            print "\n new ICAO=[", newIcao, "] tm=[", datetm, noneCounter
+            #print "\n new ICAO=[", newIcao, "] tm=[", datetm, "] counter=", noneCounter
             flightDict = lookupICAO(newIcao)
             if (flightDict is None):
                 noneCounter +=1
-                print noneCounter, flightDict
-                print 
+                #print noneCounter, flightDict
             else:
                 noneCounter =0 #reset the counter
                 print noneCounter, flightDict
+                coordinate = isInsideMaxTolerantDistance(cursor, newIcao, dateStr)
                 
+                if coordinate is not None: #insert the flight info to flights table
+                    flightSql = "INSERT INTO AirtrafficUI_flights VALUES(null,'" + newIcao + "', '" + flightDict['flightNo'] + "', " \
+                                " '" + str(coordinate['date']) + "', " + str(coordinate['alt']) + ", " + str(coordinate['lat']) + ", " + \
+                                str(coordinate['long']) + ", '" +  flightDict['aircraft'] + "', '" + flightDict['origAirport'] + "', '" + \
+                                flightDict['destAirport'] + "', " + str(coordinate['speed']) + ");"
+                    
+                    print "INSERTing flightSql=[" , flightSql
+                    cursor.execute(flightSql)
+                    
             if (noneCounter > 20):
                 #stop processing obsolete ICAO further
                 break;
