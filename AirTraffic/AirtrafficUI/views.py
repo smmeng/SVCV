@@ -142,6 +142,44 @@ def showRoutes(request):
 def showRoutes0(request):
     return render(request, 'showGMaps0.html',{})
     
+def showBadPlanes(request):
+    #today =  str(datetime.now(pytz.timezone(timeZone)))[0:10] 
+    tday =  datetime.now(pytz.timezone(timeZone))
+    print "showBadPlanes() at ",pytz.timezone(timeZone), ",today[", tday, "] request.method=", request.method
+ 
+    qname = Q() 
+    qname &= Q(date__year = tday.year)
+    qname &= Q(date__month= tday.month)
+    qname &= Q(date__day= tday.day)
+    
+    flight_list = flights.objects.filter(date__gte = str(tday.year) + "-" + str(tday.month) +"-"+ str(tday.day) + " 00:00:00").values_list('ICAO', 'Flight', 'date', 'altitude', 'latitude', 'longitude', 'aircraft','orig', 'dest', 'speed').order_by('-date')
+    print len(flight_list), datetime.now(pytz.timezone(timeZone)).date()
+    
+    flightDictionary ={}
+    singleFlightDataList=[]
+    counter = 0
+    icao = ""
+    skipICAO=""     # skip ICAO if it's taking off
+    oldAlt=99999    # initial starts at high altitude
+    for flightTuple in flight_list:
+        flight = {}
+        flight['ICAO']=flightTuple[0]
+        flight['Flight']=flightTuple[1]
+        flight['date']=flightTuple[2]
+        flight['altitude']=flightTuple[3]
+        flight['latitude']=flightTuple[4]
+        flight['longitude']=flightTuple[5]
+        flight['aircraft']=flightTuple[6]
+        flight['orig']=flightTuple[7]
+        flight['dest']=flightTuple[8]
+        flight['speed']=flightTuple[9]
+           
+
+        singleFlightDataList.append(flight )
+        #flightDictionary[flight['ICAO']] = singleFlightDataList
+
+    #print 'flightDictionary=[', flightDictionary
+    return JsonResponse(singleFlightDataList, safe=False)
 # BLUE, 7000-8000
 # cyan, 6000-6999
 # yellow, 5000-5999

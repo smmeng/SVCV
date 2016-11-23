@@ -8,12 +8,14 @@ from calculateDistance import *
 from mySendmail import sendMail
 
 from datetime import date, datetime
+import time
 import pytz
 import calculateDistance
 
 timeZone = 'US/Pacific'
 minAlt = 100
 maxAlt = 4500
+interval = 60 #seconds
 
 maxTolerantDistance = 5 # miles
 
@@ -83,26 +85,26 @@ def lookupICAO(icao):
         
         strongs = table.findAll("strong", { })
         flightNo = removeHTMLTag(strongs)
-        print "****** flightNo:", flightNo
+        #print "****** flightNo:", flightNo
     
         spans = table.findAll("span", { })
         flightName = removeHTMLTag(spans[0])
-        print "****** flightName", flightName
+        #print "****** flightName", flightName
         
         spans = table.findAll("span", class_="hint")
         origAirport = extractHTMLTagAttribute(spans[0], "title")
         destAirport = extractHTMLTagAttribute(spans[1], "title")
-        print "****** origAirport:", origAirport.split()[-1]
-        print "****** destAirport:", destAirport.split()[-1]
+        #print "****** origAirport:", origAirport.split()[-1]
+        #print "****** destAirport:", destAirport.split()[-1]
         
         spans = table.findAll("span", class_="flightStatusGood")
         status = removeHTMLTag(spans[0])
-        print "****** status", status
+        #print "****** status", status
         
         if (len(spans) > 1):
             onTime = removeHTMLTag(spans[1])
             flightDict['onTime']=onTime
-            print "****** onTime", onTime
+            #print "****** onTime", onTime
         
         #divTracePanelCourse = soup.select("#polling-flight_status")
         #print divTracePanelCourse
@@ -113,16 +115,16 @@ def lookupICAO(icao):
         aircraft = ths[1].next_sibling.next_sibling
         aircraftName = aircraft.contents[0]
         aircraft = removeHTMLTag(aircraft.contents[1])
-        print "****** aircraftName:", aircraftName, "-", aircraft
+        #print "****** aircraftName:", aircraftName, "-", aircraft
         
         speed = removeHTMLTag(ths[2].next_sibling.next_sibling.contents[0])
-        print "****** speed:", speed
+        #print "****** speed:", speed
         altitude = removeHTMLTag(ths[3].next_sibling.next_sibling).split("feet")[0]
-        print "****** altitude:",altitude
+        #print "****** altitude:",altitude
         distance = removeHTMLTag(ths[4].next_sibling.next_sibling)
-        print "****** distance:",distance
+        #print "****** distance:",distance
         route = removeHTMLTag(ths[5].next_sibling.next_sibling)
-        print "****** route:", route
+        #print "****** route:", route
         
         flightDict['flightNo']=flightNo
         flightDict['flightName']=flightName
@@ -193,49 +195,55 @@ def findNewICAOs4Today():
     # http://www.mysqltutorial.org/python-mysql-query/
     db = None
     cursor = None
+    
     try:
 
         db = MySQLdb.connect("lab2.svcvllc.com","httpuser","Save3ySky","AirTraffic" )
         
         # prepare a cursor object using cursor() method
         cursor = db.cursor()
-        cursor.execute(sql)
         
-        rows = cursor.fetchall()
- 
-        print('Total Row(s):', cursor.rowcount)
-        noneCounter = 0
-        for row in rows:
-            newIcao=row[0]
-            datetm=row[1]
-            #print "\n new ICAO=[", newIcao, "] tm=[", datetm, "] counter=", noneCounter
-            flightDict = lookupICAO(newIcao)
-            if (flightDict is None):
-                noneCounter +=1
-                #print noneCounter, flightDict
-            else:
-                noneCounter =0 #reset the counter
-                print noneCounter, flightDict
-                coordinate = isInsideMaxTolerantDistance(cursor, newIcao, dateStr)
-                
-                if coordinate is not None: #insert the flight info to flights table
-                    flightSql = "INSERT INTO AirtrafficUI_flights VALUES(null,'" + newIcao + "', '" + flightDict['flightNo'] + "', " \
-                                " '" + str(coordinate['date']) + "', " + str(coordinate['alt']) + ", " + str(coordinate['lat']) + ", " + \
-                                str(coordinate['long']) + ", '" +  flightDict['aircraft'] + "', '" + flightDict['origAirport'] + "', '" + \
-                                flightDict['destAirport'] + "', " + str(coordinate['speed']) + ");"
+        while True:
+            cursor.execute(sql)
+            
+            rows = cursor.fetchall()
+     
+            print('findNewICAOs4Today() Total New ICAO Row(s):', cursor.rowcount)
+            noneCounter = 0
+            for row in rows:
+                newIcao=row[0]
+                datetm=row[1]
+                #print "\n new ICAO=[", newIcao, "] tm=[", datetm, "] counter=", noneCounter
+                flightDict = lookupICAO(newIcao)
+                if (flightDict is None):
+                    noneCounter +=1
+                    #print noneCounter, flightDict
+                else:
+                    noneCounter =0 #reset the counter
+                    print noneCounter, flightDict
+                    coordinate = isInsideMaxTolerantDistance(cursor, newIcao, dateStr)
                     
-                    print "INSERTing flightSql=[" , flightSql
-                    cursor.execute(flightSql)
-                    
-            if (noneCounter > 20):
-                #stop processing obsolete ICAO further
-                break;
-        
-        # Commit your changes in the database
-        db.commit()
+                    if coordinate is not None: #insert the flight info to flights table
+                        flightSql = "INSERT INTO AirtrafficUI_flights VALUES(null,'" + newIcao + "', '" + flightDict['flightNo'] + "', " \
+                                    " '" + str(coordinate['date']) + "', " + str(coordinate['alt']) + ", " + str(coordinate['lat']) + ", " + \
+                                    str(coordinate['long']) + ", '" +  flightDict['aircraft'] + "', '" + flightDict['origAirport'] + "', '" + \
+                                    flightDict['destAirport'] + "', " + str(coordinate['speed']) + ");"
+                        
+                        print "INSERTing flightSql=[" , flightSql
+                        cursor.execute(flightSql)
+                        db.commit()
+                        
+                if (noneCounter > 50):
+                    #stop processing obsolete ICAO further
+                    break;
+            
+            # Commit your changes in the database
+            print "Sleep ", interval*1
+            time.sleep(interval*1)
     
     except :
         print "Something is wrong sql=[", sql
+        sendMail("parseICAO Failed", sql)
         db.rollback()
     
     if cursor is not None:

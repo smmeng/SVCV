@@ -3,7 +3,7 @@ import smtplib
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
 
-def sendMail(subject, msg): 
+def sendMail(subject, txt): 
     fromaddr = "redbiglobster@gmail.com"
     toaddr = "smmeng@gmail.com"
     
@@ -12,7 +12,7 @@ def sendMail(subject, msg):
     msg['To'] = toaddr
     msg['Subject'] = subject
      
-    body = msg
+    body = txt
     msg.attach(MIMEText(body, 'plain'))
      
     server = smtplib.SMTP('smtp.gmail.com', 587)
