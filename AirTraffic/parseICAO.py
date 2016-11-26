@@ -1,3 +1,4 @@
+import sys, traceback
 import urllib                   #https://docs.python.org/2/library/urllib.html
 from bs4 import BeautifulSoup   #https://www.crummy.com/software/BeautifulSoup/bs4/doc/#searching-the-tree, 
 from pip._vendor.requests import structures
@@ -77,7 +78,7 @@ def lookupICAO(icao):
         if (title is None):
             return None
     
-        print "******:", title#, titleList
+        print "lookupICAO() ******:", title#, titleList
         
         body=soup.body
         table=body.contents[6].table
@@ -144,6 +145,110 @@ def lookupICAO(icao):
         return None
     return flightDict
 
+# 2nd approach with known flight#
+def lookupFlightNo(flightNo):
+    
+    #ICAOurl= "http://flightaware.com/live/modes/" + icao + "/redirect"
+    ICAOurl= "http://flightaware.com/live/flight/"+flightNo
+    flightDict={}
+    
+    #store default values 
+    flightDict['flightNo']= flightNo
+    flightDict['flightName']=" "
+    flightDict['origAirport']=" "
+    flightDict['destAirport']=" "
+    flightDict['onTime']=" "
+    flightDict['status']=" "
+    flightDict['aircraft']= " "
+    flightDict['aircraftName']=" "
+    flightDict['speed']=" "
+    flightDict['altitude']=" "
+    flightDict['distance']=" "
+    flightDict['route']=" "
+    
+    try:
+        opener = urllib.FancyURLopener({})
+        f = opener.open(ICAOurl)
+        
+        html_doc = f.read()
+        
+        soup = BeautifulSoup(html_doc, 'html.parser')
+        title = soup.title
+        if (title is None):
+            return None
+    
+        #print "******:", title#, titleList
+        
+        body=soup.body
+        table= body.findAll("table", class_="track-panel-course")
+        #print table, len(table)
+        
+        origAirportTD = table[0].findAll("td", class_="track-panel-departure")
+        #print "origAirportTD=[", origAirportTD
+        origAirportA = origAirportTD[0].findAll("a", { })
+        #print "origAirportA=[", origAirportA
+        origAirport = removeHTMLTag(origAirportA[0])
+        #print "origAirport=[", origAirport
+
+        destAirportTD = table[0].findAll("td", class_="track-panel-arrival")
+        #print "destAirportTD=[", destAirportTD
+        destAirportA = destAirportTD[0].findAll("a", { })
+        #print "destAirportA=[", destAirportA
+        destAirport = removeHTMLTag(destAirportA[0])
+        #print "destAirport=[", destAirport
+        
+        flightDict['flightNo']=flightNo
+        #flightDict['flightName']=flightName
+        flightDict['origAirport']=origAirport
+        flightDict['destAirport']=destAirport
+
+        ths = body.findAll("th", class_="secondaryHeader")
+        #print "How many secondaryHeader[", len(ths)
+        spans = ths[0].next_sibling.next_sibling.findAll("span", class_="flightStatusGood")
+        status = removeHTMLTag(spans[0])
+        #print "****** status:", status, len(spans)
+        
+        if (len(spans) > 1):
+            onTime = removeHTMLTag(spans[1])
+            flightDict['onTime']=onTime
+            #print "****** onTime", onTime
+        
+        aircraft = ths[1].next_sibling.next_sibling
+        #print ths[1].next_sibling.next_sibling
+        aircraftName = ths[1].next_sibling.next_sibling
+        aircraft = aircraftName.findAll("a", {})
+        aircraft = removeHTMLTag(aircraft[0])
+        aircraftName = aircraftName.findAll("td", {})
+        aircraftName = removeHTMLTag(aircraftName[0])
+        #print "****** aircraftName:", aircraftName, "-", aircraft
+        #print "****** aircraft:", aircraft
+        flightDict['status']=status
+        flightDict['aircraft']=aircraft
+        flightDict['aircraftName']=aircraftName
+        
+        speed = ths[2].next_sibling.next_sibling
+        speed = speed.findAll("span", {})
+        speed = removeHTMLTag(speed[0])
+        #print "****** speed:", speed
+        flightDict['speed']=speed.split()[0]
+        
+        altitude = removeHTMLTag(ths[3].next_sibling.next_sibling)
+        #print "****** altitude:",altitude
+        flightDict['altitude']=altitude
+        
+        distance = removeHTMLTag(ths[4].next_sibling.next_sibling)
+        #print "****** distance:",distance
+        flightDict['distance']=distance
+        
+        route = removeHTMLTag(ths[5].next_sibling.next_sibling)
+        #print "****** route:", route
+        flightDict['route']=route
+
+        #flightDict['']=
+    except:
+        print "Something is wrong in parsing Flight !"
+    return flightDict
+
 def isInsideMaxTolerantDistance(cursor, icao, dateStr):
     
     sql="SELECT icao,  date, altitude, latitude, longititude, speed "\
@@ -178,17 +283,26 @@ def findNewICAOs4Today():
     tday =  datetime.now(pytz.timezone(timeZone))
     dateStr = "%s-%s-%s"%(tday.year, tday.month,tday.day)
     print "dateStr=[",dateStr, "(%f,%f)"%( calculateDistance.origLat,calculateDistance.origLong)
-    
+    flightSql = ""
     #MySQL lookup & update
-    sql="SELECT icao,  max(date) datetm, min(altitude) alt, avg(latitude) lat, avg(longititude) lon, avg(speed) speed "\
+    sql="SELECT icao,  max(date) datetm, min(altitude) alt, avg(latitude) lat, avg(longititude) lon, avg(speed) speed, flight "\
             "FROM AirTraffic.AirtrafficUI_positionjsonhistory "\
             "WHERE date LIKE '" + dateStr + "%' and altitude > " + str(minAlt) + " and altitude < " + str(maxAlt) + " "\
-                "AND icao NOT IN (SELECT distinct icao "\
+                " AND icao NOT IN (SELECT distinct icao "\
                                     "FROM AirTraffic.AirtrafficUI_flights "\
                                     "WHERE date LIKE '" + dateStr + "%') "\
             "GROUP BY icao "\
             "ORDER BY  datetm  DESC; "
 
+    sql = "SELECT distinct icao, flight "\
+            "FROM AirTraffic.AirtrafficUI_positionjsonhistory "\
+            "WHERE date LIKE '" + dateStr + "%'  "\
+            "AND flight IS NOT NULL "\
+            "and altitude > " + str(minAlt) + " and altitude < " + str(maxAlt) + " "\
+            "AND icao NOT IN  "\
+            "(SELECT distinct icao "\
+            "FROM AirTraffic.AirtrafficUI_flights WHERE date LIKE  '" + dateStr + "%'); " 
+    print sql
         # Or don't use GROUP BY, scan all coordinates for a flight to see if it's over our head. radius of 3 miles
         # library: https://pypi.python.org/pypi/geopy/1.11.0
     
@@ -197,7 +311,6 @@ def findNewICAOs4Today():
     cursor = None
     
     try:
-
         db = MySQLdb.connect("lab2.svcvllc.com","httpuser","Save3ySky","AirTraffic" )
         
         # prepare a cursor object using cursor() method
@@ -205,46 +318,72 @@ def findNewICAOs4Today():
         
         while True:
             cursor.execute(sql)
-            
             rows = cursor.fetchall()
      
             print('findNewICAOs4Today() Total New ICAO Row(s):', cursor.rowcount)
             noneCounter = 0
             for row in rows:
                 newIcao=row[0]
-                datetm=row[1]
-                #print "\n new ICAO=[", newIcao, "] tm=[", datetm, "] counter=", noneCounter
-                flightDict = lookupICAO(newIcao)
-                if (flightDict is None):
+                #datetm=row[1]
+                flightNo = row[1]
+                print "\n new ICAO=[", newIcao, "] flight=[",flightNo, "] counter=", noneCounter
+                if (flightNo is not None and str(flightNo)!= 'null'):
+                    flightDict = lookupFlightNo(flightNo.rstrip())
+                else:
+                    sqlJoinMap = "SELECT  TailPin "\
+                        "FROM AirTraffic.ICAOmap map"\
+                        "WHERE map.icao = '"+ newIcao+"'"
+                    cursor.execute(sql)
+            
+                    mapRows = cursor.fetchall()
+                    if (len(mapRows)==1):
+                        TailPin = mapRows[0][0]
+                        print "In ICAOmap, icao=[", newIcao, "] TailPin=[", TailPin
+                        flightDict = lookupFlightNo(TailPin.rstrip())
+                        print flightDict
+                    else:
+                        flightDict = lookupICAO(newIcao)
+                    
+                if (flightDict is None or bool(flightDict) == False):
                     noneCounter +=1
-                    #print noneCounter, flightDict
+                    print noneCounter, flightDict
                 else:
                     noneCounter =0 #reset the counter
                     print noneCounter, flightDict
                     coordinate = isInsideMaxTolerantDistance(cursor, newIcao, dateStr)
                     
                     if coordinate is not None: #insert the flight info to flights table
-                        flightSql = "INSERT INTO AirtrafficUI_flights VALUES(null,'" + newIcao + "', '" + flightDict['flightNo'] + "', " \
-                                    " '" + str(coordinate['date']) + "', " + str(coordinate['alt']) + ", " + str(coordinate['lat']) + ", " + \
-                                    str(coordinate['long']) + ", '" +  flightDict['aircraft'] + "', '" + flightDict['origAirport'] + "', '" + \
-                                    flightDict['destAirport'] + "', " + str(coordinate['speed']) + ");"
-                        
-                        print "INSERTing flightSql=[" , flightSql
-                        cursor.execute(flightSql)
-                        db.commit()
-                        
+                        try:
+                            flightSql = "INSERT INTO AirtrafficUI_flights VALUES(null,'" + newIcao + "', '" + flightDict['flightNo'] + "', " \
+                                        " '" + str(coordinate['date']) + "', " + str(coordinate['alt']) + ", " + str(coordinate['lat']) + ", " + \
+                                        str(coordinate['long']) + ", '" +  flightDict['aircraft'] + "', '" + flightDict['origAirport'] + "', '" + \
+                                        flightDict['destAirport'] + "', " + str(coordinate['speed']) + ");"
+                            
+                            print "INSERTing flightSql=[" , flightSql
+                            # Commit your changes in the database
+                            cursor.execute(flightSql)
+                            db.commit()
+                        except :
+                            print "findNewICAOs4Today() Something is wrong Insert=[",  flightSql
+                            ex = traceback.print_stack()
+                            print ex
+                            sendMail("findNewICAOs4Today() Failed Insert=[", ex)
+                            db.rollback()
+
+
                 if (noneCounter > 50):
                     #stop processing obsolete ICAO further
                     break;
             
-            # Commit your changes in the database
-            print "Sleep ", interval*1
+            
+            print "Sleep ", interval*1, "\n\n\n"
             time.sleep(interval*1)
     
     except :
-        print "Something is wrong sql=[", sql
-        sendMail("parseICAO Failed", sql)
+        print "findNewICAOs4Today() Something is wrong sql=[", sql
+        sendMail("parseICAO Failed findNewICAOs4Today()", sql)
         db.rollback()
+        traceback.print_exc(file=sys.stdout)
     
     if cursor is not None:
         cursor.close()
