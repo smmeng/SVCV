@@ -152,8 +152,14 @@ def showBadPlanes(request):
     if request.method == 'POST':
         datefilter = request.POST.get('datefilter')
         request.session['BadPlanesDatefilter'] = datefilter
-        
         print "in showBadPlanes() POST recvd with datefilter=[", datefilter, "] "
+        
+    if request.method == 'GET' and request.session.get('BadPlanesDatefilter') is None:
+        tday =  datetime.now(pytz.timezone(timeZone))
+        dateFilter = str(tday.month) + "/"+ str(tday.day) + "/"+str(tday.year)
+        print "in showBadPlanes() set  datefilter=[", dateFilter, "] "
+        request.session['BadPlanesDatefilter']=dateFilter
+
     return render(request, 'badPlanes.html',{})
 
 def showBadPlaneData(request):
@@ -164,6 +170,7 @@ def showBadPlaneData(request):
     qname = Q() 
     if (request.session.get('BadPlanesDatefilter') != None):
         dateFilter = request.session.get('BadPlanesDatefilter')
+        print dateFilter,
         firstDate = convert2DateTime(dateFilter + " 00:05 AM")
         nextDate = convert2DateTime(dateFilter + " 11:55 PM")
         
