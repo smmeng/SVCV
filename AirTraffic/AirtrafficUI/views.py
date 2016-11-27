@@ -141,11 +141,14 @@ def showRoutes(request):
     
 def showRoutes0(request):
     return render(request, 'showGMaps0.html',{})
-    
-def showBadPlanes(request):
+
+def showBadPlanes(request):    
+    return render(request, 'badPlanes.html',{})
+
+def showBadPlaneData(request):
     #today =  str(datetime.now(pytz.timezone(timeZone)))[0:10] 
     tday =  datetime.now(pytz.timezone(timeZone))
-    print "showBadPlanes() at ",pytz.timezone(timeZone), ",today[", tday, "] request.method=", request.method
+    print "showBadPlaneData() at ",pytz.timezone(timeZone), ",today[", tday, "] request.method=", request.method
  
     qname = Q() 
     qname &= Q(date__year = tday.year)

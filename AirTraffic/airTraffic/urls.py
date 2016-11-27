@@ -30,6 +30,7 @@ urlpatterns = patterns('',
         url(r'^showRouteData/$', views.showRouteData),
         url(r'^showRoutes0/', views.showRoutes0),
         url(r'^showBadPlanes/$', views.showBadPlanes),
+        url(r'^showBadPlaneData/$', views.showBadPlaneData),
 )
 
 

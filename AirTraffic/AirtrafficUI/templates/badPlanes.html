@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}South Flow Airplanes{% endblock %}
+
+{% block body_block %}
+
+	<div ng-app="myFixedHeadApp" ng-controller="fixedHeadCtrl">
+    	<table style="max-width: 80% !important;" class="CSSTableGenerator">
+	  		<thead fix-head>
+			  <tr>
+			    <th>date</th>
+			    <th>Flight No.</th>
+			    <th>Model</th>
+			    <th>From</th>
+			    <th>To</th>
+			    <th>Speed (kt)</th>
+			    <th>Altitude</th>
+			    <th>Comments</th>
+			    <th>City</th>
+			    <td>Neighborhood</td>
+			  </tr>
+			</thead>
+			<tbody>
+			  <tr ng-repeat="flight in flights">
+			    <td>{{flight.name}}</td>
+			    <td>{{flight.flight}}</td>
+			    <td>{{flight.model}}</td>
+			    <td>{{flight.orig}}</td>
+			    <td>{{flight.dest}}</td>
+			    <td>{{flight.speed}}</td>
+			    <td>{{flight.altitude}}</td>
+			    <td>{{flight.comments}}</td>
+			    <td>Sunnyvale</td>
+			    <td></td>
+			  </tr>
+			</tbody>
+	  	</table>  
+  	</div>
+	<div  style="float: center;">
+		<form action="/showBadPlanes/" method="post"  class="form-container">
+			{% csrf_token %}
+			Date Range:
+		  	<input type="text" name="datefilter" value="{{ request.session.datefilter }} " size="60"  class="form-field"/>
+	 
+			<script type="text/javascript">
+			$(function() {
+			
+			  $('input[name="datefilter"]').daterangepicker({
+			      autoUpdateInput: true,
+			      timePicker: true,
+			      timePickerIncrement: 15,
+			      locale: {
+			          cancelLabel: 'Clear',
+			          format: 'MM/DD/YYYY hh:mm A'
+			      }
+			  });
+			
+			  $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
+			      $(this).val(picker.startDate.format('MM/DD/YYYY hh:mm A') + ' - ' + picker.endDate.format('MM/DD/YYYY hh:mm A'));
+			  });
+			
+			  $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
+			      $(this).val('');
+			  });
+			
+			});
+			</script>
+			<br>
+ 			<br>
+ 			
+			<input type="submit" value="Filter">
+			<input type="reset">
+			<br>
+
+		</form>
+	  </div>
+	  
+{% endblock %}

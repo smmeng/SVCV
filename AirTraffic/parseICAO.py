@@ -203,7 +203,7 @@ def lookupFlightNo(flightNo):
         flightDict['destAirport']=destAirport
 
         ths = body.findAll("th", class_="secondaryHeader")
-        #print "How many secondaryHeader[", len(ths)
+        print "How many secondaryHeader[", len(ths)
         spans = ths[0].next_sibling.next_sibling.findAll("span", class_="flightStatusGood")
         status = removeHTMLTag(spans[0])
         #print "****** status:", status, len(spans)
@@ -297,7 +297,6 @@ def findNewICAOs4Today():
     sql = "SELECT distinct icao, flight "\
             "FROM AirTraffic.AirtrafficUI_positionjsonhistory "\
             "WHERE date LIKE '" + dateStr + "%'  "\
-            "AND flight IS NOT NULL "\
             "and altitude > " + str(minAlt) + " and altitude < " + str(maxAlt) + " "\
             "AND icao NOT IN  "\
             "(SELECT distinct icao "\
@@ -310,14 +309,15 @@ def findNewICAOs4Today():
     db = None
     cursor = None
     
-    try:
-        db = MySQLdb.connect("lab2.svcvllc.com","httpuser","Save3ySky","AirTraffic" )
-        
-        # prepare a cursor object using cursor() method
-        cursor = db.cursor()
-        
+    try:        
         while True:
+            db = MySQLdb.connect("lab2.svcvllc.com","httpuser","Save3ySky","AirTraffic" )
+            
+            # prepare a cursor object using cursor() method
+            cursor = db.cursor()
+            
             cursor.execute(sql)
+            print "EXE main sql=[", sql
             rows = cursor.fetchall()
      
             print('findNewICAOs4Today() Total New ICAO Row(s):', cursor.rowcount)
@@ -330,23 +330,24 @@ def findNewICAOs4Today():
                 if (flightNo is not None and str(flightNo)!= 'null'):
                     flightDict = lookupFlightNo(flightNo.rstrip())
                 else:
-                    sqlJoinMap = "SELECT  TailPin "\
-                        "FROM AirTraffic.ICAOmap map"\
-                        "WHERE map.icao = '"+ newIcao+"'"
-                    cursor.execute(sql)
-            
+                    sqlJoinMap = "SELECT TailPin FROM AirTraffic.ICAOmap "\
+                        "WHERE icao = '"+ newIcao+"';"
+                    
+                    cursor.execute(sqlJoinMap)
                     mapRows = cursor.fetchall()
+
                     if (len(mapRows)==1):
                         TailPin = mapRows[0][0]
                         print "In ICAOmap, icao=[", newIcao, "] TailPin=[", TailPin
                         flightDict = lookupFlightNo(TailPin.rstrip())
-                        print flightDict
+                        print "In ICAOmap, flightDict=[",flightDict
                     else:
                         flightDict = lookupICAO(newIcao)
-                    
+
+                    #time.sleep(interval*10)
                 if (flightDict is None or bool(flightDict) == False):
                     noneCounter +=1
-                    print noneCounter, flightDict
+                    #print noneCounter, flightDict
                 else:
                     noneCounter =0 #reset the counter
                     print noneCounter, flightDict
@@ -375,13 +376,19 @@ def findNewICAOs4Today():
                     #stop processing obsolete ICAO further
                     break;
             
-            
-            print "Sleep ", interval*1, "\n\n\n"
-            time.sleep(interval*1)
+            if cursor is not None:
+                cursor.close()
+            if db is not None:
+                db.close()
+                
+            print "Sleep ", interval*6, "\n\n\n"
+            time.sleep(interval*6)
     
     except :
         print "findNewICAOs4Today() Something is wrong sql=[", sql
-        sendMail("parseICAO Failed findNewICAOs4Today()", sql)
+        ex = traceback.print_stack()
+        print ex
+        sendMail("parseICAO Failed findNewICAOs4Today()", ex)
         db.rollback()
         traceback.print_exc(file=sys.stdout)
     

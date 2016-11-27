@@ -175,6 +175,23 @@ app.controller('appGMapsCtrl', function($scope, $filter, $http) {
     });
 });
 
+var app = angular.module('myFixedHeadApp', []);
+
+app.controller('fixedHeadCtrl', function($scope, $filter, $http) {
+	var jsonURL = "/showBadPlaneData/";
+	var homeLatlng = new google.maps.LatLng(37.3522374, -122.052706);
+	$scope.mapProp = {
+			    center:homeLatlng,
+			    zoom:11,
+			    mapTypeId:google.maps.MapTypeId.ROADMAP
+			   };
+
+	$scope.map=new google.maps.Map(document.getElementById("map_canvas"),$scope.mapProp);
+	
+    $http.get(jsonURL).success(function (data) {
+    })
+});
+    
 var app = angular.module('myApp', ['anguFixedHeaderTable']);
 
 app.controller('projectInvestorSummarysCtrl', function($scope, $filter, $http) {
