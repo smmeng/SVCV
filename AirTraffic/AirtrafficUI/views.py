@@ -149,6 +149,11 @@ def showRoutes0(request):
     return render(request, 'showGMaps0.html',{})
 
 def showBadPlanes(request):    
+    if request.method == 'POST':
+        datefilter = request.POST.get('datefilter')
+        request.session['BadPlanesDatefilter'] = datefilter
+        
+        print "in showBadPlanes() POST recvd with datefilter=[", datefilter, "] "
     return render(request, 'badPlanes.html',{})
 
 def showBadPlaneData(request):
@@ -157,11 +162,19 @@ def showBadPlaneData(request):
     print "showBadPlaneData() at ",pytz.timezone(timeZone), ",today[", tday, "] request.method=", request.method
  
     qname = Q() 
-    qname &= Q(date__year = tday.year)
-    qname &= Q(date__month= tday.month)
-    qname &= Q(date__day= tday.day)
-    
-    flight_list = flights.objects.filter(date__gte = str(tday.year) + "-" + str(tday.month) +"-"+ str(tday.day) + " 00:00:00").values_list('ICAO', 'Flight', 'date', 'altitude', 'latitude', 'longitude', 'aircraft','orig', 'dest', 'speed').order_by('-date')
+    if (request.session.get('BadPlanesDatefilter') != None):
+        dateFilter = request.session.get('BadPlanesDatefilter')
+        firstDate = convert2DateTime(dateFilter + " 00:05 AM")
+        nextDate = convert2DateTime(dateFilter + " 11:55 PM")
+        
+        qname &= Q(date__range = (firstDate, nextDate))
+        
+        flight_list = flights.objects.filter(qname).values_list('ICAO', 'Flight', 'date', 'altitude', 'latitude', 'longitude', 'aircraft','orig', 'dest', 'speed').order_by('-date')
+    else:
+        qname &= Q(date__year = tday.year)
+        qname &= Q(date__month= tday.month)
+        qname &= Q(date__day= tday.day)
+        flight_list = flights.objects.filter(date__gte = str(tday.year) + "-" + str(tday.month) +"-"+ str(tday.day) + " 00:00:00").values_list('ICAO', 'Flight', 'date', 'altitude', 'latitude', 'longitude', 'aircraft','orig', 'dest', 'speed').order_by('-date')
     print len(flight_list), datetime.now(pytz.timezone(timeZone)).date()
     
     flightDictionary ={}

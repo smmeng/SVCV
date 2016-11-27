@@ -67,18 +67,21 @@
 			    {% endverbatim %} 
 			  </tr>
 			</tbody>
-	  	</table>  
-  	</div>
-	<div  style="float: center;">
-		<form action="/showBadPlanes/" method="post"  class="form-container">
+	  	</table>
+	  	<div style="float: center;">
+		<form action="/showBadPlanes/" method="post" class="form-container">
 			{% csrf_token %}
-			Pick a Date (PENDING):
-		  	<input type="text" name="datefilter" value="{{ request.session.datefilter }} " size="60"  class="form-field"/>
+			Pick a Date:
+		  	<input type="text" name="datefilter" value="{{ request.session.BadPlanesDatefilter }} " size="20" class="form-field">
 	 		<script type="text/javascript">
 			$(function() {
 			    $('input[name="datefilter"]').daterangepicker({
 			        singleDatePicker: true,
-			        showDropdowns: true
+			        showDropdowns: true,
+			        locale: {
+				          cancelLabel: 'Clear',
+				          format: 'MM/DD/YYYY'
+				      }
 			    }, 
 			    function(start, end, label) {
 			        var years = moment().diff(start, 'years');
@@ -90,11 +93,13 @@
 			<br>
  			<br>
  			
-			<input type="RESET" value="PENDING">
+			<input type="submit" value="Filter">
 			<input type="reset">
 			<br>
 
 		</form>
-	  </div>
+	  </div>  
+  	</div>
+	
 	  
 {% endblock %}
