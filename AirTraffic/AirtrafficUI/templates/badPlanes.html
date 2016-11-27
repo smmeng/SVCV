@@ -8,13 +8,13 @@
     	<table style="max-width: 80% !important;" class="CSSTableGenerator">
 	  		<thead fix-head>
 			  <tr>
-			    <th>date</th>
+			    <th>Date</th>
 			    <th>Flight No.</th>
 			    <th>Model</th>
 			    <th>From</th>
 			    <th>To</th>
 			    <th>Speed (kt)</th>
-			    <th>Altitude</th>
+			    <th>Altitude (ft)</th>
 			    <th>Comments</th>
 			    <th>City</th>
 			    <td>Neighborhood</td>
@@ -22,9 +22,10 @@
 			</thead>
 			<tbody>
 			  <tr ng-repeat="flight in flights">
-			    <td>{{flight.name}}</td>
-			    <td>{{flight.flight}}</td>
-			    <td>{{flight.model}}</td>
+			  	{% verbatim %}
+			    <td>{{flight.date}}</td>
+			    <td>{{flight.Flight}}</td>
+			    <td>{{flight.aircraft}}</td>
 			    <td>{{flight.orig}}</td>
 			    <td>{{flight.dest}}</td>
 			    <td>{{flight.speed}}</td>
@@ -32,6 +33,7 @@
 			    <td>{{flight.comments}}</td>
 			    <td>Sunnyvale</td>
 			    <td></td>
+			    {% endverbatim %} 
 			  </tr>
 			</tbody>
 	  	</table>  
