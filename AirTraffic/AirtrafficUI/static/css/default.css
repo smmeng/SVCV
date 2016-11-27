@@ -622,8 +622,8 @@ table { margin: auto; }
 }.CSSTableGenerator tr:hover td{
 	
 }
-.CSSTableGenerator tr:nth-child(odd){ background-color:#ffda56; }
-.CSSTableGenerator tr:nth-child(even)    { background-color:#ffffff; }.CSSTableGenerator td{
+.CSSTableGenerator tr:nth-child(odd){ background-color:#ffff80; }
+.CSSTableGenerator tr:nth-child(even)    { background-color:#80ffff; }.CSSTableGenerator td{
 	vertical-align:middle;
 	
 	
@@ -641,13 +641,13 @@ table { margin: auto; }
 	border-width:0px 0px 0px 0px;
 }
 .CSSTableGenerator thead th {
-	background:-o-linear-gradient(bottom, #ff7f00 5%, #7f0000 100%);	
-	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ff7f00), color-stop(1, #7f0000) );
-	background:-moz-linear-gradient( center top, #ff7f00 5%, #7f0000 100% );
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#ff7f00", endColorstr="#7f0000");	
-	background: -o-linear-gradient(top,#ff7f00,7f0000);
+	background:-o-linear-gradient(bottom, #c0c0c 5%, #7f0000 100%);	
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #c0c0c), color-stop(1, #7f0000) );
+	background:-moz-linear-gradient( center top, #c0c0c 5%, #7f0000 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#c0c0c", endColorstr="#7f0000");	
+	background: -o-linear-gradient(top,#c0c0c,7f0000);
 
-	background-color:#ff7f00;
+	background-color:#c0c0c0;
 	border:0px solid #000000;
 	text-align:center;
 	border-width:0px 0px 1px 1px;

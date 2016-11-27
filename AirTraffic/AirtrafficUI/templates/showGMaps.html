@@ -23,6 +23,7 @@ body { height: 100%; margin: 0; padding: 0 }
 
 {% block body_block %}
 
+<H1> Daily Flight Path | <a href="/showBadPlanes">Daily Noisy Flights</a></H1>
 	<div  style="float: center;">
 		<form action="/showRoutes/" method="post"  class="form-container">
 			{% csrf_token %}

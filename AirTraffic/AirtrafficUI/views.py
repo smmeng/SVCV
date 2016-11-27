@@ -1,4 +1,10 @@
+######################################################################################################
+#
 # Create your views here.
+# URL References:
+# Date Range Picker: http://www.daterangepicker.com/
+#
+######################################################################################################
 from datetime import datetime, timedelta
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, RequestContext

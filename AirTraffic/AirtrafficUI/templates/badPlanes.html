@@ -4,24 +4,55 @@
 
 {% block body_block %}
 
-	<div ng-app="myFixedHeadApp" ng-controller="fixedHeadCtrl">
+	<!-- reference from https://scotch.io/tutorials/sort-and-filter-a-table-using-angular -->
+	<!-- Include Date Range Picker as per http://www.daterangepicker.com/-->
+	
+	<H1>Daily Noisy Flights | <a href="/showRoutes">Daily Flight Path</a></H1>
+	<div class="alert alert-info" ng-app="myFixedHeadApp" ng-controller="fixedHeadCtrl">
+		{% verbatim %}
+	    <p>Sort Type: {{ sortType }}</p>
+	    <p>Sort Reverse: {{ sortReverse }}</p>
+	    <form  class="form-container">
+		    <div style="max-width:30%;">
+		    	<p class="form-title">Search Query: {{ searchTo }}</p>
+	    		<input type="text" class="form-control" placeholder="Search Destination" ng-model="searchTo" 
+	    			size=60 class="form-field">
+	    	</div>
+	    </form>
+	    {% endverbatim %}
+	    
     	<table style="max-width: 80% !important;" class="CSSTableGenerator">
 	  		<thead fix-head>
 			  <tr>
-			    <th>Date</th>
+			    <th>
+			    	<a href="#" ng-click="sortType = 'date'; sortReverse = !sortReverse">
+			    		Date
+			    		<span ng-show="sortType == 'date'" ></span>
+		          	</a>
+		        </th>
 			    <th>Flight No.</th>
 			    <th>Model</th>
-			    <th>From</th>
-			    <th>To</th>
+			    <th>
+			    	<a href="#" ng-click="sortType = 'orig'; sortReverse = !sortReverse">
+			    		From
+			    		<span ng-show="sortType == 'orig'" ></span>
+		          	</a>			    
+			    </th>
+			    <th>
+			    	<a href="#" ng-click="sortType = 'dest'; sortReverse = !sortReverse">
+			    		To
+			    		<span ng-show="sortType == 'dest'" ></span>
+		          	</a>
+			    </th>
 			    <th>Speed (kt)</th>
 			    <th>Altitude (ft)</th>
 			    <th>Comments</th>
 			    <th>City</th>
-			    <td>Neighborhood</td>
+			    <th>Neighborhood</th>
 			  </tr>
 			</thead>
 			<tbody>
-			  <tr ng-repeat="flight in flights">
+			  <tr ng-repeat="flight in flights | orderBy:sortType:sortReverse  | filter:searchTo">
 			  	{% verbatim %}
 			    <td>{{flight.date}}</td>
 			    <td>{{flight.Flight}}</td>
@@ -41,36 +72,25 @@
 	<div  style="float: center;">
 		<form action="/showBadPlanes/" method="post"  class="form-container">
 			{% csrf_token %}
-			Date Range:
+			Pick a Date (PENDING):
 		  	<input type="text" name="datefilter" value="{{ request.session.datefilter }} " size="60"  class="form-field"/>
-	 
-			<script type="text/javascript">
+	 		<script type="text/javascript">
 			$(function() {
-			
-			  $('input[name="datefilter"]').daterangepicker({
-			      autoUpdateInput: true,
-			      timePicker: true,
-			      timePickerIncrement: 15,
-			      locale: {
-			          cancelLabel: 'Clear',
-			          format: 'MM/DD/YYYY hh:mm A'
-			      }
-			  });
-			
-			  $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
-			      $(this).val(picker.startDate.format('MM/DD/YYYY hh:mm A') + ' - ' + picker.endDate.format('MM/DD/YYYY hh:mm A'));
-			  });
-			
-			  $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
-			      $(this).val('');
-			  });
-			
+			    $('input[name="datefilter"]').daterangepicker({
+			        singleDatePicker: true,
+			        showDropdowns: true
+			    }, 
+			    function(start, end, label) {
+			        var years = moment().diff(start, 'years');
+			    });
 			});
 			</script>
+			
+
 			<br>
  			<br>
  			
-			<input type="submit" value="Filter">
+			<input type="RESET" value="PENDING">
 			<input type="reset">
 			<br>
 
