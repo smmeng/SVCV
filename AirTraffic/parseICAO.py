@@ -203,7 +203,7 @@ def lookupFlightNo(flightNo):
         flightDict['destAirport']=destAirport
 
         ths = body.findAll("th", class_="secondaryHeader")
-        print "How many secondaryHeader[", len(ths)
+        #print "How many secondaryHeader[", len(ths)
         spans = ths[0].next_sibling.next_sibling.findAll("span", class_="flightStatusGood")
         status = removeHTMLTag(spans[0])
         #print "****** status:", status, len(spans)
@@ -279,12 +279,47 @@ def isInsideMaxTolerantDistance(cursor, icao, dateStr):
         print "isInsideMaxTolerantDistance() Something is wrong sql=[", sql
     return None
 
+def updateICAOmap(db, cursor, icao, tailPin):
+    
+    sql="SELECT icao,  tailpin "\
+            "FROM  AirTraffic.ICAOmap "\
+            "WHERE icao='" + icao + "';"
+            
+    try:
+        tday =  datetime.now(pytz.timezone(timeZone))
+        dateStr = "%s-%s-%s"%(tday.year, tday.month,tday.day)
+        
+        cursor.execute(sql)
+        rows = cursor.fetchall()
+ 
+        print('updateICAOmap() Total Row(s):', cursor.rowcount)
+        if cursor.rowcount == 0: #insert it as a new icao map
+            sql = "INSERT INTO  AirTraffic.ICAOmap VALUES ('" + icao + "', '" + tailPin +"', '" + dateStr + "');"
+        else:
+            sql = "UPDATE AirTraffic.ICAOmap SET tailpin = '" + tailPin +"', date = '"  + dateStr + "' WHERE icao='" + icao + "';"
+
+        print('updateICAOmap() sql=[', sql)
+
+        cursor.execute(sql)
+        db.commit()
+            
+    except :
+        print "updateICAOmap() Something is wrong sql=[", sql
+        ex = traceback.print_stack()
+        print ex
+        sendMail("parseICAO Failed updateICAOmap()", ex)
+        db.rollback()
+    return None
+
 def findNewICAOs4Today():
+    flightSql = ""
+    sql = ""
+    icaoDict = {}
+    #MySQL lookup & update
+    '''
     tday =  datetime.now(pytz.timezone(timeZone))
     dateStr = "%s-%s-%s"%(tday.year, tday.month,tday.day)
     print "dateStr=[",dateStr, "(%f,%f)"%( calculateDistance.origLat,calculateDistance.origLong)
-    flightSql = ""
-    #MySQL lookup & update
     sql="SELECT icao,  max(date) datetm, min(altitude) alt, avg(latitude) lat, avg(longititude) lon, avg(speed) speed, flight "\
             "FROM AirTraffic.AirtrafficUI_positionjsonhistory "\
             "WHERE date LIKE '" + dateStr + "%' and altitude > " + str(minAlt) + " and altitude < " + str(maxAlt) + " "\
@@ -293,15 +328,7 @@ def findNewICAOs4Today():
                                     "WHERE date LIKE '" + dateStr + "%') "\
             "GROUP BY icao "\
             "ORDER BY  datetm  DESC; "
-
-    sql = "SELECT distinct icao, flight "\
-            "FROM AirTraffic.AirtrafficUI_positionjsonhistory "\
-            "WHERE date LIKE '" + dateStr + "%'  "\
-            "and altitude > " + str(minAlt) + " and altitude < " + str(maxAlt) + " "\
-            "AND icao NOT IN  "\
-            "(SELECT distinct icao "\
-            "FROM AirTraffic.AirtrafficUI_flights WHERE date LIKE  '" + dateStr + "%'); " 
-    print sql
+    '''
         # Or don't use GROUP BY, scan all coordinates for a flight to see if it's over our head. radius of 3 miles
         # library: https://pypi.python.org/pypi/geopy/1.11.0
     
@@ -311,7 +338,20 @@ def findNewICAOs4Today():
     
     try:        
         while True:
+            tday =  datetime.now(pytz.timezone(timeZone))
+            dateStr = "%s-%s-%s"%(tday.year, tday.month,tday.day)
+            #print "dateStr=[",dateStr, "(%f,%f)"%( calculateDistance.origLat,calculateDistance.origLong)
+            sql = "SELECT distinct icao, flight "\
+                    "FROM AirTraffic.AirtrafficUI_positionjsonhistory "\
+                    "WHERE date LIKE '" + dateStr + "%'  "\
+                    "and altitude > " + str(minAlt) + " and altitude < " + str(maxAlt) + " "\
+                    "AND icao NOT IN  "\
+                    "(SELECT distinct icao "\
+                    "FROM AirTraffic.AirtrafficUI_flights WHERE date LIKE  '" + dateStr + "%') ORDER BY icao; " 
+            #print sql
+
             db = MySQLdb.connect("lab2.svcvllc.com","httpuser","Save3ySky","AirTraffic" )
+            #db = MySQLdb.connect("localhost","httpuser","Save3ySky","AirTraffic" )
             
             # prepare a cursor object using cursor() method
             cursor = db.cursor()
@@ -329,21 +369,31 @@ def findNewICAOs4Today():
                 print "\n new ICAO=[", newIcao, "] flight=[",flightNo, "] counter=", noneCounter
                 if (flightNo is not None and str(flightNo)!= 'null'):
                     flightDict = lookupFlightNo(flightNo.rstrip())
-                else:
-                    sqlJoinMap = "SELECT TailPin FROM AirTraffic.ICAOmap "\
-                        "WHERE icao = '"+ newIcao+"';"
+                    icaoDict[newIcao] = flightNo
                     
-                    cursor.execute(sqlJoinMap)
-                    mapRows = cursor.fetchall()
-
-                    if (len(mapRows)==1):
-                        TailPin = mapRows[0][0]
-                        print "In ICAOmap, icao=[", newIcao, "] TailPin=[", TailPin
-                        flightDict = lookupFlightNo(TailPin.rstrip())
-                        print "In ICAOmap, flightDict=[",flightDict
-                    else:
-                        flightDict = lookupICAO(newIcao)
-
+                    updateICAOmap(db, cursor, newIcao, flightNo) #update the mapping table for this icao
+                else:
+                    flightNo = icaoDict.get(newIcao, "null")
+                    print 'icaoDict[newIcao]=',flightNo
+                    if (flightNo is not None and flightNo != "null"):
+                        continue    # skip this because I just processed it
+                    
+                    flightDict = lookupICAO(newIcao)
+                    if (flightDict is not None and flightDict['flightNo'] is not None):
+                        updateICAOmap(db, cursor, newIcao, flightNo) #update the mapping table for this icao
+                    else: # Finally we must look up the flight # from the mapping table
+                        sqlJoinMap = "SELECT TailPin FROM AirTraffic.ICAOmap "\
+                            "WHERE icao = '"+ newIcao+"';"
+                        
+                        cursor.execute(sqlJoinMap)
+                        mapRows = cursor.fetchall()
+    
+                        if (len(mapRows)==1):
+                            TailPin = mapRows[0][0]
+                            print "In ICAOmap, icao=[", newIcao, "] TailPin=[", TailPin
+                            flightDict = lookupFlightNo(TailPin.rstrip())
+                            #print "In ICAOmap, flightDict=[",flightDict
+                            
                     #time.sleep(interval*10)
                 if (flightDict is None or bool(flightDict) == False):
                     noneCounter +=1
