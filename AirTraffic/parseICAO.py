@@ -287,7 +287,7 @@ def updateICAOmap(db, cursor, icao, tailPin):
             
     try:
         tday =  datetime.now(pytz.timezone(timeZone))
-        dateStr = "%s-%s-%s"%(tday.year, tday.month,tday.day)
+        dateStr = "%s-%02d-%02d"%(tday.year, tday.month,tday.day)
         
         cursor.execute(sql)
         rows = cursor.fetchall()
@@ -318,7 +318,7 @@ def findNewICAOs4Today():
     #MySQL lookup & update
     '''
     tday =  datetime.now(pytz.timezone(timeZone))
-    dateStr = "%s-%s-%s"%(tday.year, tday.month,tday.day)
+    dateStr = "%s-%02d-%02d"%(tday.year, tday.month,tday.day)
     print "dateStr=[",dateStr, "(%f,%f)"%( calculateDistance.origLat,calculateDistance.origLong)
     sql="SELECT icao,  max(date) datetm, min(altitude) alt, avg(latitude) lat, avg(longititude) lon, avg(speed) speed, flight "\
             "FROM AirTraffic.AirtrafficUI_positionjsonhistory "\
@@ -339,7 +339,7 @@ def findNewICAOs4Today():
     try:        
         while True:
             tday =  datetime.now(pytz.timezone(timeZone))
-            dateStr = "%s-%s-%s"%(tday.year, tday.month,tday.day)
+            dateStr = "%s-%02d-%02d"%(tday.year, tday.month,tday.day)
             #print "dateStr=[",dateStr, "(%f,%f)"%( calculateDistance.origLat,calculateDistance.origLong)
             sql = "SELECT distinct icao, flight "\
                     "FROM AirTraffic.AirtrafficUI_positionjsonhistory "\
