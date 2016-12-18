@@ -16,6 +16,7 @@ def distance(origin, destination):
 
     return d
 
+# Mango Ave & Knickerbocker Drive
 origLat = 37.3522374; 
 origLong = -122.052706; 
 '''
